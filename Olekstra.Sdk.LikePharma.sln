@@ -7,11 +7,30 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		GlobalSuppressions.cs = GlobalSuppressions.cs
+		GlobalSuppressions.Tests.cs = GlobalSuppressions.Tests.cs
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Olekstra.LikePharma.Client", "Olekstra.LikePharma.Client\Olekstra.LikePharma.Client.csproj", "{066F84CB-F384-4E1D-80FF-71D9DD62FD5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Olekstra.LikePharma.Client.Tests", "Olekstra.LikePharma.Client.Tests\Olekstra.LikePharma.Client.Tests.csproj", "{21B603E7-2386-4AC7-9969-48AC24D9412D}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{066F84CB-F384-4E1D-80FF-71D9DD62FD5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{066F84CB-F384-4E1D-80FF-71D9DD62FD5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{066F84CB-F384-4E1D-80FF-71D9DD62FD5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{066F84CB-F384-4E1D-80FF-71D9DD62FD5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21B603E7-2386-4AC7-9969-48AC24D9412D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21B603E7-2386-4AC7-9969-48AC24D9412D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21B603E7-2386-4AC7-9969-48AC24D9412D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21B603E7-2386-4AC7-9969-48AC24D9412D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
