@@ -9,7 +9,7 @@
     public class ErrorCodeMatchStatusAttribute : ValidationAttribute
     {
         /// <inheritdoc />
-        public override bool RequiresValidationContext => true;
+        public override bool RequiresValidationContext => false;
 
         /// <inheritdoc />
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

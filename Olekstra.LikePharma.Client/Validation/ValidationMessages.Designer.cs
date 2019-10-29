@@ -79,6 +79,15 @@ namespace Olekstra.LikePharma.Client.Validation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Значение поля {0} должно содержать не менее {1} символов..
+        /// </summary>
+        public static string MinLengthFailed {
+            get {
+                return ResourceManager.GetString("MinLengthFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Поле {0} должно начинаться с &apos;+7&apos; и следом 10 цифр..
         /// </summary>
         public static string PhoneNumberInvalid {

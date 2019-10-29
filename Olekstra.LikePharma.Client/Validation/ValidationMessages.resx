@@ -123,6 +123,9 @@
   <data name="ErrorCodeInvalid" xml:space="preserve">
     <value>Значение поля {0} должно быть от 0 до 9999.</value>
   </data>
+  <data name="MinLengthFailed" xml:space="preserve">
+    <value>Значение поля {0} должно содержать не менее {1} символов.</value>
+  </data>
   <data name="PhoneNumberInvalid" xml:space="preserve">
     <value>Поле {0} должно начинаться с '+7' и следом 10 цифр.</value>
   </data>
