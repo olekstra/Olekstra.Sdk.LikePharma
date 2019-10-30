@@ -120,17 +120,38 @@
   <data name="CardNumberInvalid" xml:space="preserve">
     <value>Поле {0} может содержать только цифры (19шт).</value>
   </data>
+  <data name="CollectionCanNotHaveNullElements" xml:space="preserve">
+    <value>Поле {0} не должно содержать пустые (null) элементы.</value>
+  </data>
+  <data name="CollectionMustHaveElements" xml:space="preserve">
+    <value>Поле {0} не может быть пустым, должно содержать элементы.</value>
+  </data>
+  <data name="CountMustBePositive" xml:space="preserve">
+    <value>Значение поля {0} должно быть не менее 1 и не более 9999.</value>
+  </data>
   <data name="ErrorCodeInvalid" xml:space="preserve">
     <value>Значение поля {0} должно быть от 0 до 9999.</value>
   </data>
+  <data name="FailedOrderNotNeedDiscount" xml:space="preserve">
+    <value>Для строк с error_code!=0 нельзя указывать ненулевой 'discount'.</value>
+  </data>
+  <data name="FailedOrderNotNeedTransaction" xml:space="preserve">
+    <value>Для строк с error_code!=0 нельзя заполнять поле 'transaction'.</value>
+  </data>
   <data name="MinLengthFailed" xml:space="preserve">
     <value>Значение поля {0} должно содержать не менее {1} символов.</value>
+  </data>
+  <data name="NeedEitherCardOrPhone" xml:space="preserve">
+    <value>Должен быть указан либо номер карты, либо номер телефона, но не оба сразу.</value>
   </data>
   <data name="PhoneNumberInvalid" xml:space="preserve">
     <value>Поле {0} должно начинаться с '+7' и следом 10 цифр.</value>
   </data>
   <data name="PosIdInvalid" xml:space="preserve">
     <value>Недопустимое значение {0}: разрешены только цифры и латинские буквы.</value>
+  </data>
+  <data name="PriceMustBePositive" xml:space="preserve">
+    <value>Значение поля {0} не может быть менее нуля.</value>
   </data>
   <data name="StatusErrorMustHaveNonZeroErrorCode" xml:space="preserve">
     <value>При неуспешном ("error") значении поля "status" поле "ErrorCode" должно иметь значение больше нуля.</value>
@@ -140,6 +161,12 @@
   </data>
   <data name="StatusSuccessMustHaveErrorCodeZero" xml:space="preserve">
     <value>При успешном ("success") значении поля "status" поле "ErrorCode" должно иметь значение 0.</value>
+  </data>
+  <data name="SuccessfulOrderNeedDiscount" xml:space="preserve">
+    <value>Для строк с error_code=0 необходимо указать ненулевой 'discount'.</value>
+  </data>
+  <data name="SuccessfulOrderNeedTransaction" xml:space="preserve">
+    <value>Для строк с error_code=0 необходимо заполнить поле 'transaction'.</value>
   </data>
   <data name="ValueRequired" xml:space="preserve">
     <value>Значение поля {0} должно быть указано.</value>

@@ -5,30 +5,21 @@
     using System.ComponentModel.DataAnnotations;
     using Xunit;
 
-    public class BaseResponseValidationTests
+    public abstract class BaseResponseValidationTests<T>
+        where T : BaseResponse, new()
     {
-        private readonly SampleResponse validValue;
-
-        private readonly List<ValidationResult> results = new List<ValidationResult>();
-
         public BaseResponseValidationTests()
         {
-            validValue = MakeValidResponse(new SampleResponse());
-        }
-
-        public static T MakeValidResponse<T>(T value)
-            where T : BaseResponse
-        {
-            value = value ?? throw new ArgumentNullException(nameof(value));
-
-            value.Status = Globals.StatusSuccess;
-            value.ErrorCode = Globals.ErrorCodeNoError;
+            ValidValue.Status = Globals.StatusSuccess;
+            ValidValue.ErrorCode = Globals.ErrorCodeNoError;
 #pragma warning disable CA1303 // Do not pass literals as localized parameters
-            value.Message = "Hello, World";
+            ValidValue.Message = "Hello, World";
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
-
-            return value;
         }
+
+        protected T ValidValue { get; } = new T();
+
+        protected List<ValidationResult> Results { get; } = new List<ValidationResult>();
 
         [Theory]
         [InlineData(false)]
@@ -37,12 +28,12 @@
         {
             if (invert)
             {
-                validValue.Status = Globals.StatusError;
-                validValue.ErrorCode = 123;
+                ValidValue.Status = Globals.StatusError;
+                ValidValue.ErrorCode = 123;
             }
 
-            Assert.True(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.Empty(results);
+            Assert.True(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
+            Assert.Empty(Results);
         }
 
         [Theory]
@@ -51,25 +42,25 @@
         [InlineData(" \t ")]
         public void FailsOnEmptyStatus(string value)
         {
-            validValue.Status = value;
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
+            ValidValue.Status = value;
+            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
+            Assert.NotEmpty(Results);
         }
 
         [Fact]
         public void FailsOnInvalidStatus()
         {
-            validValue.Status = Validation.StatusAttributeTests.InvalidStatusValue;
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
+            ValidValue.Status = Validation.StatusAttributeTests.InvalidStatusValue;
+            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
+            Assert.NotEmpty(Results);
         }
 
         [Fact]
         public void FailsOnNegativeErrorCode()
         {
-            validValue.ErrorCode = -1;
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
+            ValidValue.ErrorCode = -1;
+            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
+            Assert.NotEmpty(Results);
         }
 
         [Theory]
@@ -78,9 +69,9 @@
         [InlineData(" \t ")]
         public void FailsOnEmptyMessage(string value)
         {
-            validValue.Message = value;
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
+            ValidValue.Message = value;
+            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
+            Assert.NotEmpty(Results);
         }
 
         [Theory]
@@ -90,20 +81,15 @@
         {
             if (invert)
             {
-                validValue.Status = Globals.StatusError;
+                ValidValue.Status = Globals.StatusError;
             }
             else
             {
-                validValue.ErrorCode = 123;
+                ValidValue.ErrorCode = 123;
             }
 
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
-        }
-
-        private class SampleResponse : BaseResponse
-        {
-            // Nothing
+            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
+            Assert.NotEmpty(Results);
         }
     }
 }

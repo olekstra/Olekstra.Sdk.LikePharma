@@ -4,8 +4,9 @@
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    /// Проверочный атрибут для для значений <c>ErrorCode</c> и <c>Status</c>.
+    /// Проверочный атрибут для для значений <see cref="BaseResponse.ErrorCode"/> и <see cref="BaseResponse.Status"/>.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class ErrorCodeMatchStatusAttribute : ValidationAttribute
     {
         /// <inheritdoc />

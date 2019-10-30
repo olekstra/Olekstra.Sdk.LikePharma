@@ -1,5 +1,6 @@
 ﻿namespace Olekstra.LikePharma.Client.Validation
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.Text.RegularExpressions;
 
@@ -7,6 +8,7 @@
     /// Проверочный атрибут для для значения <c>CardNumber</c>.
     /// </summary>
     /// <remarks>Значения <c>null</c> и <see cref="string.Empty"/> считаются "правильными" (проверку обязательности делайте отдельным <see cref="RequiredAttribute"/>).</remarks>
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, AllowMultiple = false)]
     public class CardNumberAttribute : ValidationAttribute
     {
         private static readonly Regex ValidExpression = new Regex(

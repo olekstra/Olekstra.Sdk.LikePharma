@@ -70,6 +70,33 @@ namespace Olekstra.LikePharma.Client.Validation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Поле {0} не должно содержать пустые (null) элементы..
+        /// </summary>
+        public static string CollectionCanNotHaveNullElements {
+            get {
+                return ResourceManager.GetString("CollectionCanNotHaveNullElements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поле {0} не может быть пустым, должно содержать элементы..
+        /// </summary>
+        public static string CollectionMustHaveElements {
+            get {
+                return ResourceManager.GetString("CollectionMustHaveElements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Значение поля {0} должно быть не менее 1 и не более 9999..
+        /// </summary>
+        public static string CountMustBePositive {
+            get {
+                return ResourceManager.GetString("CountMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Значение поля {0} должно быть от 0 до 9999..
         /// </summary>
         public static string ErrorCodeInvalid {
@@ -79,11 +106,38 @@ namespace Olekstra.LikePharma.Client.Validation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Для строк с error_code!=0 нельзя указывать ненулевой &apos;discount&apos;..
+        /// </summary>
+        public static string FailedOrderNotNeedDiscount {
+            get {
+                return ResourceManager.GetString("FailedOrderNotNeedDiscount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Для строк с error_code!=0 нельзя заполнять поле &apos;transaction&apos;..
+        /// </summary>
+        public static string FailedOrderNotNeedTransaction {
+            get {
+                return ResourceManager.GetString("FailedOrderNotNeedTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Значение поля {0} должно содержать не менее {1} символов..
         /// </summary>
         public static string MinLengthFailed {
             get {
                 return ResourceManager.GetString("MinLengthFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Должен быть указан либо номер карты, либо номер телефона, но не оба сразу..
+        /// </summary>
+        public static string NeedEitherCardOrPhone {
+            get {
+                return ResourceManager.GetString("NeedEitherCardOrPhone", resourceCulture);
             }
         }
         
@@ -102,6 +156,15 @@ namespace Olekstra.LikePharma.Client.Validation {
         public static string PosIdInvalid {
             get {
                 return ResourceManager.GetString("PosIdInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Значение поля {0} не может быть менее нуля..
+        /// </summary>
+        public static string PriceMustBePositive {
+            get {
+                return ResourceManager.GetString("PriceMustBePositive", resourceCulture);
             }
         }
         
@@ -129,6 +192,24 @@ namespace Olekstra.LikePharma.Client.Validation {
         public static string StatusSuccessMustHaveErrorCodeZero {
             get {
                 return ResourceManager.GetString("StatusSuccessMustHaveErrorCodeZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Для строк с error_code=0 необходимо указать ненулевой &apos;discount&apos;..
+        /// </summary>
+        public static string SuccessfulOrderNeedDiscount {
+            get {
+                return ResourceManager.GetString("SuccessfulOrderNeedDiscount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Для строк с error_code=0 необходимо заполнить поле &apos;transaction&apos;..
+        /// </summary>
+        public static string SuccessfulOrderNeedTransaction {
+            get {
+                return ResourceManager.GetString("SuccessfulOrderNeedTransaction", resourceCulture);
             }
         }
         

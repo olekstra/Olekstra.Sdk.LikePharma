@@ -5,10 +5,12 @@
 
     public class PosIdAttributeTests
     {
+        public const string ValidPosIdValue = "ABC123";
+
         public const string InvalidPosIdValue = "a b c";
 
         [Theory]
-        [InlineData("ABC123")]
+        [InlineData(ValidPosIdValue)]
         [InlineData("123ABC")]
         [InlineData("A")]
         [InlineData("1")]
