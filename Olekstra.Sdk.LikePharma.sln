@@ -6,6 +6,8 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E946E396-1031-4114-AFC9-6A736E4185D5}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		bitbucket-pipelines.yml = bitbucket-pipelines.yml
+		build.sh = build.sh
 		GlobalSuppressions.cs = GlobalSuppressions.cs
 		GlobalSuppressions.Tests.cs = GlobalSuppressions.Tests.cs
 		LICENSE = LICENSE
@@ -18,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Olekstra.LikePharma.Client.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Olekstra.LikePharma.Server", "Olekstra.LikePharma.Server\Olekstra.LikePharma.Server.csproj", "{DB55AE85-CCDB-4EF5-8591-EDB38D6A066D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Olekstra.LikePharma.Server.Tests", "Olekstra.LikePharma.Server.Tests\Olekstra.LikePharma.Server.Tests.csproj", "{30BFB0DA-FDA7-478C-980C-B08102039356}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Olekstra.LikePharma.Server.Tests", "Olekstra.LikePharma.Server.Tests\Olekstra.LikePharma.Server.Tests.csproj", "{30BFB0DA-FDA7-478C-980C-B08102039356}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
