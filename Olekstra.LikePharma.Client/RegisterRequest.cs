@@ -3,7 +3,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
-    using Olekstra.LikePharma.Client.Validation;
+    using Olekstra.LikePharma.Client.Attributes;
 
     /// <summary>
     /// Выдача новой карты пациенту и привязка к ней номера телефона. Привязка существующей карты пациента к номеру телефона.
@@ -14,26 +14,26 @@
         /// <summary>
         /// Идентификатор кассового терминала. Любая строка длиной до 40 символов, уникальная внутри аптечной сети.
         /// </summary>
-        [Required(AllowEmptyStrings = false, ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = nameof(ValidationMessages.ValueRequired))]
+        [Required(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = nameof(ValidationMessages.ValueRequired))]
         [PosId(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = nameof(ValidationMessages.PosIdInvalid))]
         [JsonPropertyName("pos_id")]
         [XmlElement("pos_id")]
         public string? PosId { get; set; }
 
         /// <summary>
-        /// Номер выдаваемой карты. 19 цифр без разделителей.
+        /// Номер выдаваемой карты.
         /// </summary>
-        [Required(AllowEmptyStrings = false, ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = nameof(ValidationMessages.ValueRequired))]
-        [CardNumber(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = nameof(ValidationMessages.CardNumberInvalid))]
+        [Required(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = nameof(ValidationMessages.ValueRequired))]
+        [CardNumber]
         [JsonPropertyName("card_number")]
         [XmlElement("card_number")]
         public string? CardNumber { get; set; }
 
         /// <summary>
-        /// Российский мобильный номер телефона. +7 и 10 цифр без разделителей.
+        /// Российский мобильный номер телефона.
         /// </summary>
-        [Required(AllowEmptyStrings = false, ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = nameof(ValidationMessages.ValueRequired))]
-        [PhoneNumber(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = nameof(ValidationMessages.PhoneNumberInvalid))]
+        [Required(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = nameof(ValidationMessages.ValueRequired))]
+        [PhoneNumber]
         [JsonPropertyName("phone_number")]
         [XmlElement("phone_number")]
         public string? PhoneNumber { get; set; }

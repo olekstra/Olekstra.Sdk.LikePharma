@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using Olekstra.LikePharma.Client.Attributes;
     using Xunit;
 
     public abstract class BaseResponseValidationTests<T>
@@ -17,9 +18,9 @@
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
-        protected T ValidValue { get; } = new T();
+        protected Policy Policy { get; } = Policy.CreateEmpty();
 
-        protected List<ValidationResult> Results { get; } = new List<ValidationResult>();
+        protected T ValidValue { get; } = new T();
 
         [Theory]
         [InlineData(false)]
@@ -32,8 +33,8 @@
                 ValidValue.ErrorCode = 123;
             }
 
-            Assert.True(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.Empty(Results);
+            Assert.True(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Empty(results);
         }
 
         [Theory]
@@ -43,24 +44,27 @@
         public void FailsOnEmptyStatus(string value)
         {
             ValidValue.Status = value;
-            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.NotEmpty(Results);
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnInvalidStatus()
         {
-            ValidValue.Status = Validation.StatusAttributeTests.InvalidStatusValue;
-            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.Status = StatusAttributeTests.InvalidStatusValue;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnNegativeErrorCode()
         {
             ValidValue.ErrorCode = -1;
-            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.NotEmpty(Results);
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Theory]
@@ -70,8 +74,9 @@
         public void FailsOnEmptyMessage(string value)
         {
             ValidValue.Message = value;
-            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.NotEmpty(Results);
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Theory]
@@ -88,8 +93,8 @@
                 ValidValue.ErrorCode = 123;
             }
 
-            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.NotEmpty(Results);
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
     }
 }

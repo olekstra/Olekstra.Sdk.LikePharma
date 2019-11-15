@@ -1,23 +1,23 @@
 ﻿namespace Olekstra.LikePharma.Client
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using Olekstra.LikePharma.Client.Attributes;
     using Xunit;
 
     public class RegisterRequestValidationTests
     {
         private readonly RegisterRequest validValue;
 
-        private readonly List<ValidationResult> results = new List<ValidationResult>();
+        private readonly Policy policy = Policy.CreateEmpty();
 
         public RegisterRequestValidationTests()
         {
             validValue = new RegisterRequest
             {
                 PosId = "A12BC",
-                CardNumber = "1234567890123456789",
-                PhoneNumber = "+71234567890",
+                CardNumber = "12345",
+                PhoneNumber = "12345",
                 TrustKey = "abc",
             };
         }
@@ -25,7 +25,7 @@
         [Fact]
         public void ValidatesOk()
         {
-            Assert.True(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
+            Assert.True(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
             Assert.Empty(results);
         }
 
@@ -33,7 +33,8 @@
         public void ValidatesOkWithoutTrustKey()
         {
             validValue.TrustKey = null;
-            Assert.True(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
+
+            Assert.True(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
             Assert.Empty(results);
         }
 
@@ -44,16 +45,18 @@
         public void FailsOnEmptyPosId(string value)
         {
             validValue.PosId = value;
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
+
+            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnInvalidPosId()
         {
-            validValue.PosId = Validation.PosIdAttributeTests.InvalidPosIdValue;
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
+            validValue.PosId = PosIdAttributeTests.InvalidPosIdValue;
+
+            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.Single(results);
         }
 
         [Theory]
@@ -63,16 +66,18 @@
         public void FailsOnEmptyCardNumber(string value)
         {
             validValue.CardNumber = value;
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
+
+            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnInvalidCardNumber()
         {
-            validValue.CardNumber = Validation.CardNumberAttributeTests.InvalidCardNumberValue;
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
+            policy.CardNumberValidator = new DummyCardValidator(new ValidationResult("fail"));
+
+            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.Single(results);
         }
 
         [Theory]
@@ -82,16 +87,18 @@
         public void FailsOnEmptyPhoneNumber(string value)
         {
             validValue.PhoneNumber = value;
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
+
+            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnInvalidPhoneNumber()
         {
-            validValue.PhoneNumber = Validation.PhoneNumberAttributeTests.InvalidPhoneNumberValue;
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
+            policy.PhoneNumberValidator = new DummyPhoneValidator(new ValidationResult("fail"));
+
+            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.Single(results);
         }
     }
 }

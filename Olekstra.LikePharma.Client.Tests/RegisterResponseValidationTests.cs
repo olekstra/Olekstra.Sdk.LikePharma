@@ -1,7 +1,6 @@
 ﻿namespace Olekstra.LikePharma.Client
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
     using Xunit;
 
     public class RegisterResponseValidationTests : BaseResponseValidationTests<RegisterResponse>
@@ -15,8 +14,9 @@
         public void ValidatesOkWithoutCode()
         {
             ValidValue.Code = null;
-            Assert.True(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.Empty(Results);
+
+            Assert.True(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Empty(results);
         }
     }
 }

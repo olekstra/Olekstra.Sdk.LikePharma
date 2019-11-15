@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
-    using Olekstra.LikePharma.Client.Validation;
+    using Olekstra.LikePharma.Client.Attributes;
 
     /// <summary>
     /// Ответ на запрос <see cref="GetDiscountRequest"/>.

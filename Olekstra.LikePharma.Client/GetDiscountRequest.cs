@@ -1,10 +1,11 @@
 ﻿namespace Olekstra.LikePharma.Client
 {
+    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
-    using Olekstra.LikePharma.Client.Validation;
+    using Olekstra.LikePharma.Client.Attributes;
 
     /// <summary>
     /// Запрос на расчёт снижения цены.

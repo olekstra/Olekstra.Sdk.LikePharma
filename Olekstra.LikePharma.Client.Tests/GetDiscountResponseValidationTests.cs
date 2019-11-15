@@ -3,14 +3,15 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using Olekstra.LikePharma.Client.Attributes;
     using Xunit;
 
     public class GetDiscountResponseValidationTests : BaseResponseValidationTests<GetDiscountResponse>
     {
         public GetDiscountResponseValidationTests()
         {
-            ValidValue.PosId = Validation.PosIdAttributeTests.ValidPosIdValue;
-            ValidValue.CardNumber = Validation.CardNumberAttributeTests.ValidCardNumber;
+            ValidValue.PosId = PosIdAttributeTests.ValidPosIdValue;
+            ValidValue.CardNumber = "12345";
             ValidValue.Orders = new List<GetDiscountResponse.Order>
             {
                 new GetDiscountResponse.Order
@@ -36,43 +37,50 @@
         public void FailsOnEmptyPosId(string value)
         {
             ValidValue.PosId = value;
-            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.NotEmpty(Results);
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnInvalidPosId()
         {
-            ValidValue.PosId = Validation.PosIdAttributeTests.InvalidPosIdValue;
-            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.PosId = PosIdAttributeTests.InvalidPosIdValue;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnInvalidCardNumber()
         {
-            ValidValue.CardNumber = Validation.CardNumberAttributeTests.InvalidCardNumberValue;
-            ValidValue.PhoneNumber = null;
-            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.NotEmpty(Results);
+            Policy.CardNumberValidator = new DummyCardValidator(new ValidationResult("fail"));
+
+            ValidValue.PhoneNumber = null; // чтобы валидация "телефон или карта" не сработала
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnInvalidPhoneNumber()
         {
-            ValidValue.CardNumber = null;
-            ValidValue.PhoneNumber = Validation.PhoneNumberAttributeTests.InvalidPhoneNumberValue;
-            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.NotEmpty(Results);
+            Policy.PhoneNumberValidator = new DummyPhoneValidator(new ValidationResult("fail"));
+
+            ValidValue.CardNumber = null; // чтобы валидация "телефон или карта" не сработала
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnBothCardAndPhoneNumber()
         {
-            ValidValue.CardNumber = Validation.CardNumberAttributeTests.ValidCardNumber;
-            ValidValue.PhoneNumber = Validation.PhoneNumberAttributeTests.ValidPhoneNumberValue;
-            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.CardNumber = "12345";
+            ValidValue.PhoneNumber = "12345";
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
@@ -80,24 +88,27 @@
         {
             ValidValue.CardNumber = null;
             ValidValue.PhoneNumber = null;
-            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.NotEmpty(Results);
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsWithoutOrders()
         {
             ValidValue.Orders.Clear();
-            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.NotEmpty(Results);
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnNullOrder()
         {
             ValidValue.Orders[0] = null;
-            Assert.False(Validator.TryValidateObject(ValidValue, new ValidationContext(ValidValue), Results, true));
-            Assert.NotEmpty(Results);
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Theory]
@@ -106,19 +117,19 @@
         [InlineData(" \t ")]
         public void FailsOnEmptyOrderBarcode(string value)
         {
-            var order = ValidValue.Orders[0];
-            order.Barcode = value;
-            Assert.False(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.Orders[0].Barcode = value;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void ZeroOrderCountIsNotOK()
         {
-            var order = ValidValue.Orders[0];
-            order.Count = 0;
-            Assert.False(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.Orders[0].Count = 0;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Theory]
@@ -126,19 +137,19 @@
         [InlineData(-999)]
         public void FailsOnWrongOrderCount(int value)
         {
-            var order = ValidValue.Orders[0];
-            order.Count = value;
-            Assert.False(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.Orders[0].Count = value;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact(Skip = "Неясно, правильно ли это.")]
         public void ZeroOrderDiscountIsOK()
         {
-            var order = ValidValue.Orders[0];
-            order.Discount = 0;
-            Assert.True(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.Empty(Results);
+            ValidValue.Orders[0].Discount = 0;
+
+            Assert.True(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Empty(results);
         }
 
         [Theory]
@@ -146,10 +157,10 @@
         [InlineData(-999)]
         public void FailsOnWrongOrderDiscount(decimal value)
         {
-            var order = ValidValue.Orders[0];
-            order.Discount = value;
-            Assert.False(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.Orders[0].Discount = value;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Theory]
@@ -158,28 +169,28 @@
         [InlineData(" \t ")]
         public void FailsOnEmptyOrderMessage(string value)
         {
-            var order = ValidValue.Orders[0];
-            order.Message = value;
-            Assert.False(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.Orders[0].Message = value;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnInvalidType()
         {
-            var order = ValidValue.Orders[0];
-            order.Type = Validation.OrderDiscountTypeAttributeTests.InvalidTypeValue;
-            Assert.False(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.Orders[0].Type = OrderDiscountTypeAttributeTests.InvalidTypeValue;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void ZeroOrderValueIsOK()
         {
-            var order = ValidValue.Orders[0];
-            order.Value = 0;
-            Assert.True(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.Empty(Results);
+            ValidValue.Orders[0].Value = 0;
+
+            Assert.True(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Empty(results);
         }
 
         [Theory]
@@ -187,19 +198,19 @@
         [InlineData(-999)]
         public void FailsOnWrongOrderValue(decimal value)
         {
-            var order = ValidValue.Orders[0];
-            order.Value = value;
-            Assert.False(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.Orders[0].Value = value;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void ZeroOrderValuePerItemIsOK()
         {
-            var order = ValidValue.Orders[0];
-            order.ValuePerItem = 0;
-            Assert.True(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.Empty(Results);
+            ValidValue.Orders[0].ValuePerItem = 0;
+
+            Assert.True(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Empty(results);
         }
 
         [Theory]
@@ -207,10 +218,10 @@
         [InlineData(-999)]
         public void FailsOnWrongOrderValuePerItem(decimal value)
         {
-            var order = ValidValue.Orders[0];
-            order.ValuePerItem = value;
-            Assert.False(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.Orders[0].ValuePerItem = value;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Theory]
@@ -219,48 +230,48 @@
         [InlineData(" \t ")]
         public void FailsOnOrderWithoutTransaction(string value)
         {
-            var order = ValidValue.Orders[0];
-            order.Transaction = value;
-            Assert.False(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.Orders[0].Transaction = value;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnOrderWithoutDiscount()
         {
-            var order = ValidValue.Orders[0];
-            order.Discount = 0;
-            Assert.False(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.Orders[0].Discount = 0;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnUnsuccessfulOrderWithTransaction()
         {
-            var order = ValidValue.Orders[0];
-            order.ErrorCode = 13;
-            Assert.False(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.Orders[0].ErrorCode = 13;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnUnsuccessfulOrderWithDiscount()
         {
-            var order = ValidValue.Orders[0];
-            order.ErrorCode = 13;
-            Assert.False(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.NotEmpty(Results);
+            ValidValue.Orders[0].ErrorCode = 13;
+
+            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void UnsuccessfulOrderWithoutTransactionAdnDiscountisOK()
         {
-            var order = ValidValue.Orders[0];
-            order.ErrorCode = 13;
-            order.Transaction = null;
-            order.Discount = 0;
-            Assert.True(Validator.TryValidateObject(order, new ValidationContext(order), Results, true));
-            Assert.Empty(Results);
+            ValidValue.Orders[0].ErrorCode = 13;
+            ValidValue.Orders[0].Transaction = null;
+            ValidValue.Orders[0].Discount = 0;
+
+            Assert.True(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Empty(results);
         }
     }
 }

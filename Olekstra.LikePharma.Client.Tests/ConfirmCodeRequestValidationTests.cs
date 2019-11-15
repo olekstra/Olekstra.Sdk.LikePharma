@@ -1,15 +1,14 @@
 ﻿namespace Olekstra.LikePharma.Client
 {
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+    using Olekstra.LikePharma.Client.Attributes;
     using Xunit;
 
     public class ConfirmCodeRequestValidationTests
     {
         private readonly ConfirmCodeRequest validValue;
 
-        private readonly List<ValidationResult> results = new List<ValidationResult>();
+        private readonly Policy policy = Policy.CreateEmpty();
 
         public ConfirmCodeRequestValidationTests()
         {
@@ -23,7 +22,7 @@
         [Fact]
         public void ValidatesOk()
         {
-            Assert.True(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
+            Assert.True(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
             Assert.Empty(results);
         }
 
@@ -34,16 +33,18 @@
         public void FailsOnEmptyPosId(string value)
         {
             validValue.PosId = value;
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
+
+            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnInvalidPosId()
         {
-            validValue.PosId = Validation.PosIdAttributeTests.InvalidPosIdValue;
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
+            validValue.PosId = PosIdAttributeTests.InvalidPosIdValue;
+
+            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.Single(results);
         }
 
         [Theory]
@@ -53,8 +54,9 @@
         public void FailsOnEmptyCode(string value)
         {
             validValue.Code = value;
-            Assert.False(Validator.TryValidateObject(validValue, new ValidationContext(validValue), results, true));
-            Assert.NotEmpty(results);
+
+            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.Single(results);
         }
     }
 }

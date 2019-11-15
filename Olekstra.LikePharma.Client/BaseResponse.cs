@@ -3,7 +3,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
-    using Olekstra.LikePharma.Client.Validation;
+    using Olekstra.LikePharma.Client.Attributes;
 
     /// <summary>
     /// Базовый класс для всех ответов (содержит поля <see cref="Status"/>, <see cref="ErrorCode"/>, <see cref="Message"/>).
