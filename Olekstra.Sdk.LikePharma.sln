@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Olekstra.LikePharma.Server"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Olekstra.LikePharma.Server.Tests", "Olekstra.LikePharma.Server.Tests\Olekstra.LikePharma.Server.Tests.csproj", "{30BFB0DA-FDA7-478C-980C-B08102039356}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Olekstra.LikePharma.Server.Demo", "Olekstra.LikePharma.Server.Demo\Olekstra.LikePharma.Server.Demo.csproj", "{97ECDB39-E515-4436-B71D-534995CCE58D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{30BFB0DA-FDA7-478C-980C-B08102039356}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30BFB0DA-FDA7-478C-980C-B08102039356}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30BFB0DA-FDA7-478C-980C-B08102039356}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97ECDB39-E515-4436-B71D-534995CCE58D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97ECDB39-E515-4436-B71D-534995CCE58D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97ECDB39-E515-4436-B71D-534995CCE58D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97ECDB39-E515-4436-B71D-534995CCE58D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

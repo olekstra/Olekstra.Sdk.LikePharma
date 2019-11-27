@@ -5,11 +5,12 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Olekstra.LikePharma.Client;
 
     /// <summary>
     /// Middleware-класс для обработки запросов к API.
     /// </summary>
-    public class LikePharmaMiddleware : IMiddleware
+    public class LikePharmaMiddleware
     {
         /// <summary>
         /// Имя заголовка, содержащего аутентификационный токен.
@@ -21,33 +22,38 @@
         /// </summary>
         public const string AuthorizationSecretHeaderName = "authorization-secret";
 
+        private readonly LikePharmaValidator validator;
+
         private readonly ILogger logger;
 
         /// <summary>
         /// Конструктор по умолчанию.
         /// </summary>
+        /// <param name="next">Следующий <see cref="RequestDelegate"/> в цепочке (будет проигнорирован!).</param>
+        /// <param name="policy">Политика валидации.</param>
         /// <param name="logger">Экземпляр логгера.</param>
-        public LikePharmaMiddleware(ILogger<LikePharmaMiddleware> logger)
+        public LikePharmaMiddleware(RequestDelegate next, Policy policy, ILogger<LikePharmaMiddleware> logger)
         {
-            this.logger = logger;
+            this.validator = new LikePharmaValidator(policy ?? throw new ArgumentNullException(nameof(policy)));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        /// <inheritdoc />
-        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        /// <summary>
+        /// Обработчик входящих запросов.
+        /// </summary>
+        /// <param name="context">Экземпляр <see cref="HttpContext"/>.</param>
+        /// <returns>Экземпляр Task для ожидания.</returns>
+        public async Task InvokeAsync(HttpContext context)
         {
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (next == null)
-            {
-                throw new ArgumentNullException(nameof(next));
-            }
-
+            var request = context.Request;
             var response = context.Response;
 
-            var headers = context.Request.Headers;
+            var headers = request.Headers;
             var authToken = headers[AuthorizationTokenHeaderName].ToString();
             var authSecret = headers[AuthorizationSecretHeaderName].ToString();
 
@@ -68,7 +74,18 @@
                 return;
             }
 
-            logger.LogInformation($"Аутентификация успешна: token {authToken} -> user {userId}");
+            logger.LogDebug($"Аутентификация успешна: token {authToken} -> user {userId}");
+
+            switch (request.Path)
+            {
+                ////case "/register":
+                ////    break;
+
+                default:
+                    logger.LogWarning("Неизвестный запрос, возвращаю 404: " + request.Path);
+                    response.StatusCode = StatusCodes.Status404NotFound;
+                    break;
+            }
         }
     }
 }
