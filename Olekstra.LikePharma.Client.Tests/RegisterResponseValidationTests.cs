@@ -3,7 +3,7 @@
     using System;
     using Xunit;
 
-    public class RegisterResponseValidationTests : BaseResponseValidationTests<RegisterResponse>
+    public class RegisterResponseValidationTests : ResponseBaseValidationTests<RegisterResponse>
     {
         public RegisterResponseValidationTests()
         {

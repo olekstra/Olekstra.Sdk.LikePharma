@@ -1,6 +1,8 @@
 ﻿namespace Olekstra.LikePharma.Server
 {
     using System;
+    using System.Linq;
+    using System.Text.Json;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +12,9 @@
     /// <summary>
     /// Middleware-класс для обработки запросов к API.
     /// </summary>
-    public class LikePharmaMiddleware
+    /// <typeparam name="TUser">Класс, описывающий авторизованного пользователя (аптечную сеть).</typeparam>
+    public class LikePharmaMiddleware<TUser>
+        where TUser : class
     {
         /// <summary>
         /// Имя заголовка, содержащего аутентификационный токен.
@@ -22,6 +26,8 @@
         /// </summary>
         public const string AuthorizationSecretHeaderName = "authorization-secret";
 
+        private const string ContentTypeJson = "application/json";
+
         private readonly LikePharmaValidator validator;
 
         private readonly ILogger logger;
@@ -32,7 +38,7 @@
         /// <param name="next">Следующий <see cref="RequestDelegate"/> в цепочке (будет проигнорирован!).</param>
         /// <param name="policy">Политика валидации.</param>
         /// <param name="logger">Экземпляр логгера.</param>
-        public LikePharmaMiddleware(RequestDelegate next, Policy policy, ILogger<LikePharmaMiddleware> logger)
+        public LikePharmaMiddleware(RequestDelegate next, Policy policy, ILogger<LikePharmaMiddleware<TUser>> logger)
         {
             this.validator = new LikePharmaValidator(policy ?? throw new ArgumentNullException(nameof(policy)));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -64,28 +70,85 @@
                 return;
             }
 
-            var service = context.RequestServices.GetRequiredService<ILikePharmaService>();
+            var service = context.RequestServices.GetRequiredService<ILikePharmaService<TUser>>();
 
-            var userId = await service.AuthorizeAsync(authToken, authSecret).ConfigureAwait(false);
-            if (userId == null)
+            var user = await service.AuthorizeAsync(authToken, authSecret, request).ConfigureAwait(false);
+            if (user == null)
             {
                 logger.LogWarning($"Запрос с некорректной аутентификацией (токен {authToken}), отвечаю кодом 403");
                 response.StatusCode = StatusCodes.Status403Forbidden;
                 return;
             }
 
-            logger.LogDebug($"Аутентификация успешна: token {authToken} -> user {userId}");
+            logger.LogDebug($"Аутентификация успешна: token {authToken} -> {user}");
 
             switch (request.Path)
             {
-                ////case "/register":
-                ////    break;
+                case "/register":
+                    await Process<RegisterRequest, RegisterResponse>(service.RegisterAsync, request, response, user).ConfigureAwait(false);
+                    break;
+
+                case "/confirm_code":
+                    await Process<ConfirmCodeRequest, ConfirmCodeResponse>(service.ConfirmCodeAsync, request, response, user).ConfigureAwait(false);
+                    break;
+
+                case "/get_discount":
+                    await Process<GetDiscountRequest, GetDiscountResponse>(service.GetDiscountAsync, request, response, user).ConfigureAwait(false);
+                    break;
 
                 default:
                     logger.LogWarning("Неизвестный запрос, возвращаю 404: " + request.Path);
                     response.StatusCode = StatusCodes.Status404NotFound;
                     break;
             }
+        }
+
+        /// <summary>
+        /// Обработчик запроса: считывает и десериализует запрос, валидирует его, вызывает обработчик, вылидирует ответ, отправляет ответ.
+        /// </summary>
+        /// <typeparam name="TRequest">Тип запроса.</typeparam>
+        /// <typeparam name="TResponse">Тип ответа.</typeparam>
+        /// <param name="processor">Обработчик.</param>
+        /// <param name="httpRequest">HTTP request (to read request from).</param>
+        /// <param name="httpResponse">HTTP response (to write response to).</param>
+        /// <param name="user">Current (authorized) user.</param>
+        /// <returns>Awaitable Task.</returns>
+        public async Task Process<TRequest, TResponse>(Func<TRequest, TUser, Task<TResponse>> processor, HttpRequest httpRequest, HttpResponse httpResponse, TUser user)
+            where TRequest : RequestBase<TResponse>
+            where TResponse : ResponseBase, new()
+        {
+            processor = processor ?? throw new ArgumentNullException(nameof(processor));
+            httpRequest = httpRequest ?? throw new ArgumentNullException(nameof(httpRequest));
+            httpResponse = httpResponse ?? throw new ArgumentNullException(nameof(httpResponse));
+            user = user ?? throw new ArgumentNullException(nameof(user));
+
+            TResponse resp;
+
+            var req = await JsonSerializer.DeserializeAsync<TRequest>(httpRequest.Body);
+            if (!validator.TryValidateObject(req, out var results))
+            {
+                resp = new TResponse
+                {
+                    Status = Globals.StatusError,
+                    ErrorCode = StatusCodes.Status400BadRequest,
+                    Message = results.First().ErrorMessage,
+                };
+
+                httpResponse.ContentType = ContentTypeJson;
+                await JsonSerializer.SerializeAsync(httpResponse.Body, resp).ConfigureAwait(false);
+                return;
+            }
+
+            resp = await processor(req, user).ConfigureAwait(false);
+            if (!validator.TryValidateObject(resp, out results))
+            {
+                logger.LogDebug(JsonSerializer.Serialize(resp));
+                logger.LogWarning("Errors: " + string.Join(Environment.NewLine, results.Select(x => x.MemberNames.FirstOrDefault() + " " + x.ErrorMessage)));
+                throw new ApplicationException(Messages.PreparedResponseIsInvalid);
+            }
+
+            httpResponse.ContentType = ContentTypeJson;
+            await JsonSerializer.SerializeAsync(httpResponse.Body, resp).ConfigureAwait(false);
         }
     }
 }

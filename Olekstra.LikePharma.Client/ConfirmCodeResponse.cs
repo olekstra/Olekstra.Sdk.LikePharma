@@ -6,7 +6,7 @@
     /// Ответ на запрос <see cref="ConfirmCodeRequest"/>.
     /// </summary>
     [XmlRoot("confirm_code_response")]
-    public class ConfirmCodeResponse : BaseResponse
+    public class ConfirmCodeResponse : ResponseBase
     {
         // Nothing
     }

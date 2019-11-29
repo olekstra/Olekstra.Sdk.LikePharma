@@ -19,15 +19,15 @@ namespace Olekstra.LikePharma.Server
             var context = new DefaultHttpContext();
             if (!noToken)
             {
-                context.Request.Headers[LikePharmaMiddleware.AuthorizationTokenHeaderName] = "some-token";
+                context.Request.Headers[LikePharmaMiddleware<SampleUserInfo>.AuthorizationTokenHeaderName] = "some-token";
             }
 
             if (!noSecret)
             {
-                context.Request.Headers[LikePharmaMiddleware.AuthorizationSecretHeaderName] = "some-secret";
+                context.Request.Headers[LikePharmaMiddleware<SampleUserInfo>.AuthorizationSecretHeaderName] = "some-secret";
             }
 
-            var middleware = new LikePharmaMiddleware(_ => Task.CompletedTask, Policy.CreateEmpty(), new Mock<ILogger<LikePharmaMiddleware>>().Object);
+            var middleware = new LikePharmaMiddleware<SampleUserInfo>(_ => Task.CompletedTask, Policy.CreateEmpty(), new Mock<ILogger<LikePharmaMiddleware<SampleUserInfo>>>().Object);
 
             await middleware.InvokeAsync(context).ConfigureAwait(false);
 
@@ -39,21 +39,21 @@ namespace Olekstra.LikePharma.Server
         {
             var context = new DefaultHttpContext();
 
-            context.Request.Headers[LikePharmaMiddleware.AuthorizationTokenHeaderName] = "some-token";
-            context.Request.Headers[LikePharmaMiddleware.AuthorizationSecretHeaderName] = "some-secret";
+            context.Request.Headers[LikePharmaMiddleware<SampleUserInfo>.AuthorizationTokenHeaderName] = "some-token";
+            context.Request.Headers[LikePharmaMiddleware<SampleUserInfo>.AuthorizationSecretHeaderName] = "some-secret";
 
             var servicesMock = new Mock<IServiceProvider>(MockBehavior.Strict);
-            var likeService = new Mock<ILikePharmaService>(MockBehavior.Strict);
+            var likeService = new Mock<ILikePharmaService<SampleUserInfo>>(MockBehavior.Strict);
 
             context.RequestServices = servicesMock.Object;
-            servicesMock.Setup(x => x.GetService(typeof(ILikePharmaService))).Returns(likeService.Object);
+            servicesMock.Setup(x => x.GetService(typeof(ILikePharmaService<SampleUserInfo>))).Returns(likeService.Object);
 
             likeService
-                .Setup(x => x.AuthorizeAsync("some-token", "some-secret"))
-                .ReturnsAsync(default(string))
+                .Setup(x => x.AuthorizeAsync("some-token", "some-secret", context.Request))
+                .ReturnsAsync(default(SampleUserInfo))
                 .Verifiable();
 
-            var middleware = new LikePharmaMiddleware(_ => Task.CompletedTask, Policy.CreateEmpty(), new Mock<ILogger<LikePharmaMiddleware>>().Object);
+            var middleware = new LikePharmaMiddleware<SampleUserInfo>(_ => Task.CompletedTask, Policy.CreateEmpty(), new Mock<ILogger<LikePharmaMiddleware<SampleUserInfo>>>().Object);
 
             await middleware.InvokeAsync(context).ConfigureAwait(false);
 

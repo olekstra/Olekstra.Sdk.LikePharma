@@ -6,7 +6,7 @@
     using Olekstra.LikePharma.Client.Attributes;
     using Xunit;
 
-    public class GetDiscountResponseValidationTests : BaseResponseValidationTests<GetDiscountResponse>
+    public class GetDiscountResponseValidationTests : ResponseBaseValidationTests<GetDiscountResponse>
     {
         public GetDiscountResponseValidationTests()
         {

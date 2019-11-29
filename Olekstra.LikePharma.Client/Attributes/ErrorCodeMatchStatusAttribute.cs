@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    /// Проверочный атрибут для для значений <see cref="BaseResponse.ErrorCode"/> и <see cref="BaseResponse.Status"/>.
+    /// Проверочный атрибут для для значений <see cref="ResponseBase.ErrorCode"/> и <see cref="ResponseBase.Status"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class ErrorCodeMatchStatusAttribute : ValidationAttribute
@@ -20,7 +20,7 @@
                 throw new ArgumentNullException(nameof(value));
             }
 
-            if (!(value is BaseResponse baseResponse))
+            if (!(value is ResponseBase baseResponse))
             {
                 return new ValidationResult(ValidationMessages.StatusSuccessMustHaveErrorCodeZero);
             }

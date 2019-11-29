@@ -11,7 +11,7 @@
     /// </summary>
     [CardOrPhoneNumber]
     [XmlRoot("get_discount_response")]
-    public class GetDiscountResponse : BaseResponse
+    public class GetDiscountResponse : ResponseBase
     {
         /// <summary>
         /// Идентификатор кассового терминала.

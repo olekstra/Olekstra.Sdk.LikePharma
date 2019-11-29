@@ -9,7 +9,7 @@
     /// Выдача новой карты пациенту и привязка к ней номера телефона. Привязка существующей карты пациента к номеру телефона.
     /// </summary>
     [XmlRoot("register_request")]
-    public class RegisterRequest
+    public class RegisterRequest : RequestBase<RegisterResponse>
     {
         /// <summary>
         /// Идентификатор кассового терминала. Любая строка длиной до 40 символов, уникальная внутри аптечной сети.

@@ -6,10 +6,10 @@
     using Olekstra.LikePharma.Client.Attributes;
     using Xunit;
 
-    public abstract class BaseResponseValidationTests<T>
-        where T : BaseResponse, new()
+    public abstract class ResponseBaseValidationTests<T>
+        where T : ResponseBase, new()
     {
-        public BaseResponseValidationTests()
+        public ResponseBaseValidationTests()
         {
             ValidValue.Status = Globals.StatusSuccess;
             ValidValue.ErrorCode = Globals.ErrorCodeNoError;

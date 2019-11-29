@@ -9,7 +9,7 @@
     /// Базовый класс для всех ответов (содержит поля <see cref="Status"/>, <see cref="ErrorCode"/>, <see cref="Message"/>).
     /// </summary>
     [ErrorCodeMatchStatus]
-    public abstract class BaseResponse
+    public abstract class ResponseBase
     {
         /// <summary>
         /// Результат операции: <c>success</c> (успех) или <c>error</c> (ошибка).

@@ -6,17 +6,17 @@
     public static class Globals
     {
         /// <summary>
-        /// Значение свойства <see cref="BaseResponse.Status" /> для случая "успех".
+        /// Значение свойства <see cref="ResponseBase.Status" /> для случая "успех".
         /// </summary>
         public const string StatusSuccess = "success";
 
         /// <summary>
-        /// Значение свойства <see cref="BaseResponse.Status" /> для случая "ошибка".
+        /// Значение свойства <see cref="ResponseBase.Status" /> для случая "ошибка".
         /// </summary>
         public const string StatusError = "error";
 
         /// <summary>
-        /// Значение свойства <see cref="BaseResponse.ErrorCode" /> для ситуаций, когда ошибок нет.
+        /// Значение свойства <see cref="ResponseBase.ErrorCode" /> для ситуаций, когда ошибок нет.
         /// </summary>
         public const int ErrorCodeNoError = 0;
 

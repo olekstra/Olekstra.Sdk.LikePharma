@@ -11,7 +11,7 @@ namespace Olekstra.LikePharma.Server.Demo
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ILikePharmaService, SampleLikePharmaService>();
+            services.AddSingleton<ILikePharmaService<string>, SampleLikePharmaService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -21,7 +21,7 @@ namespace Olekstra.LikePharma.Server.Demo
                 app.UseDeveloperExceptionPage();
             }
 
-            app.MapLikePharma("/like/sample/v1", Policy.CreateAstraZenecaPolicy());
+            app.MapLikePharma<string>("/like/sample/v1", Policy.CreateAstraZenecaPolicy());
         }
     }
 }

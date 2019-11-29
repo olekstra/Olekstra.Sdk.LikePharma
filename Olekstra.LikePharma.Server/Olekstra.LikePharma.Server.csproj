@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Copyright>2019, Olekstra LLC</Copyright>
     <Authors>Dmitry Popov</Authors>
     <Company>Olekstra LLC</Company>
@@ -19,6 +19,7 @@
     <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>ru-RU</NeutralLanguage>
+    <PackageReleaseNotes>Updated to client 0.3.0. New members in `ILikePharmaService`.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,6 +42,21 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Olekstra.LikePharma.Client\Olekstra.LikePharma.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Messages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

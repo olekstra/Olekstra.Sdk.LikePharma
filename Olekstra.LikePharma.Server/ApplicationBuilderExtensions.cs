@@ -16,8 +16,10 @@
         /// <param name="app">Ссылка на <see cref="IApplicationBuilder"/>.</param>
         /// <param name="rootPath">Путь, по которому должен располагаться "корень" API (обычно <c>/api/1.0</c>).</param>
         /// <param name="policy">Политика проверки входящих запросов.</param>
+        /// <typeparam name="TUser">Класс, описывающий авторизованного пользователя (аптечную сеть).</typeparam>
         /// <returns>Ссылку на исходный <see cref="IApplicationBuilder"/>.</returns>
-        public static IApplicationBuilder MapLikePharma(this IApplicationBuilder app, PathString rootPath, Policy policy)
+        public static IApplicationBuilder MapLikePharma<TUser>(this IApplicationBuilder app, PathString rootPath, Policy policy)
+            where TUser : class
         {
             if (app == null)
             {
@@ -34,7 +36,7 @@
                 throw new ArgumentNullException(nameof(policy));
             }
 
-            app.Map(rootPath, builder => builder.UseMiddleware<LikePharmaMiddleware>(policy));
+            app.Map(rootPath, builder => builder.UseMiddleware<LikePharmaMiddleware<TUser>>(policy));
 
             return app;
         }

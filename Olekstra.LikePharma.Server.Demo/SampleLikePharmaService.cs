@@ -2,10 +2,12 @@
 {
     using System;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
+    using Olekstra.LikePharma.Client;
 
     // <inheritdocs />
-    public class SampleLikePharmaService : ILikePharmaService
+    public class SampleLikePharmaService : ILikePharmaService<string>
     {
         private readonly ILogger logger;
 
@@ -15,7 +17,7 @@
         }
 
         // <inheritdocs />
-        public Task<string?> AuthorizeAsync(string authorizationToken, string authorizationSecret)
+        public Task<string?> AuthorizeAsync(string authorizationToken, string authorizationSecret, HttpRequest httpRequest)
         {
             if (string.IsNullOrEmpty(authorizationToken) || string.IsNullOrEmpty(authorizationSecret))
             {
@@ -36,6 +38,24 @@
                 logger.LogWarning("Неуспешная авторизация: " + authorizationToken);
                 return Task.FromResult<string?>(null);
             }
+        }
+
+        // <inheritdocs />
+        public Task<RegisterResponse> RegisterAsync(RegisterRequest request, string user)
+        {
+            throw new NotImplementedException();
+        }
+
+        // <inheritdocs />
+        public Task<ConfirmCodeResponse> ConfirmCodeAsync(ConfirmCodeRequest request, string user)
+        {
+            throw new NotImplementedException();
+        }
+
+        // <inheritdocs />
+        public Task<GetDiscountResponse> GetDiscountAsync(GetDiscountRequest request, string user)
+        {
+            throw new NotImplementedException();
         }
     }
 }

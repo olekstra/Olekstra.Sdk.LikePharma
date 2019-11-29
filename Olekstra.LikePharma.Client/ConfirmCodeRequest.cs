@@ -9,7 +9,7 @@
     /// Подтверждение номера телефона по коду из СМС.
     /// </summary>
     [XmlRoot("confirm_code_request")]
-    public class ConfirmCodeRequest
+    public class ConfirmCodeRequest : RequestBase<ConfirmCodeResponse>
     {
         /// <summary>
         /// Идентификатор кассового терминала. Любая строка длиной до 40 символов, уникальная внутри аптечной сети.

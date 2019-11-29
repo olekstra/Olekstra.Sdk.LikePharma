@@ -3,13 +3,12 @@
     using System.ComponentModel.DataAnnotations;
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
-    using Olekstra.LikePharma.Client.Attributes;
 
     /// <summary>
     /// Ответ на запрос <see cref="RegisterRequest"/>.
     /// </summary>
     [XmlRoot("register_response")]
-    public class RegisterResponse : BaseResponse
+    public class RegisterResponse : ResponseBase
     {
         /// <summary>
         /// Код подтверждения телефона (если был указан правильный <see cref="RegisterRequest.TrustKey"/>). Для привязки карты передайте этот код в метод confirm_code.

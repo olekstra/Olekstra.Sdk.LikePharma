@@ -12,7 +12,7 @@
     /// </summary>
     [CardOrPhoneNumber]
     [XmlRoot("get_discount_request")]
-    public class GetDiscountRequest
+    public class GetDiscountRequest : RequestBase<GetDiscountResponse>
     {
         /// <summary>
         /// Идентификатор кассового терминала. Любая строка длиной до 40 символов, уникальная внутри аптечной сети.
