@@ -68,5 +68,50 @@ namespace Olekstra.LikePharma.Server {
                 return ResourceManager.GetString("PreparedResponseIsInvalid", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Протокол like-pharma. Пожалуйста ознакомьтесь с документацией, чтобы сформировать корректный запрос..
+        /// </summary>
+        public static string RootPathGetResponseText {
+            get {
+                return ResourceManager.GetString("RootPathGetResponseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Необходима авторизация (401 Unauthorized)..
+        /// </summary>
+        public static string Status401Unauthorized_ResponseText {
+            get {
+                return ResourceManager.GetString("Status401Unauthorized_ResponseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Доступ запрещён (403 Forbidden)..
+        /// </summary>
+        public static string Status403Forbidden_ResponseText {
+            get {
+                return ResourceManager.GetString("Status403Forbidden_ResponseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Недопустимый адрес (404 NotFound)..
+        /// </summary>
+        public static string Status404NotFound_ResponseText {
+            get {
+                return ResourceManager.GetString("Status404NotFound_ResponseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Недопустимый метод (405 MethodNotAllowed)..
+        /// </summary>
+        public static string Status405MethodNotAllowed_ResponseText {
+            get {
+                return ResourceManager.GetString("Status405MethodNotAllowed_ResponseText", resourceCulture);
+            }
+        }
     }
 }

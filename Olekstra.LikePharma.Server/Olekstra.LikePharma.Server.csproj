@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <Copyright>2019, Olekstra LLC</Copyright>
     <Authors>Dmitry Popov</Authors>
     <Company>Olekstra LLC</Company>
@@ -19,7 +19,7 @@
     <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>ru-RU</NeutralLanguage>
-    <PackageReleaseNotes>Updated to client 0.3.0. New members in `ILikePharmaService`.</PackageReleaseNotes>
+    <PackageReleaseNotes>Text responses for root (`/`) GET request and for invalid (40x) requests. HTTP method validation (POST).</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

@@ -28,6 +28,10 @@
 
         private const string ContentTypeJson = "application/json";
 
+        private const string ContentTypeText = "text/plain";
+
+        private const string ContentTypeTextUtf8 = "text/plain;charset=utf-8";
+
         private readonly LikePharmaValidator validator;
 
         private readonly ILogger logger;
@@ -59,6 +63,13 @@
             var request = context.Request;
             var response = context.Response;
 
+            if (request.Path == PathString.Empty && request.Method == "GET")
+            {
+                response.ContentType = ContentTypeTextUtf8;
+                await response.WriteAsync(Messages.RootPathGetResponseText).ConfigureAwait(false);
+                return;
+            }
+
             var headers = request.Headers;
             var authToken = headers[AuthorizationTokenHeaderName].ToString();
             var authSecret = headers[AuthorizationSecretHeaderName].ToString();
@@ -67,6 +78,8 @@
             {
                 logger.LogDebug($"Запрос с неполной аутентификацией ({authToken}/{authSecret}), отвечаю кодом 401");
                 response.StatusCode = StatusCodes.Status401Unauthorized;
+                response.ContentType = ContentTypeTextUtf8;
+                await response.WriteAsync(Messages.Status401Unauthorized_ResponseText).ConfigureAwait(false);
                 return;
             }
 
@@ -77,6 +90,17 @@
             {
                 logger.LogWarning($"Запрос с некорректной аутентификацией (токен {authToken}), отвечаю кодом 403");
                 response.StatusCode = StatusCodes.Status403Forbidden;
+                response.ContentType = ContentTypeTextUtf8;
+                await response.WriteAsync(Messages.Status403Forbidden_ResponseText).ConfigureAwait(false);
+                return;
+            }
+
+            if (!string.Equals(request.Method, "POST", StringComparison.Ordinal))
+            {
+                logger.LogWarning($"Запрос с некорректным методом ({request.Method}), отвечаю кодом 405");
+                response.StatusCode = StatusCodes.Status405MethodNotAllowed;
+                response.ContentType = ContentTypeTextUtf8;
+                await response.WriteAsync(Messages.Status405MethodNotAllowed_ResponseText).ConfigureAwait(false);
                 return;
             }
 
@@ -99,6 +123,8 @@
                 default:
                     logger.LogWarning("Неизвестный запрос, возвращаю 404: " + request.Path);
                     response.StatusCode = StatusCodes.Status404NotFound;
+                    response.ContentType = ContentTypeTextUtf8;
+                    await response.WriteAsync(Messages.Status404NotFound_ResponseText).ConfigureAwait(false);
                     break;
             }
         }
