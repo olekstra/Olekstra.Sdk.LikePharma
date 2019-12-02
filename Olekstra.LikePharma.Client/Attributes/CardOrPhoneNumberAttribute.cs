@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    /// Проверка, что в <see cref="GetDiscountRequest"/> заполнено ровно одно из полей <see cref="GetDiscountRequest.CardNumber"/> и <see cref="GetDiscountRequest.PhoneNumber"/>.
+    /// Проверка, что в запросе заполнено ровно одно из полей (<see cref="CardNumber"/> и <see cref="PhoneNumber"/>).
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class CardOrPhoneNumberAttribute : ValidationAttribute
@@ -31,6 +31,16 @@
             {
                 var haveCard = !string.IsNullOrEmpty(getDiscountResponse.CardNumber);
                 var havePhone = !string.IsNullOrEmpty(getDiscountResponse.PhoneNumber);
+
+                return haveCard == havePhone
+                    ? new ValidationResult(ValidationMessages.NeedEitherCardOrPhone)
+                    : ValidationResult.Success;
+            }
+
+            if (value is ConfirmPurchaseRequest confirmPurchaseRequest)
+            {
+                var haveCard = !string.IsNullOrEmpty(confirmPurchaseRequest.CardNumber);
+                var havePhone = !string.IsNullOrEmpty(confirmPurchaseRequest.PhoneNumber);
 
                 return haveCard == havePhone
                     ? new ValidationResult(ValidationMessages.NeedEitherCardOrPhone)

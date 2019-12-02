@@ -9,7 +9,7 @@
     /// Проверка, что в список/коллекция не являются пустыми (содержат элементы).
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, AllowMultiple = false)]
-    public class NonEmptyCollectionAttribute : ValidationAttribute
+    public class EmptyCollectionWithoutEmptyElementsAttribute : ValidationAttribute
     {
         /// <inheritdoc />
         public override bool RequiresValidationContext => true;
@@ -19,7 +19,7 @@
         {
             if (value == null)
             {
-                throw new ArgumentNullException(nameof(value));
+                return ValidationResult.Success;
             }
 
             if (validationContext == null)
@@ -34,7 +34,7 @@
 
             if (collection.Count == 0)
             {
-                return new ValidationResult(ValidationMessages.CollectionMustHaveElements);
+                return ValidationResult.Success;
             }
 
             foreach (var item in collection)

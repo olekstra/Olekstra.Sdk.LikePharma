@@ -50,6 +50,7 @@
             {
                 GetDiscountRequest gdr => gdr.Orders,
                 GetDiscountResponse gdr => gdr.Orders,
+                ConfirmPurchaseRequest cpr => cpr.Skus,
                 _ => null,
             };
 
