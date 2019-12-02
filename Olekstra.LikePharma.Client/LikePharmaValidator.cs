@@ -52,6 +52,7 @@
                 GetDiscountResponse gdr => gdr.Orders,
                 ConfirmPurchaseRequest cpr => cpr.Skus,
                 GetProgramsResponse gpr => gpr.Programs,
+                GetProductsResponse gpr => gpr.Products,
                 _ => null,
             };
 
