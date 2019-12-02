@@ -19,9 +19,11 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Иначе JSON-сериализация не видит эту коллекцию и не заполняет", Scope = "member", Target = "~P:Olekstra.LikePharma.Client.GetDiscountResponse.Orders")]
 [assembly: SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Иначе JSON-сериализация не видит эту коллекцию и не заполняет", Scope = "member", Target = "~P:Olekstra.LikePharma.Client.ConfirmPurchaseRequest.Transactions")]
 [assembly: SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Иначе JSON-сериализация не видит эту коллекцию и не заполняет", Scope = "member", Target = "~P:Olekstra.LikePharma.Client.ConfirmPurchaseRequest.Skus")]
+[assembly: SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Иначе JSON-сериализация не видит эту коллекцию и не заполняет", Scope = "member", Target = "~P:Olekstra.LikePharma.Client.GetProgramsResponse.Programs")]
 [assembly: SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "Иногда очень хочется", Scope = "type", Target = "~T:Olekstra.LikePharma.Client.GetDiscountRequest.Order")]
 [assembly: SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "Иногда очень хочется", Scope = "type", Target = "~T:Olekstra.LikePharma.Client.GetDiscountResponse.Order")]
 [assembly: SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "Иногда очень хочется", Scope = "type", Target = "~T:Olekstra.LikePharma.Client.ConfirmPurchaseRequest.Sku")]
+[assembly: SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "Иногда очень хочется", Scope = "type", Target = "~T:Olekstra.LikePharma.Client.GetProgramsResponse.Program")]
 
 // [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA0001:XML comment analysis is disabled due to project configuration")]
 // [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented")]
