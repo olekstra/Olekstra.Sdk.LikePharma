@@ -17,37 +17,21 @@
                 throw new ArgumentNullException(nameof(value));
             }
 
-            if (value is GetDiscountRequest getDiscountRequest)
+            var (card, phone) = value switch
             {
-                var haveCard = !string.IsNullOrEmpty(getDiscountRequest.CardNumber);
-                var havePhone = !string.IsNullOrEmpty(getDiscountRequest.PhoneNumber);
+                GetDiscountRequest val => (val.CardNumber, val.PhoneNumber),
+                GetDiscountResponse val => (val.CardNumber, val.PhoneNumber),
+                ConfirmPurchaseRequest val => (val.CardNumber, val.PhoneNumber),
+                CancelPurchaseRequest val => (val.CardNumber, val.PhoneNumber),
+                _ => throw new ArgumentException(ValidationMessages.CardOrPhoneNumberAttribute_InvalidValue, nameof(value)),
+            };
 
-                return haveCard == havePhone
-                    ? new ValidationResult(ValidationMessages.NeedEitherCardOrPhone)
-                    : ValidationResult.Success;
-            }
+            var haveCard = !string.IsNullOrEmpty(card);
+            var havePhone = !string.IsNullOrEmpty(phone);
 
-            if (value is GetDiscountResponse getDiscountResponse)
-            {
-                var haveCard = !string.IsNullOrEmpty(getDiscountResponse.CardNumber);
-                var havePhone = !string.IsNullOrEmpty(getDiscountResponse.PhoneNumber);
-
-                return haveCard == havePhone
-                    ? new ValidationResult(ValidationMessages.NeedEitherCardOrPhone)
-                    : ValidationResult.Success;
-            }
-
-            if (value is ConfirmPurchaseRequest confirmPurchaseRequest)
-            {
-                var haveCard = !string.IsNullOrEmpty(confirmPurchaseRequest.CardNumber);
-                var havePhone = !string.IsNullOrEmpty(confirmPurchaseRequest.PhoneNumber);
-
-                return haveCard == havePhone
-                    ? new ValidationResult(ValidationMessages.NeedEitherCardOrPhone)
-                    : ValidationResult.Success;
-            }
-
-            throw new ArgumentException(ValidationMessages.CardOrPhoneNumberAttribute_InvalidValue, nameof(value));
+            return haveCard == havePhone
+                ? new ValidationResult(ValidationMessages.NeedEitherCardOrPhone)
+                : ValidationResult.Success;
         }
     }
 }
