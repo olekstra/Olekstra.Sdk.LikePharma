@@ -45,9 +45,41 @@
         /// <summary>
         /// Запрос на расчёт снижения цены.
         /// </summary>
-        /// <param name="request">Запрос (чем с перечнем товаров, количеств и цен и т.п.)</param>
+        /// <param name="request">Запрос (чек с перечнем товаров, количеств и цен и т.п.)</param>
         /// <param name="user">Пользователь (аптечная сеть), ранее возвращенный методом <see cref="AuthorizeAsync(string, string, HttpRequest)"/>.</param>
         /// <returns>Результат операции (рассчитанные скидки).</returns>
         Task<GetDiscountResponse> GetDiscountAsync(GetDiscountRequest request, TUser user);
+
+        /// <summary>
+        /// Подтверждение покупки.
+        /// </summary>
+        /// <param name="request">Запрос (список подтверждаемых позиций по ранее рассчитанным скидкам).</param>
+        /// <param name="user">Пользователь (аптечная сеть), ранее возвращенный методом <see cref="AuthorizeAsync(string, string, HttpRequest)"/>.</param>
+        /// <returns>Результат операции (подтверждение).</returns>
+        Task<ConfirmPurchaseResponse> ConfirmPurchanseAsync(ConfirmPurchaseRequest request, TUser user);
+
+        /// <summary>
+        /// Отмена ранее подтверждённой покупки.
+        /// </summary>
+        /// <param name="request">Запрос (список отменяемых позиций из ранее подтверждённых).</param>
+        /// <param name="user">Пользователь (аптечная сеть), ранее возвращенный методом <see cref="AuthorizeAsync(string, string, HttpRequest)"/>.</param>
+        /// <returns>Результат операции (подтверждение).</returns>
+        Task<CancelPurchaseResponse> CancelPurchanseAsync(CancelPurchaseRequest request, TUser user);
+
+        /// <summary>
+        /// Запрос списка активных продуктов в программах.
+        /// </summary>
+        /// <param name="request">Запрос.</param>
+        /// <param name="user">Пользователь (аптечная сеть), ранее возвращенный методом <see cref="AuthorizeAsync(string, string, HttpRequest)"/>.</param>
+        /// <returns>Результат операции (данные о товарных позициях).</returns>
+        Task<GetProductsResponse> GetProductsAsync(GetProductsRequest request, TUser user);
+
+        /// <summary>
+        /// Запрос списка активных программ.
+        /// </summary>
+        /// <param name="request">Запрос.</param>
+        /// <param name="user">Пользователь (аптечная сеть), ранее возвращенный методом <see cref="AuthorizeAsync(string, string, HttpRequest)"/>.</param>
+        /// <returns>Результат операции (данные о активных программах).</returns>
+        Task<GetProgramsResponse> GetProgramsAsync(GetProgramsRequest request, TUser user);
     }
 }

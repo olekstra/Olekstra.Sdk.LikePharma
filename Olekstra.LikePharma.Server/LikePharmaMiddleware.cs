@@ -30,7 +30,7 @@
 
         private const string ContentTypeText = "text/plain";
 
-        private const string ContentTypeTextUtf8 = "text/plain;charset=utf-8";
+        private const string ContentTypeTextUtf8 = ContentTypeText + ";charset=utf-8";
 
         private readonly LikePharmaValidator validator;
 
@@ -118,6 +118,22 @@
 
                 case "/get_discount":
                     await Process<GetDiscountRequest, GetDiscountResponse>(service.GetDiscountAsync, request, response, user).ConfigureAwait(false);
+                    break;
+
+                case "/confirm_purchase":
+                    await Process<ConfirmPurchaseRequest, ConfirmPurchaseResponse>(service.ConfirmPurchanseAsync, request, response, user).ConfigureAwait(false);
+                    break;
+
+                case "/cancel_purchase":
+                    await Process<CancelPurchaseRequest, CancelPurchaseResponse>(service.CancelPurchanseAsync, request, response, user).ConfigureAwait(false);
+                    break;
+
+                case "/get_products":
+                    await Process<GetProductsRequest, GetProductsResponse>(service.GetProductsAsync, request, response, user).ConfigureAwait(false);
+                    break;
+
+                case "/get_programs":
+                    await Process<GetProgramsRequest, GetProgramsResponse>(service.GetProgramsAsync, request, response, user).ConfigureAwait(false);
                     break;
 
                 default:
