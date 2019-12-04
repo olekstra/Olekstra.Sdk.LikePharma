@@ -1,6 +1,7 @@
 ﻿namespace Olekstra.LikePharma.Server.Demo
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
@@ -79,7 +80,27 @@
         // <inheritdocs />
         public Task<GetProgramsResponse> GetProgramsAsync(GetProgramsRequest request, string user)
         {
-            throw new NotImplementedException();
+            var resp = new GetProgramsResponse
+            {
+                Status = Globals.StatusSuccess,
+                ErrorCode = 0,
+                Message = "Данные сформированы",
+                Programs = new List<GetProgramsResponse.Program>
+                {
+                    new GetProgramsResponse.Program
+                    {
+                         Code = "SAMPLE1",
+                         Name = "Программа 1",
+                    },
+                    new GetProgramsResponse.Program
+                    {
+                         Code = "SAMPLE2",
+                         Name = "Программа 2",
+                    },
+                },
+            };
+
+            return Task.FromResult(resp);
         }
     }
 }

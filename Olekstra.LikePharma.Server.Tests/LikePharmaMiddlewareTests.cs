@@ -5,7 +5,6 @@ namespace Olekstra.LikePharma.Server
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
     using Moq;
-    using Olekstra.LikePharma.Client;
     using Xunit;
 
     public class LikePharmaMiddlewareTests
@@ -27,7 +26,7 @@ namespace Olekstra.LikePharma.Server
                 context.Request.Headers[LikePharmaMiddleware<SampleUserInfo>.AuthorizationSecretHeaderName] = "some-secret";
             }
 
-            var middleware = new LikePharmaMiddleware<SampleUserInfo>(_ => Task.CompletedTask, Policy.CreateEmpty(), new Mock<ILogger<LikePharmaMiddleware<SampleUserInfo>>>().Object);
+            var middleware = new LikePharmaMiddleware<SampleUserInfo>(_ => Task.CompletedTask, new LikePharmaMiddlewareOptions(),  new Mock<ILogger<LikePharmaMiddleware<SampleUserInfo>>>().Object);
 
             await middleware.InvokeAsync(context).ConfigureAwait(false);
 
@@ -53,7 +52,7 @@ namespace Olekstra.LikePharma.Server
                 .ReturnsAsync(default(SampleUserInfo))
                 .Verifiable();
 
-            var middleware = new LikePharmaMiddleware<SampleUserInfo>(_ => Task.CompletedTask, Policy.CreateEmpty(), new Mock<ILogger<LikePharmaMiddleware<SampleUserInfo>>>().Object);
+            var middleware = new LikePharmaMiddleware<SampleUserInfo>(_ => Task.CompletedTask, new LikePharmaMiddlewareOptions(), new Mock<ILogger<LikePharmaMiddleware<SampleUserInfo>>>().Object);
 
             await middleware.InvokeAsync(context).ConfigureAwait(false);
 

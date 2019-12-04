@@ -2,10 +2,8 @@ namespace Olekstra.LikePharma.Server.Demo
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Olekstra.LikePharma.Client;
 
     public class Startup
     {
@@ -21,7 +19,7 @@ namespace Olekstra.LikePharma.Server.Demo
                 app.UseDeveloperExceptionPage();
             }
 
-            app.MapLikePharma<string>("/like/sample/v1", Policy.CreateAstraZenecaPolicy());
+            app.MapLikePharma<string>("/like/sample/v1");
         }
     }
 }

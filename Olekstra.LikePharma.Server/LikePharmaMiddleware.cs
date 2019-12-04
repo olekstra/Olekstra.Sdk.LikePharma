@@ -34,18 +34,23 @@
 
         private readonly LikePharmaValidator validator;
 
+        private readonly JsonSerializerOptions? jsonSerializerOptions;
+
         private readonly ILogger logger;
 
         /// <summary>
         /// Конструктор по умолчанию.
         /// </summary>
         /// <param name="next">Следующий <see cref="RequestDelegate"/> в цепочке (будет проигнорирован!).</param>
-        /// <param name="policy">Политика валидации.</param>
+        /// <param name="options">Параметры работы.</param>
         /// <param name="logger">Экземпляр логгера.</param>
-        public LikePharmaMiddleware(RequestDelegate next, Policy policy, ILogger<LikePharmaMiddleware<TUser>> logger)
+        public LikePharmaMiddleware(RequestDelegate next, LikePharmaMiddlewareOptions options, ILogger<LikePharmaMiddleware<TUser>> logger)
         {
-            this.validator = new LikePharmaValidator(policy ?? throw new ArgumentNullException(nameof(policy)));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+            options = options ?? throw new ArgumentNullException(nameof(options));
+            this.validator = new LikePharmaValidator(options.Policy ?? Policy.CreateEmpty());
+            this.jsonSerializerOptions = options.JsonSerializerOptions;
         }
 
         /// <summary>
@@ -166,7 +171,7 @@
 
             TResponse resp;
 
-            var req = await JsonSerializer.DeserializeAsync<TRequest>(httpRequest.Body);
+            var req = await JsonSerializer.DeserializeAsync<TRequest>(httpRequest.Body, jsonSerializerOptions);
             if (!validator.TryValidateObject(req, out var results))
             {
                 resp = new TResponse
@@ -177,20 +182,20 @@
                 };
 
                 httpResponse.ContentType = ContentTypeJson;
-                await JsonSerializer.SerializeAsync(httpResponse.Body, resp).ConfigureAwait(false);
+                await JsonSerializer.SerializeAsync(httpResponse.Body, resp, jsonSerializerOptions).ConfigureAwait(false);
                 return;
             }
 
             resp = await processor(req, user).ConfigureAwait(false);
             if (!validator.TryValidateObject(resp, out results))
             {
-                logger.LogDebug(JsonSerializer.Serialize(resp));
+                logger.LogDebug(JsonSerializer.Serialize(resp, jsonSerializerOptions));
                 logger.LogWarning("Errors: " + string.Join(Environment.NewLine, results.Select(x => x.MemberNames.FirstOrDefault() + " " + x.ErrorMessage)));
                 throw new ApplicationException(Messages.PreparedResponseIsInvalid);
             }
 
             httpResponse.ContentType = ContentTypeJson;
-            await JsonSerializer.SerializeAsync(httpResponse.Body, resp).ConfigureAwait(false);
+            await JsonSerializer.SerializeAsync(httpResponse.Body, resp, jsonSerializerOptions).ConfigureAwait(false);
         }
     }
 }
