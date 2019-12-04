@@ -7,7 +7,7 @@
     using Olekstra.LikePharma.Client.Attributes;
 
     /// <summary>
-    /// Подтверждение номера телефона по коду из СМС.
+    /// Подтверждение покупки.
     /// </summary>
     [CardOrPhoneNumber]
     [XmlRoot("confirm_purchase_request")]

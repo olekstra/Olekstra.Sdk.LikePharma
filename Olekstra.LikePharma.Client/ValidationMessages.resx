@@ -183,6 +183,12 @@
   <data name="PropertyIsNotACollection" xml:space="preserve">
     <value>Property {0} is not a collection.</value>
   </data>
+  <data name="RequestValidationFailed" xml:space="preserve">
+    <value>Некорректный запрос. Выявленные при валидации ошибки содержатся в Data["ValidationErrors"].</value>
+  </data>
+  <data name="ResponseValidationFailed" xml:space="preserve">
+    <value>Некорректный ответ сервера. Выявленные при валидации ошибки содержатся в Data["ValidationErrors"].</value>
+  </data>
   <data name="ShortRussianPhoneNumberValidator_Failure" xml:space="preserve">
     <value>Номер телефона указан некорректно: ожидается 10 цифр (без разделителей), без указания префикса "+7" или "8".</value>
   </data>

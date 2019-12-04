@@ -259,6 +259,24 @@ namespace Olekstra.LikePharma.Client {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Некорректный запрос. Выявленные при валидации ошибки содержатся в Data[&quot;ValidationErrors&quot;]..
+        /// </summary>
+        public static string RequestValidationFailed {
+            get {
+                return ResourceManager.GetString("RequestValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Некорректный ответ сервера. Выявленные при валидации ошибки содержатся в Data[&quot;ValidationErrors&quot;]..
+        /// </summary>
+        public static string ResponseValidationFailed {
+            get {
+                return ResourceManager.GetString("ResponseValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Номер телефона указан некорректно: ожидается 10 цифр (без разделителей), без указания префикса &quot;+7&quot; или &quot;8&quot;..
         /// </summary>
         public static string ShortRussianPhoneNumberValidator_Failure {

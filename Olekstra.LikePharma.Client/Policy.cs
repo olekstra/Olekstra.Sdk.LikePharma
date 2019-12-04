@@ -39,5 +39,18 @@
                 CardNumberValidator = new Digit19CardNumberValidator(),
             };
         }
+
+        /// <summary>
+        /// Создает "упрощённую" политику (номер карты допускается 13 или 19 цифр).
+        /// </summary>
+        /// <returns>Созданный объект <see cref="Policy"/>.</returns>
+        public static Policy CreateOlekstraPolicy()
+        {
+            return new Policy
+            {
+                PhoneNumberValidator = new FullRussianPhoneNumberValidator(),
+                CardNumberValidator = new Digit13Or19CardNumberValidator(),
+            };
+        }
     }
 }
