@@ -57,5 +57,29 @@
         {
             throw new NotImplementedException();
         }
+
+        // <inheritdocs />
+        public Task<ConfirmPurchaseResponse> ConfirmPurchanseAsync(ConfirmPurchaseRequest request, string user)
+        {
+            throw new NotImplementedException();
+        }
+
+        // <inheritdocs />
+        public Task<CancelPurchaseResponse> CancelPurchanseAsync(CancelPurchaseRequest request, string user)
+        {
+            throw new NotImplementedException();
+        }
+
+        // <inheritdocs />
+        public Task<GetProductsResponse> GetProductsAsync(GetProductsRequest request, string user)
+        {
+            throw new NotImplementedException();
+        }
+
+        // <inheritdocs />
+        public Task<GetProgramsResponse> GetProgramsAsync(GetProgramsRequest request, string user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
