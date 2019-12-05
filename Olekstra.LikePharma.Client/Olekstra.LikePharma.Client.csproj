@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Copyright>2019, Olekstra LLC</Copyright>
     <Authors>Dmitry Popov</Authors>
     <Company>Olekstra LLC</Company>
@@ -19,8 +19,11 @@
     <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>ru-RU</NeutralLanguage>
-    <PackageReleaseNotes>New: `LikePharmaClient`;
-`Policy.CreateOlekstraPolicy()` added.</PackageReleaseNotes>
+    <PackageReleaseNotes>New: `LikePharmaClientOptions.CreateDefaultJsonSerializerOptions()`</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\PharmaNet\git\_net\Olekstra.Sdk.LikePharma\Olekstra.LikePharma.Client\Olekstra.LikePharma.Client.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

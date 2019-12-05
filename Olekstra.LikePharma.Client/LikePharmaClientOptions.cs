@@ -29,11 +29,7 @@
 
             this.AuthorizationToken = authorizationToken;
             this.AuthorizationSecret = authorizationSecret;
-            this.JsonSerializerOptions = new JsonSerializerOptions
-            {
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-                IgnoreNullValues = true,
-            };
+            this.JsonSerializerOptions = CreateDefaultJsonSerializerOptions();
         }
 
         /// <summary>
@@ -65,5 +61,23 @@
         /// Настройки JSON-сериализации.
         /// </summary>
         public JsonSerializerOptions JsonSerializerOptions { get; set; }
+
+        /// <summary>
+        /// Создает настройки по умолчанию для JSON-сериализатора.
+        /// </summary>
+        /// <remarks>
+        /// В объект вносятся следующие изменения:
+        /// * <see cref="JsonSerializerOptions.Encoder"/> устанавливается в JavaScriptEncoder.Create(UnicodeRanges.All),
+        /// * <see cref="JsonSerializerOptions.IgnoreNullValues"/> устанавливается в <b>true</b>.
+        /// </remarks>
+        /// <returns>Настройки.</returns>
+        public static JsonSerializerOptions CreateDefaultJsonSerializerOptions()
+        {
+            return new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+                IgnoreNullValues = true,
+            };
+        }
     }
 }

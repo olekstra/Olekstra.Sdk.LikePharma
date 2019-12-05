@@ -2,3 +2,4 @@
 *.user
 bin
 obj
+/Olekstra.LikePharma.Client/Olekstra.LikePharma.Client.xml
