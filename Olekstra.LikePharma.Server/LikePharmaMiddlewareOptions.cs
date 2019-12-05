@@ -1,9 +1,7 @@
 ﻿namespace Olekstra.LikePharma.Server
 {
     using System;
-    using System.Text.Encodings.Web;
     using System.Text.Json;
-    using System.Text.Unicode;
     using Olekstra.LikePharma.Client;
 
     /// <summary>
@@ -20,9 +18,9 @@
         /// Параметры JSON-сериализации.
         /// </summary>
         /// <remarks>
-        /// По умолчанию содержит <see cref="JsonSerializerOptions"/> с модифицированным значением <see cref="JsonSerializerOptions.Encoder"/> для предотвращения избыточного кодирования нелатинских символов).
+        /// По умолчанию содержит <see cref="LikePharmaClientOptions.CreateDefaultJsonSerializerOptions"/>.
         /// </remarks>
-        public JsonSerializerOptions? JsonSerializerOptions { get; set; } = new JsonSerializerOptions { Encoder = JavaScriptEncoder.Create(UnicodeRanges.All) };
+        public JsonSerializerOptions? JsonSerializerOptions { get; set; } = LikePharmaClientOptions.CreateDefaultJsonSerializerOptions();
 
         /// <summary>
         /// Устанавливает свойство <see cref="Policy"/> в указанное значение.

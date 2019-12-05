@@ -56,7 +56,7 @@
         /// <param name="request">Запрос (список подтверждаемых позиций по ранее рассчитанным скидкам).</param>
         /// <param name="user">Пользователь (аптечная сеть), ранее возвращенный методом <see cref="AuthorizeAsync(string, string, HttpRequest)"/>.</param>
         /// <returns>Результат операции (подтверждение).</returns>
-        Task<ConfirmPurchaseResponse> ConfirmPurchanseAsync(ConfirmPurchaseRequest request, TUser user);
+        Task<ConfirmPurchaseResponse> ConfirmPurchaseAsync(ConfirmPurchaseRequest request, TUser user);
 
         /// <summary>
         /// Отмена ранее подтверждённой покупки.
@@ -64,7 +64,7 @@
         /// <param name="request">Запрос (список отменяемых позиций из ранее подтверждённых).</param>
         /// <param name="user">Пользователь (аптечная сеть), ранее возвращенный методом <see cref="AuthorizeAsync(string, string, HttpRequest)"/>.</param>
         /// <returns>Результат операции (подтверждение).</returns>
-        Task<CancelPurchaseResponse> CancelPurchanseAsync(CancelPurchaseRequest request, TUser user);
+        Task<CancelPurchaseResponse> CancelPurchaseAsync(CancelPurchaseRequest request, TUser user);
 
         /// <summary>
         /// Запрос списка активных продуктов в программах.

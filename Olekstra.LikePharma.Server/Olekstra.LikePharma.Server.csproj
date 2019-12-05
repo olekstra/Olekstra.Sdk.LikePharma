@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.5.0</Version>
+    <Version>0.6.0</Version>
     <Copyright>2019, Olekstra LLC</Copyright>
     <Authors>Dmitry Popov</Authors>
     <Company>Olekstra LLC</Company>
@@ -19,7 +19,12 @@
     <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>ru-RU</NeutralLanguage>
-    <PackageReleaseNotes>Client library updated to 1.0.0, new methods added to `ILikePharmaService`.</PackageReleaseNotes>
+    <PackageReleaseNotes>1. Method names fixed (`ConfirmPurchanseAsync` -&gt; `ConfirmPurchaseAsync`, `CancelPurchanseAsync` -&gt; `CancelPurchaseAsync`);
+2. `LikePharmaMiddlewareOptions.JsonSerializerOptions` uses `LikePharmaClientOptions.CreateDefaultJsonSerializerOptions`;</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\PharmaNet\git\_net\Olekstra.Sdk.LikePharma\Olekstra.LikePharma.Server\Olekstra.LikePharma.Server.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

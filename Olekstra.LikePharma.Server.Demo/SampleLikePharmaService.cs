@@ -60,13 +60,13 @@
         }
 
         // <inheritdocs />
-        public Task<ConfirmPurchaseResponse> ConfirmPurchanseAsync(ConfirmPurchaseRequest request, string user)
+        public Task<ConfirmPurchaseResponse> ConfirmPurchaseAsync(ConfirmPurchaseRequest request, string user)
         {
             throw new NotImplementedException();
         }
 
         // <inheritdocs />
-        public Task<CancelPurchaseResponse> CancelPurchanseAsync(CancelPurchaseRequest request, string user)
+        public Task<CancelPurchaseResponse> CancelPurchaseAsync(CancelPurchaseRequest request, string user)
         {
             throw new NotImplementedException();
         }

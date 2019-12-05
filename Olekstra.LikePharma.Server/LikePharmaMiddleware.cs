@@ -126,11 +126,11 @@
                     break;
 
                 case "/confirm_purchase":
-                    await Process<ConfirmPurchaseRequest, ConfirmPurchaseResponse>(service.ConfirmPurchanseAsync, request, response, user).ConfigureAwait(false);
+                    await Process<ConfirmPurchaseRequest, ConfirmPurchaseResponse>(service.ConfirmPurchaseAsync, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/cancel_purchase":
-                    await Process<CancelPurchaseRequest, CancelPurchaseResponse>(service.CancelPurchanseAsync, request, response, user).ConfigureAwait(false);
+                    await Process<CancelPurchaseRequest, CancelPurchaseResponse>(service.CancelPurchaseAsync, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/get_products":
