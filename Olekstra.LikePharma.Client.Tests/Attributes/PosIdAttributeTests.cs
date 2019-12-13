@@ -14,6 +14,7 @@
         [InlineData("123ABC")]
         [InlineData("A")]
         [InlineData("1")]
+        [InlineData("1-23-456")]
         public void AcceptValidValues(string value)
         {
             var attr = new PosIdAttribute();
@@ -32,7 +33,6 @@
         [Theory]
         [InlineData(InvalidPosIdValue)]
         [InlineData("ABC 123")]
-        [InlineData("ABC-123")]
         [InlineData("абв")]
         [InlineData("*")]
         public void RejectInvalidValues(string value)

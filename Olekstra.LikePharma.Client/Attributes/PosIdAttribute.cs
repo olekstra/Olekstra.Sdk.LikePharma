@@ -12,7 +12,7 @@
     public class PosIdAttribute : ValidationAttribute
     {
         private static readonly Regex ValidExpression = new Regex(
-            @"^ [a-zA-Z\d]+ $",
+            @"^ [a-zA-Z\d][a-zA-Z\d\-]* $",
             RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         /// <inheritdoc />
