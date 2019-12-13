@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PreparedResponseIsInvalid" xml:space="preserve">
-    <value>Сформированный ответ не прошел валидацию. Зовите программиста(ов).</value>
+    <value>Сформированный ответ не прошел валидацию (детали в Data["Errors]"). Зовите программиста(ов).</value>
   </data>
   <data name="RootPathGetResponseText" xml:space="preserve">
     <value>Протокол like-pharma. Пожалуйста ознакомьтесь с документацией, чтобы сформировать корректный запрос.</value>

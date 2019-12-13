@@ -61,7 +61,7 @@ namespace Olekstra.LikePharma.Server {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Сформированный ответ не прошел валидацию. Зовите программиста(ов)..
+        ///   Looks up a localized string similar to Сформированный ответ не прошел валидацию (детали в Data[&quot;Errors]&quot;). Зовите программиста(ов)..
         /// </summary>
         public static string PreparedResponseIsInvalid {
             get {

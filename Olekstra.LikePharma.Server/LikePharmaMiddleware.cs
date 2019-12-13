@@ -190,8 +190,13 @@
             if (!validator.TryValidateObject(resp, out results))
             {
                 logger.LogDebug(JsonSerializer.Serialize(resp, jsonSerializerOptions));
-                logger.LogWarning("Errors: " + string.Join(Environment.NewLine, results.Select(x => x.MemberNames.FirstOrDefault() + " " + x.ErrorMessage)));
-                throw new ApplicationException(Messages.PreparedResponseIsInvalid);
+
+                var errors = string.Join(Environment.NewLine, results.Select(x => x.MemberNames.FirstOrDefault() + " " + x.ErrorMessage));
+                logger.LogWarning("Errors: " + errors);
+
+                var ex = new ApplicationException(Messages.PreparedResponseIsInvalid);
+                ex.Data.Add("Errors", errors);
+                throw ex;
             }
 
             httpResponse.ContentType = ContentTypeJson;
