@@ -331,6 +331,15 @@ namespace Olekstra.LikePharma.Client {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Проверяемый объект должен быть наследником ResponseBase.
+        /// </summary>
+        public static string ValidationContextObjectInstanceMustBeResponseBase {
+            get {
+                return ResourceManager.GetString("ValidationContextObjectInstanceMustBeResponseBase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Не найдена политика валидации..
         /// </summary>
         public static string ValidationPolicyNotFound {

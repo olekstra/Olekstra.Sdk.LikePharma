@@ -103,6 +103,17 @@
         }
 
         [Fact]
+        public void ErrorWithoutOrdersIsOk()
+        {
+            ValidValue.Status = Globals.StatusError;
+            ValidValue.ErrorCode = 777;
+            ValidValue.Orders.Clear();
+
+            Assert.True(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.Empty(results);
+        }
+
+        [Fact]
         public void FailsOnNullOrder()
         {
             ValidValue.Orders[0] = null;

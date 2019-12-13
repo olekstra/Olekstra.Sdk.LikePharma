@@ -207,6 +207,9 @@
   <data name="SuccessfulOrderNeedTransaction" xml:space="preserve">
     <value>Для строк с error_code=0 необходимо заполнить поле 'transaction'.</value>
   </data>
+  <data name="ValidationContextObjectInstanceMustBeResponseBase" xml:space="preserve">
+    <value>Проверяемый объект должен быть наследником ResponseBase</value>
+  </data>
   <data name="ValidationPolicyNotFound" xml:space="preserve">
     <value>Не найдена политика валидации.</value>
   </data>
