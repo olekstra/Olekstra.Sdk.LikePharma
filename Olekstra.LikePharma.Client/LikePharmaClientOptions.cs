@@ -77,6 +77,7 @@
             {
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
                 IgnoreNullValues = true,
+                AllowTrailingCommas = true,
             };
         }
     }
