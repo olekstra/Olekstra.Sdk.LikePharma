@@ -29,5 +29,15 @@
         /// Значение свойства <see cref="GetDiscountResponse.Order.Type" /> для случая абсолютной (рублевой) скидки.
         /// </summary>
         public const string DiscountTypeAbsolute = "cash";
+
+        /// <summary>
+        /// Имя HTTP-заголовка, содержащего логин (авторизационный идентификатор).
+        /// </summary>
+        public const string AuthorizationTokenHeaderName = "authorization-token";
+
+        /// <summary>
+        /// Имя HTTP-заголовка, содержащего пароль (авторизационный секрет).
+        /// </summary>
+        public const string AuthorizationSecretHeaderName = "authorization-secret";
     }
 }

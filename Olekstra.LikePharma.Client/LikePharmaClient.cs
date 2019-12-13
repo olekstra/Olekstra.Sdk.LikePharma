@@ -12,9 +12,6 @@
     /// </summary>
     public class LikePharmaClient : ILikePharmaClient
     {
-        private const string AuthorizationTokenHeaderName = "authorization-token";
-        private const string AuthorizationSecretHeaderName = "authorization-secret";
-
         private readonly LikePharmaClientOptions options;
         private readonly HttpClient httpClient;
         private readonly LikePharmaValidator validator;
@@ -95,8 +92,8 @@
             reqContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json") { CharSet = Encoding.UTF8.WebName };
 
             using var httpReq = new HttpRequestMessage(HttpMethod.Post, path);
-            httpReq.Headers.Add(AuthorizationTokenHeaderName, options.AuthorizationToken);
-            httpReq.Headers.Add(AuthorizationSecretHeaderName, options.AuthorizationSecret);
+            httpReq.Headers.Add(Globals.AuthorizationTokenHeaderName, options.AuthorizationToken);
+            httpReq.Headers.Add(Globals.AuthorizationSecretHeaderName, options.AuthorizationSecret);
             httpReq.Content = reqContent;
 
             using var httpResp = await httpClient.SendAsync(httpReq).ConfigureAwait(false);
