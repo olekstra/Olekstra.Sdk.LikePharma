@@ -91,7 +91,7 @@
             [NonNegativeDecimal]
             [JsonPropertyName("price")]
             [XmlElement("price")]
-            public decimal? Price { get; set; }
+            public decimal Price { get; set; }
         }
     }
 }
