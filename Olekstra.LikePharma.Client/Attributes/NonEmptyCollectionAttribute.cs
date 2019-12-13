@@ -34,7 +34,7 @@
 
             if (collection.Count == 0)
             {
-                return new ValidationResult(ValidationMessages.CollectionMustHaveElements);
+                return new ValidationResult(string.Format(CultureInfo.InvariantCulture, ValidationMessages.CollectionMustHaveElements, validationContext.MemberName));
             }
 
             foreach (var item in collection)
