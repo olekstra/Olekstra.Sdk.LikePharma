@@ -134,7 +134,6 @@
             /// <summary>
             /// Тип снижения цены: рубли (<c>cash</c>) или проценты (<c>percent</c>).
             /// </summary>
-            [Required(AllowEmptyStrings = false, ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = nameof(ValidationMessages.ValueRequired))]
             [OrderDiscountType]
             [JsonPropertyName("type")]
             [XmlElement("type")]
