@@ -16,16 +16,6 @@
     public class LikePharmaMiddleware<TUser>
         where TUser : class
     {
-        /// <summary>
-        /// Имя заголовка, содержащего аутентификационный токен.
-        /// </summary>
-        public const string AuthorizationTokenHeaderName = "authorization-token";
-
-        /// <summary>
-        /// Имя заголовка, содержащего аутентификационный секрет.
-        /// </summary>
-        public const string AuthorizationSecretHeaderName = "authorization-secret";
-
         private const string ContentTypeJson = "application/json";
 
         private const string ContentTypeText = "text/plain";
@@ -76,8 +66,8 @@
             }
 
             var headers = request.Headers;
-            var authToken = headers[AuthorizationTokenHeaderName].ToString();
-            var authSecret = headers[AuthorizationSecretHeaderName].ToString();
+            var authToken = headers[Globals.AuthorizationTokenHeaderName].ToString();
+            var authSecret = headers[Globals.AuthorizationSecretHeaderName].ToString();
 
             if (string.IsNullOrEmpty(authToken) || string.IsNullOrEmpty(authSecret))
             {

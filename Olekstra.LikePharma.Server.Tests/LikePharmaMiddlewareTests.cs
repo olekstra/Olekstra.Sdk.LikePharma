@@ -5,6 +5,7 @@ namespace Olekstra.LikePharma.Server
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
     using Moq;
+    using Olekstra.LikePharma.Client;
     using Xunit;
 
     public class LikePharmaMiddlewareTests
@@ -18,12 +19,12 @@ namespace Olekstra.LikePharma.Server
             var context = new DefaultHttpContext();
             if (!noToken)
             {
-                context.Request.Headers[LikePharmaMiddleware<SampleUserInfo>.AuthorizationTokenHeaderName] = "some-token";
+                context.Request.Headers[Globals.AuthorizationTokenHeaderName] = "some-token";
             }
 
             if (!noSecret)
             {
-                context.Request.Headers[LikePharmaMiddleware<SampleUserInfo>.AuthorizationSecretHeaderName] = "some-secret";
+                context.Request.Headers[Globals.AuthorizationSecretHeaderName] = "some-secret";
             }
 
             var middleware = new LikePharmaMiddleware<SampleUserInfo>(_ => Task.CompletedTask, new LikePharmaMiddlewareOptions(),  new Mock<ILogger<LikePharmaMiddleware<SampleUserInfo>>>().Object);
@@ -38,8 +39,8 @@ namespace Olekstra.LikePharma.Server
         {
             var context = new DefaultHttpContext();
 
-            context.Request.Headers[LikePharmaMiddleware<SampleUserInfo>.AuthorizationTokenHeaderName] = "some-token";
-            context.Request.Headers[LikePharmaMiddleware<SampleUserInfo>.AuthorizationSecretHeaderName] = "some-secret";
+            context.Request.Headers[Globals.AuthorizationTokenHeaderName] = "some-token";
+            context.Request.Headers[Globals.AuthorizationSecretHeaderName] = "some-secret";
 
             var servicesMock = new Mock<IServiceProvider>(MockBehavior.Strict);
             var likeService = new Mock<ILikePharmaService<SampleUserInfo>>(MockBehavior.Strict);
