@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    /// Проверка, что в запросе заполнено ровно одно из полей (<see cref="CardNumber"/> и <see cref="PhoneNumber"/>).
+    /// Проверка, что в запросе заполнено ровно одно из полей <c>CardNumber</c> и <c>PhoneNumber</c>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class CardOrPhoneNumberAttribute : ValidationAttribute
