@@ -223,6 +223,33 @@ namespace Olekstra.LikePharma.Client {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Недопустимое значение {0}: разрешены только цифры, латинские буквы и дефис..
+        /// </summary>
+        public static string PharmacyIdInvalid {
+            get {
+                return ResourceManager.GetString("PharmacyIdInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Значение поля {0} должно быть указано..
+        /// </summary>
+        public static string PharmacyIdMustBeSet {
+            get {
+                return ResourceManager.GetString("PharmacyIdMustBeSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Значение поля {0} заполнять не разрешено..
+        /// </summary>
+        public static string PharmacyIdMustNotBeSet {
+            get {
+                return ResourceManager.GetString("PharmacyIdMustNotBeSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Поле {0} должно начинаться с &apos;+7&apos; и следом 10 цифр..
         /// </summary>
         public static string PhoneNumberInvalid {
@@ -232,7 +259,7 @@ namespace Olekstra.LikePharma.Client {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Недопустимое значение {0}: разрешены только цифры и латинские буквы..
+        ///   Looks up a localized string similar to Недопустимое значение {0}: разрешены только цифры, латинские буквы и дефис..
         /// </summary>
         public static string PosIdInvalid {
             get {

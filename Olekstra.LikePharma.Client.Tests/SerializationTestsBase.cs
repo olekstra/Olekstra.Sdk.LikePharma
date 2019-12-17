@@ -38,13 +38,13 @@
         [Fact]
         public void JsonSerializationOk()
         {
-            var value = JsonSerializer.Deserialize<T>(json);
+            var value = JsonSerializer.Deserialize<T>(json, LikePharmaClientOptions.CreateDefaultJsonSerializerOptions());
 
             Assert.NotNull(value);
 
             ValidateObject(value);
 
-            var json2 = JsonSerializer.Serialize(value);
+            var json2 = JsonSerializer.Serialize(value, LikePharmaClientOptions.CreateDefaultJsonSerializerOptions());
 
             Assert.Equal(resultJson, json2);
         }

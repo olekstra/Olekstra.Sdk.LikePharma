@@ -8,6 +8,7 @@
         private const string ValidJson = @"
 {
 ""pos_id"":""A123"",
+""pharmacy_id"":""test_pharmacy"",
 ""card_number"":""1234567890123456789"",
 ""phone_number"":""+71234567890"",
 ""any_data"":""Hello, World!"",
@@ -29,6 +30,7 @@
         private const string ValidXml = @"
 <get_discount_request>
 <pos_id>A123</pos_id>
+<pharmacy_id>test_pharmacy</pharmacy_id>
 <card_number>1234567890123456789</card_number>
 <phone_number>+71234567890</phone_number>
 <any_data>Hello, World!</any_data>
@@ -59,6 +61,7 @@
             value = value ?? throw new ArgumentNullException(nameof(value));
 
             Assert.Equal("A123", value.PosId);
+            Assert.Equal("test_pharmacy", value.PharmacyId);
             Assert.Equal("1234567890123456789", value.CardNumber);
             Assert.Equal("+71234567890", value.PhoneNumber);
             Assert.Equal("Hello, World!", value.AnyData);

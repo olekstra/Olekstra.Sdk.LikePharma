@@ -171,11 +171,20 @@
   <data name="NeedEitherCardOrPhone" xml:space="preserve">
     <value>Должен быть указан либо номер карты, либо номер телефона, но не оба сразу.</value>
   </data>
+  <data name="PharmacyIdInvalid" xml:space="preserve">
+    <value>Недопустимое значение {0}: разрешены только цифры, латинские буквы и дефис.</value>
+  </data>
+  <data name="PharmacyIdMustBeSet" xml:space="preserve">
+    <value>Значение поля {0} должно быть указано.</value>
+  </data>
+  <data name="PharmacyIdMustNotBeSet" xml:space="preserve">
+    <value>Значение поля {0} заполнять не разрешено.</value>
+  </data>
   <data name="PhoneNumberInvalid" xml:space="preserve">
     <value>Поле {0} должно начинаться с '+7' и следом 10 цифр.</value>
   </data>
   <data name="PosIdInvalid" xml:space="preserve">
-    <value>Недопустимое значение {0}: разрешены только цифры и латинские буквы.</value>
+    <value>Недопустимое значение {0}: разрешены только цифры, латинские буквы и дефис.</value>
   </data>
   <data name="PriceMustBePositive" xml:space="preserve">
     <value>Значение поля {0} не может быть менее нуля.</value>

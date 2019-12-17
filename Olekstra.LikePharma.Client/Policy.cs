@@ -19,6 +19,11 @@
         public ICardNumberValidator? CardNumberValidator { get; set; }
 
         /// <summary>
+        /// Необходимость указания PharmacyId в запросах где указывается PosId.
+        /// </summary>
+        public Usage PharmacyIdUsage { get; set; }
+
+        /// <summary>
         /// Создает "пустую" политику (без каких-либо валидаторов).
         /// </summary>
         /// <returns>Созданный объект <see cref="Policy"/>.</returns>

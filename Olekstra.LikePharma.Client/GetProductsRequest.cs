@@ -19,5 +19,13 @@
         [JsonPropertyName("pos_id")]
         [XmlElement("pos_id")]
         public string? PosId { get; set; }
+
+        /// <summary>
+        /// Идентификатор аптеки. Строка, уникальная внутри аптечной сети.
+        /// </summary>
+        [PharmacyId]
+        [JsonPropertyName("pharmacy_id")]
+        [XmlElement("pharmacy_id")]
+        public string? PharmacyId { get; set; }
     }
 }

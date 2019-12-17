@@ -8,6 +8,7 @@
         private const string ValidJson = @"
 {
 ""pos_id"":""A123"",
+""pharmacy_id"":""test_pharmacy"",
 ""card_number"":""1234567890123456789"",
 ""phone_number"":""+71234567890"",
 ""any_data"":""Hello, AnyData!"",
@@ -51,6 +52,7 @@
 <error_code>11</error_code>
 <message>Hello, World!</message>
 <pos_id>A123</pos_id>
+<pharmacy_id>test_pharmacy</pharmacy_id>
 <card_number>1234567890123456789</card_number>
 <phone_number>+71234567890</phone_number>
 <any_data>Hello, AnyData!</any_data>
@@ -100,6 +102,7 @@
             Assert.Equal("Hello, World!", value.Message);
 
             Assert.Equal("A123", value.PosId);
+            Assert.Equal("test_pharmacy", value.PharmacyId);
             Assert.Equal("1234567890123456789", value.CardNumber);
             Assert.Equal("+71234567890", value.PhoneNumber);
             Assert.Equal("Hello, AnyData!", value.AnyData);

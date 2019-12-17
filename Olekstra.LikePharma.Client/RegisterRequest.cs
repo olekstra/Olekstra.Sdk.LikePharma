@@ -21,6 +21,14 @@
         public string? PosId { get; set; }
 
         /// <summary>
+        /// Идентификатор аптеки. Строка, уникальная внутри аптечной сети.
+        /// </summary>
+        [PharmacyId]
+        [JsonPropertyName("pharmacy_id")]
+        [XmlElement("pharmacy_id")]
+        public string? PharmacyId { get; set; }
+
+        /// <summary>
         /// Номер выдаваемой карты.
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = nameof(ValidationMessages.ValueRequired))]

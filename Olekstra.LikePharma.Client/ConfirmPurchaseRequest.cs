@@ -23,6 +23,14 @@
         public string? PosId { get; set; }
 
         /// <summary>
+        /// Идентификатор аптеки. Строка, уникальная внутри аптечной сети.
+        /// </summary>
+        [PharmacyId]
+        [JsonPropertyName("pharmacy_id")]
+        [XmlElement("pharmacy_id")]
+        public string? PharmacyId { get; set; }
+
+        /// <summary>
         /// Номер карты для идентификации клиента.
         /// </summary>
         /// <remarks>Используется либо номер карты, либо номер телефона.</remarks>
