@@ -21,7 +21,7 @@
 {
 ""any_data"":""Hello, Order 2"",
 ""barcode"":""2222222222222"",
-""count"":22,
+""count"":22.5,
 ""price"":222.22
 }
 ]}";
@@ -42,7 +42,7 @@
 <order>
 <any_data>Hello, Order 2</any_data>
 <barcode>2222222222222</barcode>
-<count>22</count>
+<count>22.5</count>
 <price>222.22</price>
 </order>
 </orders>
@@ -68,14 +68,14 @@
             var order = value.Orders[0];
             Assert.NotNull(order);
             Assert.Equal("1234567890123", order.Barcode);
-            Assert.Equal(11, order.Count);
+            Assert.Equal(11M, order.Count);
             Assert.Equal(123.45M, order.Price);
             Assert.Equal("Hello, Order 1", order.AnyData);
 
             order = value.Orders[1];
             Assert.NotNull(order);
             Assert.Equal("2222222222222", order.Barcode);
-            Assert.Equal(22, order.Count);
+            Assert.Equal(22.5M, order.Count);
             Assert.Equal(222.22M, order.Price);
             Assert.Equal("Hello, Order 2", order.AnyData);
         }

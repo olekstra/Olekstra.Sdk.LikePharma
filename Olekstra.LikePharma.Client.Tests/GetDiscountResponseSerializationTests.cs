@@ -29,7 +29,7 @@
 {
 ""any_data"":""Hello here"",
 ""barcode"":""1234567890000"",
-""count"":22,
+""count"":22.5,
 ""description"":""description_2"",
 ""discount"":220.00,
 ""error_code"":77,
@@ -72,7 +72,7 @@
 <order>
 <any_data>Hello here</any_data>
 <barcode>1234567890000</barcode>
-<count>22</count>
+<count>22.5</count>
 <description>description_2</description>
 <discount>220.00</discount>
 <error_code>77</error_code>
@@ -125,7 +125,7 @@
             Assert.NotNull(order);
             Assert.Equal("Hello here", order.AnyData);
             Assert.Equal("1234567890000", order.Barcode);
-            Assert.Equal(22, order.Count);
+            Assert.Equal(22.5M, order.Count);
             Assert.Equal("description_2", order.Description);
             Assert.Equal(220.00M, order.Discount);
             Assert.Equal(77, order.ErrorCode);

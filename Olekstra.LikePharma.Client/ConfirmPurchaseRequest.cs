@@ -74,10 +74,10 @@
             /// <summary>
             /// Количество продукта со таким штрихкодом в чеке.
             /// </summary>
-            [PositiveInteger]
+            [PositiveDecimal]
             [JsonPropertyName("count")]
             [XmlElement("count")]
-            public int Count { get; set; }
+            public decimal Count { get; set; }
 
             /// <summary>
             /// Цена за единицу продукта.

@@ -87,10 +87,10 @@
             /// <summary>
             /// Количество по позиции в заказе.
             /// </summary>
-            [PositiveInteger]
+            [PositiveDecimal]
             [JsonPropertyName("count")]
             [XmlElement("count")]
-            public int Count { get; set; }
+            public decimal Count { get; set; }
 
             /// <summary>
             /// Наименование препарата (если ШК распознан).

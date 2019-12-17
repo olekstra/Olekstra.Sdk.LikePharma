@@ -22,7 +22,7 @@
 },
 {
 ""barcode"":""1234567890000"",
-""count"":33,
+""count"":33.33,
 ""price"":12345.00
 }
 ]
@@ -39,7 +39,7 @@
 </transactions>
 <skus>
 <sku><barcode>1234567890123</barcode><count>3</count><price>123.45</price></sku>
-<sku><barcode>1234567890000</barcode><count>33</count><price>12345.00</price></sku>
+<sku><barcode>1234567890000</barcode><count>33.33</count><price>12345.00</price></sku>
 </skus>
 </confirm_purchase_request>";
 
@@ -69,7 +69,7 @@
             Assert.Equal(123.45M, value.Skus[0].Price);
 
             Assert.Equal("1234567890000", value.Skus[1].Barcode);
-            Assert.Equal(33, value.Skus[1].Count);
+            Assert.Equal(33.33M, value.Skus[1].Count);
             Assert.Equal(12345M, value.Skus[1].Price);
         }
     }
