@@ -58,7 +58,7 @@
             var request = context.Request;
             var response = context.Response;
 
-            if (request.Path == PathString.Empty && request.Method == "GET")
+            if (request.Method == "GET" && (request.Path == PathString.Empty || request.Path == "/"))
             {
                 response.ContentType = ContentTypeTextUtf8;
                 await response.WriteAsync(Messages.RootPathGetResponseText).ConfigureAwait(false);
@@ -104,30 +104,37 @@
             switch (request.Path)
             {
                 case "/register":
+                case "/register/":
                     await Process<RegisterRequest, RegisterResponse>(service.RegisterAsync, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/confirm_code":
+                case "/confirm_code/":
                     await Process<ConfirmCodeRequest, ConfirmCodeResponse>(service.ConfirmCodeAsync, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/get_discount":
+                case "/get_discount/":
                     await Process<GetDiscountRequest, GetDiscountResponse>(service.GetDiscountAsync, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/confirm_purchase":
+                case "/confirm_purchase/":
                     await Process<ConfirmPurchaseRequest, ConfirmPurchaseResponse>(service.ConfirmPurchaseAsync, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/cancel_purchase":
+                case "/cancel_purchase/":
                     await Process<CancelPurchaseRequest, CancelPurchaseResponse>(service.CancelPurchaseAsync, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/get_products":
+                case "/get_products/":
                     await Process<GetProductsRequest, GetProductsResponse>(service.GetProductsAsync, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/get_programs":
+                case "/get_programs/":
                     await Process<GetProgramsRequest, GetProgramsResponse>(service.GetProgramsAsync, request, response, user).ConfigureAwait(false);
                     break;
 
