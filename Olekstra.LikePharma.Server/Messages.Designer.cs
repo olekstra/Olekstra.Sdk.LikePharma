@@ -79,6 +79,15 @@ namespace Olekstra.LikePharma.Server {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ошибка при чтении JSON: {0}.
+        /// </summary>
+        public static string Status400BadRequest_InvalidJson_ResponseText {
+            get {
+                return ResourceManager.GetString("Status400BadRequest_InvalidJson_ResponseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Необходима авторизация (401 Unauthorized)..
         /// </summary>
         public static string Status401Unauthorized_ResponseText {

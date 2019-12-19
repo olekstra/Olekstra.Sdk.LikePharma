@@ -123,6 +123,9 @@
   <data name="RootPathGetResponseText" xml:space="preserve">
     <value>Протокол like-pharma. Пожалуйста ознакомьтесь с документацией, чтобы сформировать корректный запрос.</value>
   </data>
+  <data name="Status400BadRequest_InvalidJson_ResponseText" xml:space="preserve">
+    <value>Ошибка при чтении JSON: {0}</value>
+  </data>
   <data name="Status401Unauthorized_ResponseText" xml:space="preserve">
     <value>Необходима авторизация (401 Unauthorized).</value>
   </data>

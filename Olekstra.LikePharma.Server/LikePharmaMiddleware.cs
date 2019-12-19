@@ -1,6 +1,7 @@
 ﻿namespace Olekstra.LikePharma.Server
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Text.Json;
     using System.Threading.Tasks;
@@ -166,9 +167,22 @@
             httpResponse = httpResponse ?? throw new ArgumentNullException(nameof(httpResponse));
             user = user ?? throw new ArgumentNullException(nameof(user));
 
+            TRequest req;
             TResponse resp;
 
-            var req = await JsonSerializer.DeserializeAsync<TRequest>(httpRequest.Body, jsonSerializerOptions);
+            try
+            {
+                req = await JsonSerializer.DeserializeAsync<TRequest>(httpRequest.Body, jsonSerializerOptions);
+            }
+            catch (JsonException ex)
+            {
+                logger.LogWarning(ex, "Ошибка при разборе входящего JSON: " + ex.Message);
+                httpResponse.StatusCode = StatusCodes.Status400BadRequest;
+                httpResponse.ContentType = ContentTypeTextUtf8;
+                await httpResponse.WriteAsync(string.Format(CultureInfo.InvariantCulture, Messages.Status400BadRequest_InvalidJson_ResponseText, ex.Message)).ConfigureAwait(false);
+                return;
+            }
+
             if (!validator.TryValidateObject(req, out var results))
             {
                 resp = new TResponse
