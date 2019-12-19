@@ -11,7 +11,7 @@
     <PackageProjectUrl>https://bitbucket.org/olekstra/olekstra.sdk.likepharma</PackageProjectUrl>
     <RepositoryUrl>git@bitbucket.org:olekstra/olekstra.sdk.likepharma.git</RepositoryUrl>
 
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
 
