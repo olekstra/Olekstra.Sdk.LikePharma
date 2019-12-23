@@ -205,6 +205,15 @@ namespace Olekstra.LikePharma.Client {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Неподдерживаемое значение правила CardAndPhoneUsage: {0}..
+        /// </summary>
+        public static string InvalidCardAndPhoneUsageValue {
+            get {
+                return ResourceManager.GetString("InvalidCardAndPhoneUsageValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Значение поля {0} должно содержать не менее {1} символов..
         /// </summary>
         public static string MinLengthFailed {
@@ -214,7 +223,25 @@ namespace Olekstra.LikePharma.Client {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Должен быть указан либо номер карты, либо номер телефона, но не оба сразу..
+        ///   Looks up a localized string similar to Должны быть указаны и номер карты, и номер телефона..
+        /// </summary>
+        public static string NeedCardAndPhone {
+            get {
+                return ResourceManager.GetString("NeedCardAndPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Должен быть указан номер карты или номер телефона..
+        /// </summary>
+        public static string NeedCardOrPhone {
+            get {
+                return ResourceManager.GetString("NeedCardOrPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Должен быть указан либо номер карты, либо номер телефона (но не оба сразу)..
         /// </summary>
         public static string NeedEitherCardOrPhone {
             get {
@@ -372,6 +399,15 @@ namespace Olekstra.LikePharma.Client {
         public static string ValidationPolicyNotFound {
             get {
                 return ResourceManager.GetString("ValidationPolicyNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поле {0} должно быть пустым (заполнение запрещено) в текущем режиме работы..
+        /// </summary>
+        public static string ValueProhibited {
+            get {
+                return ResourceManager.GetString("ValueProhibited", resourceCulture);
             }
         }
         

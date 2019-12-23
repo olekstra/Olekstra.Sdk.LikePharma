@@ -165,11 +165,20 @@
   <data name="FullRussianPhoneNumberValidator_Failure" xml:space="preserve">
     <value>Номер телефона указан некорректно: ожидается +7 и следом 10 цифр (без разделителей).</value>
   </data>
+  <data name="InvalidCardAndPhoneUsageValue" xml:space="preserve">
+    <value>Неподдерживаемое значение правила CardAndPhoneUsage: {0}.</value>
+  </data>
   <data name="MinLengthFailed" xml:space="preserve">
     <value>Значение поля {0} должно содержать не менее {1} символов.</value>
   </data>
+  <data name="NeedCardAndPhone" xml:space="preserve">
+    <value>Должны быть указаны и номер карты, и номер телефона.</value>
+  </data>
+  <data name="NeedCardOrPhone" xml:space="preserve">
+    <value>Должен быть указан номер карты или номер телефона.</value>
+  </data>
   <data name="NeedEitherCardOrPhone" xml:space="preserve">
-    <value>Должен быть указан либо номер карты, либо номер телефона, но не оба сразу.</value>
+    <value>Должен быть указан либо номер карты, либо номер телефона (но не оба сразу).</value>
   </data>
   <data name="PharmacyIdInvalid" xml:space="preserve">
     <value>Недопустимое значение {0}: разрешены только цифры, латинские буквы и дефис.</value>
@@ -221,6 +230,9 @@
   </data>
   <data name="ValidationPolicyNotFound" xml:space="preserve">
     <value>Не найдена политика валидации.</value>
+  </data>
+  <data name="ValueProhibited" xml:space="preserve">
+    <value>Поле {0} должно быть пустым (заполнение запрещено) в текущем режиме работы.</value>
   </data>
   <data name="ValueRequired" xml:space="preserve">
     <value>Значение поля {0} должно быть указано.</value>

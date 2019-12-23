@@ -24,6 +24,11 @@
         public Usage PharmacyIdUsage { get; set; }
 
         /// <summary>
+        /// Правила использования CardNumber / PhoneNumber в запросах.
+        /// </summary>
+        public CardAndPhoneUsage CardAndPhoneUsage { get; set; } = CardAndPhoneUsage.CardOrPhone;
+
+        /// <summary>
         /// Создает "пустую" политику (без каких-либо валидаторов).
         /// </summary>
         /// <returns>Созданный объект <see cref="Policy"/>.</returns>
@@ -42,6 +47,7 @@
             {
                 PhoneNumberValidator = new FullRussianPhoneNumberValidator(),
                 CardNumberValidator = new Digit19CardNumberValidator(),
+                CardAndPhoneUsage = CardAndPhoneUsage.CardOrPhone,
             };
         }
 
@@ -51,11 +57,9 @@
         /// <returns>Созданный объект <see cref="Policy"/>.</returns>
         public static Policy CreateOlekstraPolicy()
         {
-            return new Policy
-            {
-                PhoneNumberValidator = new FullRussianPhoneNumberValidator(),
-                CardNumberValidator = new Digit13Or19CardNumberValidator(),
-            };
+            var p = CreateAstraZenecaPolicy();
+            p.CardNumberValidator = new Digit13Or19CardNumberValidator();
+            return p;
         }
     }
 }

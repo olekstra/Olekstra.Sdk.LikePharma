@@ -83,16 +83,6 @@
         }
 
         [Fact]
-        public void FailsOnBothCardAndPhoneNumber()
-        {
-            validValue.CardNumber = "12345";
-            validValue.PhoneNumber = "12345";
-
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
-            Assert.Single(results);
-        }
-
-        [Fact]
         public void FailsWithoutCardPhoneNumber()
         {
             validValue.CardNumber = null;
