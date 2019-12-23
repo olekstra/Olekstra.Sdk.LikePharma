@@ -23,6 +23,11 @@
         public JsonSerializerOptions? JsonSerializerOptions { get; set; } = LikePharmaClientOptions.CreateDefaultJsonSerializerOptions();
 
         /// <summary>
+        /// Надо ли делать URL-encode (и URL-decode) при чтении/записи JSON (по умолчанию false).
+        /// </summary>
+        public bool UseUrlEncode { get; set; } = false;
+
+        /// <summary>
         /// Устанавливает свойство <see cref="Policy"/> в указанное значение.
         /// </summary>
         /// <param name="value">Необходимое значение.</param>
@@ -42,6 +47,17 @@
         public LikePharmaMiddlewareOptions WithJsonOptions(JsonSerializerOptions? value)
         {
             this.JsonSerializerOptions = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Устанавливает свойство <see cref="UseUrlEncode"/> в указанное значение.
+        /// </summary>
+        /// <param name="value">Необходимое значение (или null для использования настроек по умолчанию).</param>
+        /// <returns>Текущий экземпляр объекта.</returns>
+        public LikePharmaMiddlewareOptions UrlEncode(bool value)
+        {
+            this.UseUrlEncode = value;
             return this;
         }
     }

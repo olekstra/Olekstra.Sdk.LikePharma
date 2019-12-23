@@ -2,7 +2,9 @@
 {
     using System;
     using System.Globalization;
+    using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Text.Json;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
@@ -23,9 +25,9 @@
 
         private const string ContentTypeTextUtf8 = ContentTypeText + ";charset=utf-8";
 
-        private readonly LikePharmaValidator validator;
+        private readonly LikePharmaMiddlewareOptions options;
 
-        private readonly JsonSerializerOptions? jsonSerializerOptions;
+        private readonly LikePharmaValidator validator;
 
         private readonly ILogger logger;
 
@@ -39,9 +41,8 @@
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            options = options ?? throw new ArgumentNullException(nameof(options));
+            this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.validator = new LikePharmaValidator(options.Policy ?? Policy.CreateEmpty());
-            this.jsonSerializerOptions = options.JsonSerializerOptions;
         }
 
         /// <summary>
@@ -170,9 +171,34 @@
             TRequest req;
             TResponse resp;
 
+            async Task WriteResponse(TResponse response)
+            {
+                httpResponse.ContentType = ContentTypeJson;
+
+                if (options.UseUrlEncode)
+                {
+                    var json = JsonSerializer.Serialize(response, options.JsonSerializerOptions);
+                    using var sw = new StreamWriter(httpResponse.Body, leaveOpen: true);
+                    await sw.WriteAsync(WebUtility.UrlEncode(json)).ConfigureAwait(false);
+                }
+                else
+                {
+                    await JsonSerializer.SerializeAsync(httpResponse.Body, response, options.JsonSerializerOptions).ConfigureAwait(false);
+                }
+            }
+
             try
             {
-                req = await JsonSerializer.DeserializeAsync<TRequest>(httpRequest.Body, jsonSerializerOptions);
+                if (options.UseUrlEncode)
+                {
+                    using var sr = new StreamReader(httpRequest.Body, System.Text.Encoding.UTF8);
+                    var json = await sr.ReadToEndAsync().ConfigureAwait(false);
+                    req = JsonSerializer.Deserialize<TRequest>(WebUtility.UrlDecode(json), options.JsonSerializerOptions);
+                }
+                else
+                {
+                    req = await JsonSerializer.DeserializeAsync<TRequest>(httpRequest.Body, options.JsonSerializerOptions);
+                }
             }
             catch (JsonException ex)
             {
@@ -192,15 +218,14 @@
                     Message = results.First().ErrorMessage,
                 };
 
-                httpResponse.ContentType = ContentTypeJson;
-                await JsonSerializer.SerializeAsync(httpResponse.Body, resp, jsonSerializerOptions).ConfigureAwait(false);
+                await WriteResponse(resp).ConfigureAwait(false);
                 return;
             }
 
             resp = await processor(req, user).ConfigureAwait(false);
             if (!validator.TryValidateObject(resp, out results))
             {
-                logger.LogDebug(JsonSerializer.Serialize(resp, jsonSerializerOptions));
+                logger.LogDebug(JsonSerializer.Serialize(resp, options.JsonSerializerOptions));
 
                 var errors = string.Join(Environment.NewLine, results.Select(x => x.MemberNames.FirstOrDefault() + " " + x.ErrorMessage));
                 logger.LogWarning("Errors: " + errors);
@@ -210,8 +235,7 @@
                 throw ex;
             }
 
-            httpResponse.ContentType = ContentTypeJson;
-            await JsonSerializer.SerializeAsync(httpResponse.Body, resp, jsonSerializerOptions).ConfigureAwait(false);
+            await WriteResponse(resp).ConfigureAwait(false);
         }
     }
 }
