@@ -385,6 +385,15 @@ namespace Olekstra.LikePharma.Client {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Поле {0} не может содержать такое значение..
+        /// </summary>
+        public static string UpdateModeInvalid {
+            get {
+                return ResourceManager.GetString("UpdateModeInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Проверяемый объект должен быть наследником ResponseBase.
         /// </summary>
         public static string ValidationContextObjectInstanceMustBeResponseBase {

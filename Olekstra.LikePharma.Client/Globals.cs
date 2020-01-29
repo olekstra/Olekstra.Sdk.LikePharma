@@ -39,5 +39,15 @@
         /// Имя HTTP-заголовка, содержащего пароль (авторизационный секрет).
         /// </summary>
         public const string AuthorizationSecretHeaderName = "authorization-secret";
+
+        /// <summary>
+        /// Значение свойства <see cref="UpdatePharmaciesRequest.UpdateMode" /> для варианта "слияние".
+        /// </summary>
+        public const string UpdateModeMerge = "merge";
+
+        /// <summary>
+        /// Значение свойства <see cref="UpdatePharmaciesRequest.UpdateMode" /> для варианта "замена".
+        /// </summary>
+        public const string UpdateModeReplace = "replace";
     }
 }

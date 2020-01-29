@@ -225,6 +225,9 @@
   <data name="SuccessfulOrderNeedTransaction" xml:space="preserve">
     <value>Для строк с error_code=0 необходимо заполнить поле 'transaction'.</value>
   </data>
+  <data name="UpdateModeInvalid" xml:space="preserve">
+    <value>Поле {0} не может содержать такое значение.</value>
+  </data>
   <data name="ValidationContextObjectInstanceMustBeResponseBase" xml:space="preserve">
     <value>Проверяемый объект должен быть наследником ResponseBase</value>
   </data>

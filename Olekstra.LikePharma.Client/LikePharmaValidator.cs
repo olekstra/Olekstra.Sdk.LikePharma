@@ -53,6 +53,7 @@
                 ConfirmPurchaseRequest cpr => cpr.Skus,
                 GetProgramsResponse gpr => gpr.Programs,
                 GetProductsResponse gpr => gpr.Products,
+                UpdatePharmaciesRequest upr => upr.Pharmacies,
                 _ => null,
             };
 
