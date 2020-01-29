@@ -122,5 +122,14 @@ namespace Olekstra.LikePharma.Server {
                 return ResourceManager.GetString("Status405MethodNotAllowed_ResponseText", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Данный метод [ещё] не реализован на сервере (501 NotImplemented).
+        /// </summary>
+        public static string Status501NotImplemented {
+            get {
+                return ResourceManager.GetString("Status501NotImplemented", resourceCulture);
+            }
+        }
     }
 }

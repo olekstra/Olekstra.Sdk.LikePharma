@@ -60,7 +60,7 @@
             var request = context.Request;
             var response = context.Response;
 
-            if (request.Method == "GET" && (request.Path == PathString.Empty || request.Path == "/"))
+            if (request.Path == PathString.Empty || request.Path == "/")
             {
                 response.ContentType = ContentTypeTextUtf8;
                 await response.WriteAsync(Messages.RootPathGetResponseText).ConfigureAwait(false);
@@ -138,6 +138,11 @@
                 case "/get_programs":
                 case "/get_programs/":
                     await Process<GetProgramsRequest, GetProgramsResponse>(service.GetProgramsAsync, request, response, user).ConfigureAwait(false);
+                    break;
+
+                case "/update_pharmacies":
+                case "/update_pharmacies/":
+                    await Process<UpdatePharmaciesRequest, UpdatePharmaciesResponse>(service.UpdatePharmaciesAsync, request, response, user).ConfigureAwait(false);
                     break;
 
                 default:

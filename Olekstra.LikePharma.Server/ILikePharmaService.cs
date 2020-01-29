@@ -81,5 +81,16 @@
         /// <param name="user">Пользователь (аптечная сеть), ранее возвращенный методом <see cref="AuthorizeAsync(string, string, HttpRequest)"/>.</param>
         /// <returns>Результат операции (данные о активных программах).</returns>
         Task<GetProgramsResponse> GetProgramsAsync(GetProgramsRequest request, TUser user);
+
+        /// <summary>
+        /// Обновление списка аптек сети.
+        /// </summary>
+        /// <param name="request">Запрос.</param>
+        /// <param name="user">Пользователь (аптечная сеть), ранее возвращенный методом <see cref="AuthorizeAsync(string, string, HttpRequest)"/>.</param>
+        /// <returns>Результат операции (подтверждение).</returns>
+        Task<UpdatePharmaciesResponse> UpdatePharmaciesAsync(UpdatePharmaciesRequest request, TUser user)
+        {
+            return Task.FromResult(new UpdatePharmaciesResponse { Status = Globals.StatusError, ErrorCode = 501, Message = Messages.Status501NotImplemented });
+        }
     }
 }

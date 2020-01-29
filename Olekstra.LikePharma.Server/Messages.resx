@@ -138,4 +138,7 @@
   <data name="Status405MethodNotAllowed_ResponseText" xml:space="preserve">
     <value>Недопустимый метод (405 MethodNotAllowed).</value>
   </data>
+  <data name="Status501NotImplemented" xml:space="preserve">
+    <value>Данный метод [ещё] не реализован на сервере (501 NotImplemented)</value>
+  </data>
 </root>
