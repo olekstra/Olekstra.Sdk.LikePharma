@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Copyright>2019, Olekstra LLC</Copyright>
     <Authors>Dmitry Popov</Authors>
     <Company>Olekstra LLC</Company>
@@ -19,7 +19,7 @@
     <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>ru-RU</NeutralLanguage>
-    <PackageReleaseNotes>New: `update_pharmacies` handler and `ILikePharmaService.UpdatePharmaciesAsync` (returns error 501 by default).</PackageReleaseNotes>
+    <PackageReleaseNotes>New: `LikePharmaMiddlewareOptions.RawRequestProcessor` handler for processing new/unknown calls.</PackageReleaseNotes>
 
     <DocumentationFile>.\bin\Debug\Olekstra.LikePharma.Server.xml</DocumentationFile>
   </PropertyGroup>

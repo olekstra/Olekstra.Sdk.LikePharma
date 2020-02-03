@@ -92,6 +92,19 @@
                 return;
             }
 
+            logger.LogDebug($"Аутентификация успешна: token {authToken} -> {user}");
+
+            if (options.RawRequestProcessor != null)
+            {
+                var result = options.RawRequestProcessor(request, response, user);
+                if (result != null)
+                {
+                    await result.ConfigureAwait(false);
+                    logger.LogDebug($"RawRequestProcessor() вернул не-null, считаю запрос обработанным (StatusCode = {response.StatusCode})");
+                    return;
+                }
+            }
+
             if (!string.Equals(request.Method, "POST", StringComparison.Ordinal))
             {
                 logger.LogWarning($"Запрос с некорректным методом ({request.Method}), отвечаю кодом 405");
@@ -100,8 +113,6 @@
                 await response.WriteAsync(Messages.Status405MethodNotAllowed_ResponseText).ConfigureAwait(false);
                 return;
             }
-
-            logger.LogDebug($"Аутентификация успешна: token {authToken} -> {user}");
 
             switch (request.Path)
             {

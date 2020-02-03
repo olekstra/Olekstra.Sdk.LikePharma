@@ -24,6 +24,7 @@ namespace Olekstra.LikePharma.Server
         {
             context = new DefaultHttpContext();
 
+            context.Request.Path = "/some_path";
             context.Request.Headers[Globals.AuthorizationTokenHeaderName] = "some-token";
             context.Request.Headers[Globals.AuthorizationSecretHeaderName] = "some-secret";
 
@@ -97,8 +98,10 @@ namespace Olekstra.LikePharma.Server
             Assert.Equal(400, context.Response.StatusCode);
         }
 
-        [Fact]
-        public async Task ItWorks()
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public async Task ItWorks(bool useEmptyRawRequestProcessor)
         {
             var sampleProgramName = "Программа 2+2 - скидка 22%";
 
@@ -128,6 +131,11 @@ namespace Olekstra.LikePharma.Server
                 .Setup(x => x.GetProgramsAsync(It.Is<GetProgramsRequest>(grp => grp.PosId == "123"), It.IsNotNull<SampleUserInfo>()))
                 .ReturnsAsync(sampleResponse)
                 .Verifiable();
+
+            if (useEmptyRawRequestProcessor)
+            {
+                options.RawRequestProcessor = (request, response, user) => null;
+            }
 
             await middleware.InvokeAsync(context).ConfigureAwait(false);
 
@@ -185,6 +193,26 @@ namespace Olekstra.LikePharma.Server
             using var sr = new StreamReader(context.Response.Body);
             var respText = await sr.ReadToEndAsync().ConfigureAwait(false);
             Assert.Contains(options.JsonSerializerOptions.Encoder.Encode(sampleProgramName), System.Net.WebUtility.UrlDecode(respText), StringComparison.Ordinal);
+        }
+
+        [Fact]
+        public async Task RawProcessorCalled()
+        {
+            PathString unknownPath = "/hello_world";
+            var expectedStatusCode = 777;
+            var rawProcessorInvokeCount = 0;
+
+            options.RawRequestProcessor = (request, response, user) =>
+            {
+                rawProcessorInvokeCount++;
+                response.StatusCode = expectedStatusCode;
+                return Task.CompletedTask;
+            };
+
+            await middleware.InvokeAsync(context).ConfigureAwait(false);
+
+            Assert.Equal(1, rawProcessorInvokeCount);
+            Assert.Equal(expectedStatusCode, context.Response.StatusCode);
         }
     }
 }
