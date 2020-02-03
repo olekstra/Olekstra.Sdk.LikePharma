@@ -35,9 +35,9 @@
         /// <remarks>
         /// Если обработчик вернул Task - считается что он обработал запрос, дальнейшая обработка не производится.
         /// Если вернул null вместо Task - считается что он запрос не обработал, выполняется "обычная" обработка.
-        /// Третьим параметром (object) в обработчик передается TUser (авторизованный пользователь).
+        /// Вторым параметром (object) в обработчик передается TUser (авторизованный пользователь).
         /// </remarks>
-        public Func<HttpRequest, HttpResponse, object, Task?>? RawRequestProcessor { get; set; } = null;
+        public Func<HttpContext, object, Task?>? RawRequestProcessor { get; set; } = null;
 
         /// <summary>
         /// Устанавливает свойство <see cref="Policy"/> в указанное значение.
@@ -78,7 +78,7 @@
         /// </summary>
         /// <param name="value">Необходимое значение (или null для использования настроек по умолчанию).</param>
         /// <returns>Текущий экземпляр объекта.</returns>
-        public LikePharmaMiddlewareOptions WithRawProcessor(Func<HttpRequest, HttpResponse, object, Task?>? value)
+        public LikePharmaMiddlewareOptions WithRawProcessor(Func<HttpContext, object, Task?>? value)
         {
             this.RawRequestProcessor = value;
             return this;

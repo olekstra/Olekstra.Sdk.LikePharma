@@ -134,7 +134,7 @@ namespace Olekstra.LikePharma.Server
 
             if (useEmptyRawRequestProcessor)
             {
-                options.RawRequestProcessor = (request, response, user) => null;
+                options.RawRequestProcessor = (context, user) => null;
             }
 
             await middleware.InvokeAsync(context).ConfigureAwait(false);
@@ -202,10 +202,10 @@ namespace Olekstra.LikePharma.Server
             var expectedStatusCode = 777;
             var rawProcessorInvokeCount = 0;
 
-            options.RawRequestProcessor = (request, response, user) =>
+            options.RawRequestProcessor = (context, user) =>
             {
                 rawProcessorInvokeCount++;
-                response.StatusCode = expectedStatusCode;
+                context.Response.StatusCode = expectedStatusCode;
                 return Task.CompletedTask;
             };
 

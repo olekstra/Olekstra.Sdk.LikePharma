@@ -96,7 +96,7 @@
 
             if (options.RawRequestProcessor != null)
             {
-                var result = options.RawRequestProcessor(request, response, user);
+                var result = options.RawRequestProcessor(context, user);
                 if (result != null)
                 {
                     await result.ConfigureAwait(false);
