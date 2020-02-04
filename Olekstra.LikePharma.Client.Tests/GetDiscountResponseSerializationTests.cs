@@ -38,7 +38,8 @@
 ""transaction"":""abc456def"",
 ""type"":""percent"",
 ""value"":999.99,
-""value_per_item"":1.00
+""value_per_item"":1.00,
+""program"":""test-program""
 }
 ],
 ""status"":""error"",
@@ -83,6 +84,7 @@
 <type>percent</type>
 <value>999.99</value>
 <value_per_item>1.00</value_per_item>
+<program>test-program</program>
 </order>
 </orders>
 </get_discount_response>";
@@ -137,6 +139,7 @@
             Assert.Equal("percent", order.Type);
             Assert.Equal(999.99M, order.Value);
             Assert.Equal(1.0M, order.ValuePerItem);
+            Assert.Equal("test-program", order.Program);
         }
     }
 }

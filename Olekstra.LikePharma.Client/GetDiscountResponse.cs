@@ -162,6 +162,13 @@
             [JsonPropertyName("value_per_item")]
             [XmlElement("value_per_item")]
             public decimal ValuePerItem { get; set; }
+
+            /// <summary>
+            /// Название дисконтной программы, по которой был выполнен расчёт снижения цены.
+            /// </summary>
+            [JsonPropertyName("program")]
+            [XmlElement("program")]
+            public string? Program { get; set; }
         }
     }
 }
