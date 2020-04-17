@@ -60,8 +60,8 @@
 
         private void RunTest(CardAndPhoneUsage policyValue, bool expectedValid, string card, string phone)
         {
-            var policy = Policy.CreateEmpty();
-            policy.CardAndPhoneUsage = policyValue;
+            var protocolSettings = ProtocolSettings.CreateEmpty();
+            protocolSettings.CardAndPhoneUsage = policyValue;
 
             var sampleRequest = new ConfirmPurchaseRequest
             {
@@ -71,7 +71,7 @@
                 Transactions = { "12345" },
             };
 
-            var isValid = new LikePharmaValidator(policy).TryValidateObject(sampleRequest, out var results);
+            var isValid = new LikePharmaValidator(protocolSettings).TryValidateObject(sampleRequest, out var results);
 
             if (expectedValid)
             {

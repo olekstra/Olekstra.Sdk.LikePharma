@@ -9,24 +9,19 @@
     /// </summary>
     public class LikePharmaValidator
     {
-        private readonly Policy policy;
+        private readonly ProtocolSettings protocolSettings;
 
         /// <summary>
         /// Конструктор по умолчанию.
         /// </summary>
-        /// <param name="policy"><see cref="Policy"/>, которую необходимо использовать в процессе валидации.</param>
-        public LikePharmaValidator(Policy policy)
+        /// <param name="protocolSettings"><see cref="ProtocolSettings"/>, которую необходимо использовать в процессе валидации.</param>
+        public LikePharmaValidator(ProtocolSettings protocolSettings)
         {
-            if (policy == null)
-            {
-                throw new ArgumentNullException(nameof(policy));
-            }
-
-            this.policy = policy;
+            this.protocolSettings = protocolSettings ?? throw new ArgumentNullException(nameof(protocolSettings));
         }
 
         /// <summary>
-        /// Выполяняет валидацию объекта, с учётом вложенных коллекций Order (для определённых типов), используя <see cref="Policy">политику валидации</see>, заданную в конструкторе.
+        /// Выполняет валидацию объекта с учётом вложенных коллекций (Orders, Products, ...), используя <see cref="ProtocolSettings">параметры протокола</see>, заданные в конструкторе.
         /// </summary>
         /// <param name="instance">Экземпляр объекта для проверки.</param>
         /// <param name="results">Список, который необходимо заполнить ошибками (если они будут найдены).</param>
@@ -38,7 +33,7 @@
                 throw new ArgumentNullException(nameof(instance));
             }
 
-            var psp = new PolicyServiceProvider(policy);
+            var psp = new ProtocolSettingsServiceProvider(protocolSettings);
 
             var vc = new ValidationContext(instance, psp, null);
 
@@ -72,20 +67,20 @@
             return isValid;
         }
 
-        private class PolicyServiceProvider : IServiceProvider
+        private class ProtocolSettingsServiceProvider : IServiceProvider
         {
-            private readonly Policy policy;
+            private readonly ProtocolSettings protocolSettings;
 
-            public PolicyServiceProvider(Policy policy)
+            public ProtocolSettingsServiceProvider(ProtocolSettings protocolSettings)
             {
-                this.policy = policy;
+                this.protocolSettings = protocolSettings;
             }
 
             public object? GetService(Type serviceType)
             {
-                if (serviceType == typeof(Policy))
+                if (serviceType == typeof(ProtocolSettings))
                 {
-                    return policy;
+                    return protocolSettings;
                 }
 
                 return null;

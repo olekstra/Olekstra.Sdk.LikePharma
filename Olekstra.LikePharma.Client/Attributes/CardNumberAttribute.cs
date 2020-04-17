@@ -5,7 +5,7 @@
     using Olekstra.LikePharma.Client.Validators;
 
     /// <summary>
-    /// Проверочный значения с помощью <see cref="ICardNumberValidator"/> указанного в <see cref="Policy"/>.
+    /// Проверочный значения с помощью <see cref="ICardNumberValidator"/> указанного в <see cref="ProtocolSettings"/>.
     /// </summary>
     /// <remarks>Значения <c>null</c> и <see cref="string.Empty"/> сразу считаются "правильными" (проверку обязательности делайте отдельным <see cref="RequiredAttribute"/>).</remarks>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, AllowMultiple = false)]
@@ -37,7 +37,7 @@
                 return ValidationResult.Success;
             }
 
-            var policy = (Policy)validationContext.GetService(typeof(Policy));
+            var policy = (ProtocolSettings)validationContext.GetService(typeof(ProtocolSettings));
             if (policy == null)
             {
                 throw new ApplicationException(ValidationMessages.ValidationPolicyNotFound);

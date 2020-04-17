@@ -12,9 +12,9 @@
     public class LikePharmaMiddlewareOptions
     {
         /// <summary>
-        /// Политика валидации данных (по умолчанию <see cref="Policy.CreateAstraZenecaPolicy()"/>).
+        /// Политика валидации данных (по умолчанию <see cref="ProtocolSettings.CreateAstraZeneca()"/>).
         /// </summary>
-        public Policy Policy { get; set; } = Policy.CreateAstraZenecaPolicy();
+        public ProtocolSettings ProtocolSettings { get; set; } = ProtocolSettings.CreateAstraZeneca();
 
         /// <summary>
         /// Параметры JSON-сериализации.
@@ -40,14 +40,14 @@
         public Func<HttpContext, object, Task?>? RawRequestProcessor { get; set; } = null;
 
         /// <summary>
-        /// Устанавливает свойство <see cref="Policy"/> в указанное значение.
+        /// Устанавливает свойство <see cref="ProtocolSettings"/> в указанное значение.
         /// </summary>
         /// <param name="value">Необходимое значение.</param>
         /// <returns>Текущий экземпляр объекта.</returns>
         /// <exception cref="ArgumentNullException">Если передано пустое (null) значение.</exception>
-        public LikePharmaMiddlewareOptions WithPolicy(Policy value)
+        public LikePharmaMiddlewareOptions WithProtocolSettings(ProtocolSettings value)
         {
-            this.Policy = value ?? throw new ArgumentNullException(nameof(value));
+            this.ProtocolSettings = value ?? throw new ArgumentNullException(nameof(value));
             return this;
         }
 
@@ -67,7 +67,7 @@
         /// </summary>
         /// <param name="value">Необходимое значение (или null для использования настроек по умолчанию).</param>
         /// <returns>Текущий экземпляр объекта.</returns>
-        public LikePharmaMiddlewareOptions UrlEncode(bool value)
+        public LikePharmaMiddlewareOptions WithUrlEncode(bool value)
         {
             this.UseUrlEncode = value;
             return this;

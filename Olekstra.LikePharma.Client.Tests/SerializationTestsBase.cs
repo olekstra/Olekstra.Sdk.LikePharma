@@ -55,7 +55,8 @@
             var serializer = new XmlSerializer(typeof(T));
 
             using var sr = new StringReader(xml);
-            var value = (T)serializer.Deserialize(sr);
+            using var xmlReader = XmlReader.Create(sr);
+            var value = (T)serializer.Deserialize(xmlReader);
 
             Assert.NotNull(value);
 

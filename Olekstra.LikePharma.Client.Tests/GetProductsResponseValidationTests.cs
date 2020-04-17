@@ -27,7 +27,7 @@
         {
             ValidValue.Products = null;
 
-            Assert.True(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.True(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Empty(results);
         }
 
@@ -36,7 +36,7 @@
         {
             ValidValue.Products.Clear();
 
-            Assert.True(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.True(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Empty(results);
         }
 
@@ -45,7 +45,7 @@
         {
             ValidValue.Products[0] = null;
 
-            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.False(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Single(results);
         }
 
@@ -57,7 +57,7 @@
         {
             ValidValue.Products[0].Barcode = value;
 
-            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.False(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Single(results);
         }
 
@@ -69,7 +69,7 @@
         {
             ValidValue.Products[0].Description = value;
 
-            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.False(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Single(results);
         }
     }

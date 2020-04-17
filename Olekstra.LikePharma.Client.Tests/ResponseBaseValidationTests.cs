@@ -1,8 +1,6 @@
 ﻿namespace Olekstra.LikePharma.Client
 {
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using Olekstra.LikePharma.Client.Attributes;
     using Xunit;
 
@@ -11,6 +9,9 @@
     {
         public ResponseBaseValidationTests()
         {
+            ProtocolSettings = ProtocolSettings.CreateEmpty();
+            Validator = new LikePharmaValidator(ProtocolSettings);
+
             ValidValue.Status = Globals.StatusSuccess;
             ValidValue.ErrorCode = Globals.ErrorCodeNoError;
 #pragma warning disable CA1303 // Do not pass literals as localized parameters
@@ -18,7 +19,9 @@
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
-        protected Policy Policy { get; } = Policy.CreateEmpty();
+        protected ProtocolSettings ProtocolSettings { get; private set; }
+
+        protected LikePharmaValidator Validator { get; private set; }
 
         protected T ValidValue { get; } = new T();
 
@@ -33,7 +36,7 @@
                 ValidValue.ErrorCode = 123;
             }
 
-            Assert.True(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.True(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Empty(results);
         }
 
@@ -45,7 +48,7 @@
         {
             ValidValue.Status = value;
 
-            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.False(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Single(results);
         }
 
@@ -54,7 +57,7 @@
         {
             ValidValue.Status = StatusAttributeTests.InvalidStatusValue;
 
-            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.False(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Single(results);
         }
 
@@ -63,7 +66,7 @@
         {
             ValidValue.ErrorCode = -1;
 
-            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.False(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Single(results);
         }
 
@@ -75,7 +78,7 @@
         {
             ValidValue.Message = value;
 
-            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.False(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Single(results);
         }
 
@@ -93,7 +96,7 @@
                 ValidValue.ErrorCode = 123;
             }
 
-            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.False(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Single(results);
         }
     }

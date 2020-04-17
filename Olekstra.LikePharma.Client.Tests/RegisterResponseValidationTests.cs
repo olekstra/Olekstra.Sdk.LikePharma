@@ -15,7 +15,7 @@
         {
             ValidValue.Code = null;
 
-            Assert.True(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.True(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Empty(results);
         }
     }

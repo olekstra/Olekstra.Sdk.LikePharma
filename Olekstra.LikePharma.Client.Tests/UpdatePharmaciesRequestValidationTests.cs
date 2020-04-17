@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using Olekstra.LikePharma.Client.Attributes;
     using Xunit;
 
@@ -10,7 +9,7 @@
     {
         private readonly UpdatePharmaciesRequest validValue;
 
-        private readonly Policy policy = Policy.CreateEmpty();
+        private readonly LikePharmaValidator validator = new LikePharmaValidator(ProtocolSettings.CreateEmpty());
 
         public UpdatePharmaciesRequestValidationTests()
         {
@@ -38,7 +37,7 @@
         [Fact]
         public void ValidatesOk()
         {
-            Assert.True(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.True(validator.TryValidateObject(validValue, out var results));
             Assert.Empty(results);
         }
 
@@ -47,7 +46,7 @@
         {
             validValue.UpdateMode = "foo";
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -56,7 +55,7 @@
         {
             validValue.Pharmacies.Clear();
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -65,7 +64,7 @@
         {
             validValue.Pharmacies[0] = null;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -74,7 +73,7 @@
         {
             validValue.Pharmacies[0].Id = PosIdAttributeTests.InvalidPosIdValue;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -83,7 +82,7 @@
         {
             validValue.Pharmacies[0].Id = null;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -92,7 +91,7 @@
         {
             validValue.Pharmacies[0].Address = null;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
     }

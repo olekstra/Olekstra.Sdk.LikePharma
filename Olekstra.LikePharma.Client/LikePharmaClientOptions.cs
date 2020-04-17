@@ -45,7 +45,7 @@
         /// <summary>
         /// Набор правил (политика) валидации структур данных.
         /// </summary>
-        public Policy Policy { get; set; } = Policy.CreateOlekstraPolicy();
+        public ProtocolSettings ProtocolSettings { get; set; } = ProtocolSettings.CreateOlekstra();
 
         /// <summary>
         /// Нужно ли автоматически проверять все запросы.

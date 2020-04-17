@@ -20,15 +20,11 @@
         where TUser : class
     {
         private const string ContentTypeJson = "application/json";
-
         private const string ContentTypeText = "text/plain";
-
         private const string ContentTypeTextUtf8 = ContentTypeText + ";charset=utf-8";
 
         private readonly LikePharmaMiddlewareOptions options;
-
         private readonly LikePharmaValidator validator;
-
         private readonly ILogger logger;
 
         /// <summary>
@@ -37,13 +33,14 @@
         /// <param name="next">Следующий <see cref="RequestDelegate"/> в цепочке (будет проигнорирован!).</param>
         /// <param name="options">Параметры работы.</param>
         /// <param name="logger">Экземпляр логгера.</param>
+#pragma warning disable CA1801 // Can't unused parameter 'next' - required by ASP.NET Core!
         public LikePharmaMiddleware(RequestDelegate next, LikePharmaMiddlewareOptions options, ILogger<LikePharmaMiddleware<TUser>> logger)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
             this.options = options ?? throw new ArgumentNullException(nameof(options));
-            this.validator = new LikePharmaValidator(options.Policy ?? Policy.CreateEmpty());
+            this.validator = new LikePharmaValidator(options.ProtocolSettings ?? ProtocolSettings.CreateEmpty());
         }
+#pragma warning restore CA1801 // Remove unused parameter 'next'
 
         /// <summary>
         /// Обработчик входящих запросов.

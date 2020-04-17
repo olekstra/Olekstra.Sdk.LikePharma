@@ -8,7 +8,7 @@
     {
         private readonly ConfirmCodeRequest validValue;
 
-        private readonly Policy policy = Policy.CreateEmpty();
+        private readonly LikePharmaValidator validator = new LikePharmaValidator(ProtocolSettings.CreateEmpty());
 
         public ConfirmCodeRequestValidationTests()
         {
@@ -22,7 +22,7 @@
         [Fact]
         public void ValidatesOk()
         {
-            Assert.True(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.True(validator.TryValidateObject(validValue, out var results));
             Assert.Empty(results);
         }
 
@@ -34,7 +34,7 @@
         {
             validValue.PosId = value;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -43,7 +43,7 @@
         {
             validValue.PosId = PosIdAttributeTests.InvalidPosIdValue;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -55,7 +55,7 @@
         {
             validValue.Code = value;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
     }

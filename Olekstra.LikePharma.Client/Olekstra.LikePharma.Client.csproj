@@ -15,8 +15,6 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
 
-    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
-    <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>ru-RU</NeutralLanguage>
     <PackageReleaseNotes>New: 'program' field in `orders` objects in `get_discount` response.</PackageReleaseNotes>

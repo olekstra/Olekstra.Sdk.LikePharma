@@ -9,10 +9,14 @@
     {
         private readonly RegisterRequest validValue;
 
-        private readonly Policy policy = Policy.CreateEmpty();
+        private readonly ProtocolSettings protocolSettings;
+        private readonly LikePharmaValidator validator;
 
         public RegisterRequestValidationTests()
         {
+            this.protocolSettings = ProtocolSettings.CreateEmpty();
+            this.validator = new LikePharmaValidator(protocolSettings);
+
             validValue = new RegisterRequest
             {
                 PosId = "A12BC",
@@ -25,7 +29,7 @@
         [Fact]
         public void ValidatesOk()
         {
-            Assert.True(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.True(validator.TryValidateObject(validValue, out var results));
             Assert.Empty(results);
         }
 
@@ -34,7 +38,7 @@
         {
             validValue.TrustKey = null;
 
-            Assert.True(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.True(validator.TryValidateObject(validValue, out var results));
             Assert.Empty(results);
         }
 
@@ -46,7 +50,7 @@
         {
             validValue.PosId = value;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -55,7 +59,7 @@
         {
             validValue.PosId = PosIdAttributeTests.InvalidPosIdValue;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -67,16 +71,16 @@
         {
             validValue.CardNumber = value;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnInvalidCardNumber()
         {
-            policy.CardNumberValidator = new DummyCardValidator(new ValidationResult("fail"));
+            protocolSettings.CardNumberValidator = new DummyCardValidator(new ValidationResult("fail"));
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -88,16 +92,16 @@
         {
             validValue.PhoneNumber = value;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnInvalidPhoneNumber()
         {
-            policy.PhoneNumberValidator = new DummyPhoneValidator(new ValidationResult("fail"));
+            protocolSettings.PhoneNumberValidator = new DummyPhoneValidator(new ValidationResult("fail"));
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
     }

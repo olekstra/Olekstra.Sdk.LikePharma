@@ -39,7 +39,7 @@
                 }
             }
 
-            var policy = (Policy)validationContext.GetService(typeof(Policy));
+            var policy = (ProtocolSettings)validationContext.GetService(typeof(ProtocolSettings));
             if (policy == null)
             {
                 throw new ApplicationException(ValidationMessages.ValidationPolicyNotFound);

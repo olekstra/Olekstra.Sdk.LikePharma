@@ -6,8 +6,6 @@
     <IsPackable>false</IsPackable>
 
     <RootNamespace>Olekstra.LikePharma.Server</RootNamespace>
-
-    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>

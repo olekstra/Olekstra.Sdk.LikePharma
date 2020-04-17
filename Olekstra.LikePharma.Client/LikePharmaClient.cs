@@ -26,7 +26,7 @@
         public LikePharmaClient(LikePharmaClientOptions options, HttpClient httpClient, ILogger<LikePharmaClient> logger)
         {
             this.options = options ?? throw new ArgumentNullException(nameof(options));
-            this.validator = new LikePharmaValidator(options.Policy);
+            this.validator = new LikePharmaValidator(options.ProtocolSettings);
             this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }

@@ -10,10 +10,14 @@
     {
         private readonly CancelPurchaseRequest validValue;
 
-        private readonly Policy policy = Policy.CreateEmpty();
+        private readonly ProtocolSettings protocolSettings;
+        private readonly LikePharmaValidator validator;
 
         public CancelPurchaseRequestValidationTests()
         {
+            this.protocolSettings = ProtocolSettings.CreateEmpty();
+            this.validator = new LikePharmaValidator(protocolSettings);
+
             validValue = new CancelPurchaseRequest
             {
                 PosId = "A12BC",
@@ -26,7 +30,7 @@
         [Fact]
         public void ValidatesOk()
         {
-            Assert.True(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.True(validator.TryValidateObject(validValue, out var results));
             Assert.Empty(results);
         }
 
@@ -38,7 +42,7 @@
         {
             validValue.PosId = value;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -47,29 +51,29 @@
         {
             validValue.PosId = PosIdAttributeTests.InvalidPosIdValue;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnInvalidCardNumber()
         {
-            policy.CardNumberValidator = new DummyCardValidator(new ValidationResult("fail"));
+            protocolSettings.CardNumberValidator = new DummyCardValidator(new ValidationResult("fail"));
 
             validValue.PhoneNumber = null; // чтобы валидация "телефон или карта" не сработала
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
         [Fact]
         public void FailsOnInvalidPhoneNumber()
         {
-            policy.PhoneNumberValidator = new DummyPhoneValidator(new ValidationResult("fail"));
+            protocolSettings.PhoneNumberValidator = new DummyPhoneValidator(new ValidationResult("fail"));
 
             validValue.CardNumber = null; // чтобы валидация "телефон или карта" не сработала
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -79,7 +83,7 @@
             validValue.CardNumber = null;
             validValue.PhoneNumber = null;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -91,7 +95,7 @@
         {
             validValue.TrustKey = value;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -100,7 +104,7 @@
         {
             validValue.Transactions.Clear();
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
 
@@ -112,7 +116,7 @@
         {
             validValue.Transactions[0] = value;
 
-            Assert.False(new LikePharmaValidator(policy).TryValidateObject(validValue, out var results));
+            Assert.False(validator.TryValidateObject(validValue, out var results));
             Assert.Single(results);
         }
     }

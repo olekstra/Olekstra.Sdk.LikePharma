@@ -10,11 +10,11 @@
         public void SuccessValidation()
         {
             var validator = new DummyPhoneValidator(ValidationResult.Success);
-            var policy = new Policy { PhoneNumberValidator = validator };
+            var protocolSettings = new ProtocolSettings { PhoneNumberValidator = validator };
 
             var sample = new SampleClass { SampleProperty = "12345" };
 
-            var isValid = new LikePharmaValidator(policy).TryValidateObject(sample, out var results);
+            var isValid = new LikePharmaValidator(protocolSettings).TryValidateObject(sample, out var results);
 
             Assert.True(isValid); // потому что answer это Success;
             Assert.Equal(sample.SampleProperty, validator.ValidatedValue);
@@ -24,11 +24,11 @@
         [Fact]
         public void SuccessValidationWithoutValidator()
         {
-            var policy = new Policy { PhoneNumberValidator = null };
+            var protocolSettings = new ProtocolSettings { PhoneNumberValidator = null };
 
             var sample = new SampleClass { SampleProperty = "12345" };
 
-            var isValid = new LikePharmaValidator(policy).TryValidateObject(sample, out var results);
+            var isValid = new LikePharmaValidator(protocolSettings).TryValidateObject(sample, out var results);
 
             Assert.True(isValid);
             Assert.Empty(results);
@@ -39,11 +39,11 @@
         {
             var answer = new ValidationResult("abc");
             var validator = new DummyPhoneValidator(answer);
-            var policy = new Policy { PhoneNumberValidator = validator };
+            var protocolSettings = new ProtocolSettings { PhoneNumberValidator = validator };
 
             var sample = new SampleClass { SampleProperty = "12345" };
 
-            var isValid = new LikePharmaValidator(policy).TryValidateObject(sample, out var results);
+            var isValid = new LikePharmaValidator(protocolSettings).TryValidateObject(sample, out var results);
 
             Assert.False(isValid); // потому что answer это Success;
             Assert.Equal(sample.SampleProperty, validator.ValidatedValue);

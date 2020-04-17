@@ -27,7 +27,7 @@
         {
             ValidValue.Programs = null;
 
-            Assert.True(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.True(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Empty(results);
         }
 
@@ -36,7 +36,7 @@
         {
             ValidValue.Programs.Clear();
 
-            Assert.True(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.True(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Empty(results);
         }
 
@@ -45,7 +45,7 @@
         {
             ValidValue.Programs[0] = null;
 
-            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.False(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Single(results);
         }
 
@@ -57,7 +57,7 @@
         {
             ValidValue.Programs[0].Code = value;
 
-            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.False(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Single(results);
         }
 
@@ -69,7 +69,7 @@
         {
             ValidValue.Programs[0].Name = value;
 
-            Assert.False(new LikePharmaValidator(Policy).TryValidateObject(ValidValue, out var results));
+            Assert.False(Validator.TryValidateObject(ValidValue, out var results));
             Assert.Single(results);
         }
     }
