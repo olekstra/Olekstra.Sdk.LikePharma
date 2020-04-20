@@ -1,5 +1,6 @@
 ﻿namespace Olekstra.LikePharma.Client
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
@@ -35,5 +36,33 @@
         [JsonPropertyName("message")]
         [XmlElement("message")]
         public string? Message { get; set; }
+
+        /// <summary>
+        /// Копирует в данный объект поля из предоставленного объекта.
+        /// </summary>
+        /// <param name="source">Исходный объект, поля которого надо скопировать.</param>
+        /// <exception cref="ArgumentNullException">Если в параметре 'source' передано значение <b>null</b>.</exception>
+        protected void CopyFrom(ResponseBase source)
+        {
+            source = source ?? throw new ArgumentNullException(nameof(source));
+
+            this.Status = source.Status;
+            this.ErrorCode = source.ErrorCode;
+            this.Message = source.Message;
+        }
+
+        /// <summary>
+        /// Копирует в предоставленный объект поля из данного объекта.
+        /// </summary>
+        /// <param name="destination">Целевой объект, в который надо скопировать значения полей.</param>
+        /// <exception cref="ArgumentNullException">Если в параметре 'destination' передано значение <b>null</b>.</exception>
+        protected void CopyTo(ResponseBase destination)
+        {
+            destination = destination ?? throw new ArgumentNullException(nameof(destination));
+
+            destination.Status = this.Status;
+            destination.ErrorCode = this.ErrorCode;
+            destination.Message = this.Message;
+        }
     }
 }

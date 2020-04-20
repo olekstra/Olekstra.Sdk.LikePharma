@@ -5,31 +5,17 @@
 
     public class GetProgramsResponseSerializationTests : SerializationTestsBase<GetProgramsResponse>
     {
-        private const string ValidJson = @"
-{
-""program"":[
-{
-""code"":""code1"",
-""name"":""name1""
-},
-{
-""code"":""code2"",
-""name"":""name2""
-}],
-""status"":""error"",
-""error_code"":11,
-""message"":""Hello, World!""
-}";
+        public const string ValidJson = LikePharmaClientTests_SmartDeserialize.ValidGetProgramsResponsePluralJson;
 
         private const string ValidXml = @"
 <get_programs_response>
 <status>error</status>
 <error_code>11</error_code>
 <message>Hello, World!</message>
-<program>
+<programs>
 <program><code>code1</code><name>name1</name></program>
 <program><code>code2</code><name>name2</name></program>
-</program>
+</programs>
 </get_programs_response>";
 
         public GetProgramsResponseSerializationTests()

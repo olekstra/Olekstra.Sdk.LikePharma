@@ -31,6 +31,51 @@
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        /// <summary>
+        /// Выполняет "умную" десериализацию из JSON с учетом настроек.
+        /// </summary>
+        /// <typeparam name="TValue">Результирующий (целевой) тип.</typeparam>
+        /// <param name="text">Сериализованный (json) объект.</param>
+        /// <param name="protocolSettings">Настройки протокола.</param>
+        /// <param name="jsonSerializerOptions">Настройки сериализатора.</param>
+        /// <returns>Десериализованый ответ запрошенного типа.</returns>
+        public static TValue DeserializeJson<TValue>(string text, ProtocolSettings protocolSettings, JsonSerializerOptions jsonSerializerOptions)
+        {
+            if (typeof(TValue) == typeof(GetProgramsResponse))
+            {
+                var helper = JsonSerializer.Deserialize<Internal.GetProgramsResponseHelper>(text, jsonSerializerOptions);
+                return (TValue)(object)helper.CreateResponse();
+            }
+
+            return JsonSerializer.Deserialize<TValue>(text, jsonSerializerOptions);
+        }
+
+        /// <summary>
+        /// Сериализация класса запроса/ответа в JSON с учетом настроек.
+        /// </summary>
+        /// <typeparam name="TValue">Тип сериализуемого объекта (запроса или ответа).</typeparam>
+        /// <param name="value">Сериализуемый объект.</param>
+        /// <param name="protocolSettings">Настройки протокола.</param>
+        /// <param name="jsonSerializerOptions">Настройки сериализатора.</param>
+        /// <returns>Массив байтов JSON-сериализованного объекта.</returns>
+        public static byte[] SerializeJsonUtf8Bytes<TValue>(TValue value, ProtocolSettings protocolSettings, JsonSerializerOptions jsonSerializerOptions)
+        {
+            return JsonSerializer.SerializeToUtf8Bytes(value, jsonSerializerOptions);
+        }
+
+        /// <summary>
+        /// Сериализация класса запроса/ответа в JSON с учетом настроек.
+        /// </summary>
+        /// <typeparam name="TValue">Тип сериализуемого объекта (запроса или ответа).</typeparam>
+        /// <param name="value">Сериализуемый объект.</param>
+        /// <param name="protocolSettings">Настройки протокола.</param>
+        /// <param name="jsonSerializerOptions">Настройки сериализатора.</param>
+        /// <returns>JSON-строка сериализованного объекта.</returns>
+        public static string SerializeJson<TValue>(TValue value, ProtocolSettings protocolSettings, JsonSerializerOptions jsonSerializerOptions)
+        {
+            return JsonSerializer.Serialize(value, jsonSerializerOptions);
+        }
+
         /// <inheritdoc />
         public Task<RegisterResponse> RegisterAsync(RegisterRequest request)
         {
@@ -73,6 +118,24 @@
             return MakeRequestAsync<GetProgramsRequest, GetProgramsResponse>("get_programs", request);
         }
 
+        /// <inheritdoc />
+        public TValue DeserializeJson<TValue>(string text)
+        {
+            return DeserializeJson<TValue>(text, options.ProtocolSettings, options.JsonSerializerOptions);
+        }
+
+        /// <inheritdoc />
+        public byte[] SerializeJsonUtf8Bytes<TValue>(TValue value)
+        {
+            return SerializeJsonUtf8Bytes(value, options.ProtocolSettings, options.JsonSerializerOptions);
+        }
+
+        /// <inheritdoc />
+        public string SerializeJson<TValue>(TValue value)
+        {
+            return SerializeJson(value, options.ProtocolSettings, options.JsonSerializerOptions);
+        }
+
         private async Task<TResponse> MakeRequestAsync<TRequest, TResponse>(string path, TRequest request)
             where TRequest : RequestBase<TResponse>
             where TResponse : ResponseBase
@@ -81,14 +144,14 @@
             {
                 if (!validator.TryValidateObject(request, out var results))
                 {
-                    logger.LogError("Invalid request (validation failed): " + JsonSerializer.Serialize(request, options.JsonSerializerOptions));
+                    logger.LogError("Invalid request (validation failed): " + SerializeJson(request));
                     var ex = new ArgumentException(ValidationMessages.RequestValidationFailed, nameof(request));
                     ex.Data["ValidationErrors"] = results;
                     throw ex;
                 }
             }
 
-            using var reqContent = new ByteArrayContent(JsonSerializer.SerializeToUtf8Bytes(request, options.JsonSerializerOptions));
+            using var reqContent = new ByteArrayContent(SerializeJsonUtf8Bytes(request));
             reqContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json") { CharSet = Encoding.UTF8.WebName };
 
             using var httpReq = new HttpRequestMessage(HttpMethod.Post, path);
@@ -105,7 +168,7 @@
                 httpResp.EnsureSuccessStatusCode(); // will raise correct exception
             }
 
-            var resp = JsonSerializer.Deserialize<TResponse>(respText, options.JsonSerializerOptions);
+            var resp = DeserializeJson<TResponse>(respText);
             if (options.ValidateResponses)
             {
                 if (!validator.TryValidateObject(request, out var results))

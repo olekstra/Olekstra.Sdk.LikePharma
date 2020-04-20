@@ -15,9 +15,12 @@
         /// <summary>
         /// Список активных программ.
         /// </summary>
+        /// <remarks>
+        /// В связи с отличиями в написании (program vs programs) в разных версиях протокола - технически при обмене используется вспомогательный <see cref="Internal.GetProgramsResponseHelper"/>.
+        /// </remarks>
         [EmptyCollectionWithoutEmptyElements]
-        [JsonPropertyName("program")]
-        [XmlArray("program")]
+        [JsonPropertyName("programs")]
+        [XmlArray("programs")]
         [XmlArrayItem("program")]
         public List<Program> Programs { get; set; } = new List<Program>();
 
