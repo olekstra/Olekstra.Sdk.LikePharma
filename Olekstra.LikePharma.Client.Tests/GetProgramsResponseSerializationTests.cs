@@ -5,18 +5,8 @@
 
     public class GetProgramsResponseSerializationTests : SerializationTestsBase<GetProgramsResponse>
     {
-        public const string ValidJson = LikePharmaClientTests_SmartDeserialize.ValidGetProgramsResponsePluralJson;
-
-        private const string ValidXml = @"
-<get_programs_response>
-<status>error</status>
-<error_code>11</error_code>
-<message>Hello, World!</message>
-<programs>
-<program><code>code1</code><name>name1</name></program>
-<program><code>code2</code><name>name2</name></program>
-</programs>
-</get_programs_response>";
+        private const string ValidJson = Internal.GetProgramsResponseHelperSerializationTests.ValidJsonPlural;
+        private const string ValidXml = Internal.GetProgramsResponseHelperSerializationTests.ValidXmlPlural;
 
         public GetProgramsResponseSerializationTests()
             : base(ValidJson, ValidXml)
@@ -34,10 +24,10 @@
 
             Assert.NotNull(value.Programs);
             Assert.Equal(2, value.Programs.Count);
-            Assert.Equal("code1", value.Programs[0].Code);
-            Assert.Equal("name1", value.Programs[0].Name);
-            Assert.Equal("code2", value.Programs[1].Code);
-            Assert.Equal("name2", value.Programs[1].Name);
+            Assert.Equal("code1p", value.Programs[0].Code);
+            Assert.Equal("name1p", value.Programs[0].Name);
+            Assert.Equal("code2p", value.Programs[1].Code);
+            Assert.Equal("name2p", value.Programs[1].Name);
         }
     }
 }

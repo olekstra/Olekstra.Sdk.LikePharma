@@ -22,12 +22,7 @@
         /// <remarks>
         /// По умолчанию содержит <see cref="LikePharmaClientOptions.CreateDefaultJsonSerializerOptions"/>.
         /// </remarks>
-        public JsonSerializerOptions? JsonSerializerOptions { get; set; } = LikePharmaClientOptions.CreateDefaultJsonSerializerOptions();
-
-        /// <summary>
-        /// Надо ли делать URL-encode (и URL-decode) при чтении/записи JSON (по умолчанию false).
-        /// </summary>
-        public bool UseUrlEncode { get; set; } = false;
+        public JsonSerializerOptions JsonSerializerOptions { get; set; } = LikePharmaClientOptions.CreateDefaultJsonSerializerOptions();
 
         /// <summary>
         /// Единый "универсальный" обработчик запросов, вызывается после авторизации польозвателя но до реальной обработки.
@@ -56,20 +51,9 @@
         /// </summary>
         /// <param name="value">Необходимое значение (или null для использования настроек по умолчанию).</param>
         /// <returns>Текущий экземпляр объекта.</returns>
-        public LikePharmaMiddlewareOptions WithJsonOptions(JsonSerializerOptions? value)
+        public LikePharmaMiddlewareOptions WithJsonOptions(JsonSerializerOptions value)
         {
-            this.JsonSerializerOptions = value;
-            return this;
-        }
-
-        /// <summary>
-        /// Устанавливает свойство <see cref="UseUrlEncode"/> в указанное значение.
-        /// </summary>
-        /// <param name="value">Необходимое значение (или null для использования настроек по умолчанию).</param>
-        /// <returns>Текущий экземпляр объекта.</returns>
-        public LikePharmaMiddlewareOptions WithUrlEncode(bool value)
-        {
-            this.UseUrlEncode = value;
+            this.JsonSerializerOptions = value ?? throw new ArgumentNullException(nameof(value));
             return this;
         }
 

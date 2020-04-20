@@ -187,31 +187,16 @@
             async Task WriteResponse(TResponse response)
             {
                 httpResponse.ContentType = ContentTypeJson;
-
-                if (options.UseUrlEncode)
-                {
-                    var json = JsonSerializer.Serialize(response, options.JsonSerializerOptions);
-                    using var sw = new StreamWriter(httpResponse.Body, leaveOpen: true);
-                    await sw.WriteAsync(WebUtility.UrlEncode(json)).ConfigureAwait(false);
-                }
-                else
-                {
-                    await JsonSerializer.SerializeAsync(httpResponse.Body, response, options.JsonSerializerOptions).ConfigureAwait(false);
-                }
+                var json = LikePharmaClient.SerializeJson(response, options.ProtocolSettings, options.JsonSerializerOptions);
+                using var sw = new StreamWriter(httpResponse.Body, leaveOpen: true);
+                await sw.WriteAsync(json).ConfigureAwait(false);
             }
 
             try
             {
-                if (options.UseUrlEncode)
-                {
-                    using var sr = new StreamReader(httpRequest.Body, System.Text.Encoding.UTF8);
-                    var json = await sr.ReadToEndAsync().ConfigureAwait(false);
-                    req = JsonSerializer.Deserialize<TRequest>(WebUtility.UrlDecode(json), options.JsonSerializerOptions);
-                }
-                else
-                {
-                    req = await JsonSerializer.DeserializeAsync<TRequest>(httpRequest.Body, options.JsonSerializerOptions);
-                }
+                using var sr = new StreamReader(httpRequest.Body, System.Text.Encoding.UTF8);
+                var json = await sr.ReadToEndAsync().ConfigureAwait(false);
+                req = LikePharmaClient.DeserializeJson<TRequest>(json, options.ProtocolSettings, options.JsonSerializerOptions);
             }
             catch (JsonException ex)
             {

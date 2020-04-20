@@ -13,11 +13,8 @@ namespace Olekstra.LikePharma.Server
     public class LikePharmaMiddlewareTests
     {
         private readonly HttpContext context;
-
         private readonly Mock<ILikePharmaService<SampleUserInfo>> likeServiceMock;
-
         private readonly LikePharmaMiddleware<SampleUserInfo> middleware;
-
         private readonly LikePharmaMiddlewareOptions options = new LikePharmaMiddlewareOptions();
 
         public LikePharmaMiddlewareTests()
@@ -147,52 +144,6 @@ namespace Olekstra.LikePharma.Server
             using var sr = new StreamReader(context.Response.Body);
             var resp = await sr.ReadToEndAsync().ConfigureAwait(false);
             Assert.Contains(options.JsonSerializerOptions.Encoder.Encode(sampleProgramName), resp, StringComparison.Ordinal);
-        }
-
-        [Fact]
-        public async Task UseUrlEncodingIfNeeded()
-        {
-            var sampleProgramName = "Программа 2+2 - скидка 22%";
-
-            var jsonText = "{\"pos_id\": \"123\"}";
-            var jsonBytes = Encoding.UTF8.GetBytes(System.Net.WebUtility.UrlEncode(jsonText)); // отличие от предыдущего теста
-
-            options.UseUrlEncode = true; // второе важное отличие от предыдущего теста
-
-            using var body = new MemoryStream();
-            body.Write(jsonBytes, 0, jsonBytes.Length);
-            body.Position = 0;
-
-            context.Request.Method = "POST";
-            context.Request.Path = "/get_programs";
-            context.Request.ContentType = "application/json";
-            context.Request.Body = body;
-
-            context.Response.Body = new MemoryStream();
-
-            var sampleResponse = new GetProgramsResponse
-            {
-                Status = Globals.StatusSuccess,
-                ErrorCode = 0,
-                Message = nameof(ItWorks),
-                Programs = { new GetProgramsResponse.Program { Code = "1", Name = sampleProgramName } },
-            };
-
-            likeServiceMock
-                .Setup(x => x.GetProgramsAsync(It.Is<GetProgramsRequest>(grp => grp.PosId == "123"), It.IsNotNull<SampleUserInfo>()))
-                .ReturnsAsync(sampleResponse)
-                .Verifiable();
-
-            await middleware.InvokeAsync(context).ConfigureAwait(false);
-
-            Assert.Equal(200, context.Response.StatusCode);
-            likeServiceMock.Verify();
-
-            context.Response.Body.Position = 0;
-
-            using var sr = new StreamReader(context.Response.Body);
-            var respText = await sr.ReadToEndAsync().ConfigureAwait(false);
-            Assert.Contains(options.JsonSerializerOptions.Encoder.Encode(sampleProgramName), System.Net.WebUtility.UrlDecode(respText), StringComparison.Ordinal);
         }
 
         [Fact]

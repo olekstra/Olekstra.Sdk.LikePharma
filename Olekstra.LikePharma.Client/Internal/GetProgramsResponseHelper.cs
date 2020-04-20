@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
-    using Olekstra.LikePharma.Client.Attributes;
 
     /// <summary>
     /// Вспомогательная структура ответа на запрос <see cref="GetProgramsRequest"/> с двумя написания вариантами: program и programs.
@@ -13,35 +13,66 @@
     public class GetProgramsResponseHelper : ResponseBase
     {
         /// <summary>
+        /// Конструктор без параметров.
+        /// </summary>
+        public GetProgramsResponseHelper()
+        {
+            // Nothing
+        }
+
+        /// <summary>
+        /// Конструктор, копирующий значения из переданного объекта.
+        /// </summary>
+        /// <param name="source">Объект, значения которого необходимо скопировать.</param>
+        public GetProgramsResponseHelper(GetProgramsResponse source)
+        {
+            source = source ?? throw new ArgumentNullException(nameof(source));
+            CopyFrom(source);
+            ProgramsSingular = source.Programs;
+            ProgramsPlural = source.Programs;
+        }
+
+        /// <summary>
         /// Список активных программ (единственое число).
         /// </summary>
-        [EmptyCollectionWithoutEmptyElements]
         [JsonPropertyName("program")]
-        [XmlArray("program")]
-        [XmlArrayItem("program")]
-        public List<GetProgramsResponse.Program> ProgramsSingular { get; set; } = new List<GetProgramsResponse.Program>();
+        [XmlIgnore]
+        public List<GetProgramsResponse.Program>? ProgramsSingular { get; set; }
 
         /// <summary>
         /// Список активных программ (множественое число).
         /// </summary>
-        [EmptyCollectionWithoutEmptyElements]
         [JsonPropertyName("programs")]
-        [XmlArray("programs")]
+        [XmlIgnore]
+        public List<GetProgramsResponse.Program>? ProgramsPlural { get; set; }
+
+#pragma warning disable CA1819 // Очень нужно для XML-сериализации
+#pragma warning disable SA1011 // Эй, это ж nullable-массив :)
+        /// <summary>
+        /// Список активных программ (единственое число), для сериализации.
+        /// </summary>
+        [JsonIgnore]
+        [XmlArray("program")]
         [XmlArrayItem("program")]
-        public List<GetProgramsResponse.Program> ProgramsPlural { get; set; } = new List<GetProgramsResponse.Program>();
+        public GetProgramsResponse.Program[]? ProgramsSingularArray
+        {
+            get { return ProgramsSingular?.ToArray(); }
+            set { ProgramsSingular = value?.ToList(); }
+        }
 
         /// <summary>
-        /// Копирует в себя значения полей переданного объекта.
+        /// Список активных программ (множественое число), для сериализации.
         /// </summary>
-        /// <param name="source">Исходный объект, поля которого надо скопировать.</param>
-        /// <exception cref="ArgumentNullException">Если в параметре 'source' передано значение <b>null</b>.</exception>
-        public void CopyFrom(GetProgramsResponse source)
+        [JsonIgnore]
+        [XmlArray("programs")]
+        [XmlArrayItem("program")]
+        public GetProgramsResponse.Program[]? ProgramsPluralArray
         {
-            source = source ?? throw new ArgumentNullException(nameof(source));
-            base.CopyFrom(source);
-            ProgramsSingular = source.Programs;
-            ProgramsPlural = source.Programs;
+            get { return ProgramsPlural?.ToArray(); }
+            set { ProgramsPlural = value?.ToList(); }
         }
+#pragma warning restore CA1819 // Properties should not return arrays
+#pragma warning restore SA1011 // Closing square brackets should be spaced correctly
 
         /// <summary>
         /// Копирует в предоставленный объект поля из данного объекта.
@@ -51,7 +82,7 @@
         {
             var retVal = new GetProgramsResponse();
             CopyTo(retVal);
-            retVal.Programs = this.ProgramsPlural.Count > 0 ? this.ProgramsPlural : this.ProgramsSingular;
+            retVal.Programs = ProgramsPlural ?? ProgramsSingular ?? new List<GetProgramsResponse.Program>();
             return retVal;
         }
     }

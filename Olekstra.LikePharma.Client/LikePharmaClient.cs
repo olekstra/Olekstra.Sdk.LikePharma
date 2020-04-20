@@ -32,15 +32,30 @@
         }
 
         /// <summary>
-        /// Выполняет "умную" десериализацию из JSON с учетом настроек.
+        /// Выполняет "умную" десериализацию из JSON (с учетом настроек протокола).
         /// </summary>
         /// <typeparam name="TValue">Результирующий (целевой) тип.</typeparam>
         /// <param name="text">Сериализованный (json) объект.</param>
         /// <param name="protocolSettings">Настройки протокола.</param>
         /// <param name="jsonSerializerOptions">Настройки сериализатора.</param>
         /// <returns>Десериализованый ответ запрошенного типа.</returns>
+        /// <remarks>
+        /// Ответы типа <see cref="GetProgramsResponse"/> десериализуются корректно автоматически, независимо от значения <see cref="ProtocolSettings.SingularGetProgramsResponse"/>.
+        /// </remarks>
         public static TValue DeserializeJson<TValue>(string text, ProtocolSettings protocolSettings, JsonSerializerOptions jsonSerializerOptions)
         {
+            protocolSettings = protocolSettings ?? throw new ArgumentNullException(nameof(protocolSettings));
+
+            if (protocolSettings.UrlEncodedRequests && typeof(TValue).IsSubclassOf(typeof(RequestBase)))
+            {
+                text = System.Net.WebUtility.UrlDecode(text);
+            }
+
+            if (protocolSettings.UrlEncodedResponses && typeof(TValue).IsSubclassOf(typeof(ResponseBase)))
+            {
+                text = System.Net.WebUtility.UrlDecode(text);
+            }
+
             if (typeof(TValue) == typeof(GetProgramsResponse))
             {
                 var helper = JsonSerializer.Deserialize<Internal.GetProgramsResponseHelper>(text, jsonSerializerOptions);
@@ -51,29 +66,42 @@
         }
 
         /// <summary>
-        /// Сериализация класса запроса/ответа в JSON с учетом настроек.
+        /// Выполняет "умную" сериализацию в JSON (с учетом настроек протокола).
         /// </summary>
-        /// <typeparam name="TValue">Тип сериализуемого объекта (запроса или ответа).</typeparam>
-        /// <param name="value">Сериализуемый объект.</param>
-        /// <param name="protocolSettings">Настройки протокола.</param>
-        /// <param name="jsonSerializerOptions">Настройки сериализатора.</param>
-        /// <returns>Массив байтов JSON-сериализованного объекта.</returns>
-        public static byte[] SerializeJsonUtf8Bytes<TValue>(TValue value, ProtocolSettings protocolSettings, JsonSerializerOptions jsonSerializerOptions)
-        {
-            return JsonSerializer.SerializeToUtf8Bytes(value, jsonSerializerOptions);
-        }
-
-        /// <summary>
-        /// Сериализация класса запроса/ответа в JSON с учетом настроек.
-        /// </summary>
-        /// <typeparam name="TValue">Тип сериализуемого объекта (запроса или ответа).</typeparam>
+        /// <typeparam name="TValue">Тип сериализуемого объекта.</typeparam>
         /// <param name="value">Сериализуемый объект.</param>
         /// <param name="protocolSettings">Настройки протокола.</param>
         /// <param name="jsonSerializerOptions">Настройки сериализатора.</param>
         /// <returns>JSON-строка сериализованного объекта.</returns>
         public static string SerializeJson<TValue>(TValue value, ProtocolSettings protocolSettings, JsonSerializerOptions jsonSerializerOptions)
         {
-            return JsonSerializer.Serialize(value, jsonSerializerOptions);
+            value = value ?? throw new ArgumentNullException(nameof(value));
+            protocolSettings = protocolSettings ?? throw new ArgumentNullException(nameof(protocolSettings));
+
+            string text;
+
+            if (typeof(TValue) == typeof(GetProgramsResponse) && protocolSettings.SingularGetProgramsResponse)
+            {
+                var helper = new Internal.GetProgramsResponseHelper((GetProgramsResponse)(object)value);
+                helper.ProgramsPlural = null;
+                text = JsonSerializer.Serialize(helper, jsonSerializerOptions);
+            }
+            else
+            {
+                text = JsonSerializer.Serialize(value, jsonSerializerOptions);
+            }
+
+            if (protocolSettings.UrlEncodedRequests && typeof(TValue).IsSubclassOf(typeof(RequestBase)))
+            {
+                text = System.Net.WebUtility.UrlEncode(text);
+            }
+
+            if (protocolSettings.UrlEncodedResponses && typeof(TValue).IsSubclassOf(typeof(ResponseBase)))
+            {
+                text = System.Net.WebUtility.UrlEncode(text);
+            }
+
+            return text;
         }
 
         /// <inheritdoc />
@@ -118,24 +146,6 @@
             return MakeRequestAsync<GetProgramsRequest, GetProgramsResponse>("get_programs", request);
         }
 
-        /// <inheritdoc />
-        public TValue DeserializeJson<TValue>(string text)
-        {
-            return DeserializeJson<TValue>(text, options.ProtocolSettings, options.JsonSerializerOptions);
-        }
-
-        /// <inheritdoc />
-        public byte[] SerializeJsonUtf8Bytes<TValue>(TValue value)
-        {
-            return SerializeJsonUtf8Bytes(value, options.ProtocolSettings, options.JsonSerializerOptions);
-        }
-
-        /// <inheritdoc />
-        public string SerializeJson<TValue>(TValue value)
-        {
-            return SerializeJson(value, options.ProtocolSettings, options.JsonSerializerOptions);
-        }
-
         private async Task<TResponse> MakeRequestAsync<TRequest, TResponse>(string path, TRequest request)
             where TRequest : RequestBase<TResponse>
             where TResponse : ResponseBase
@@ -144,14 +154,15 @@
             {
                 if (!validator.TryValidateObject(request, out var results))
                 {
-                    logger.LogError("Invalid request (validation failed): " + SerializeJson(request));
+                    // здесь НЕ используем "умную" сериализацию, так как в json конвертируем лишь для удобства записи в лог (для разбора ошибки).
+                    logger.LogError("Invalid request (validation failed): " + JsonSerializer.Serialize(request, options.JsonSerializerOptions));
                     var ex = new ArgumentException(ValidationMessages.RequestValidationFailed, nameof(request));
                     ex.Data["ValidationErrors"] = results;
                     throw ex;
                 }
             }
 
-            using var reqContent = new ByteArrayContent(SerializeJsonUtf8Bytes(request));
+            using var reqContent = new StringContent(SerializeJson(request, options.ProtocolSettings, options.JsonSerializerOptions));
             reqContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json") { CharSet = Encoding.UTF8.WebName };
 
             using var httpReq = new HttpRequestMessage(HttpMethod.Post, path);
@@ -168,7 +179,7 @@
                 httpResp.EnsureSuccessStatusCode(); // will raise correct exception
             }
 
-            var resp = DeserializeJson<TResponse>(respText);
+            var resp = DeserializeJson<TResponse>(respText, options.ProtocolSettings, options.JsonSerializerOptions);
             if (options.ValidateResponses)
             {
                 if (!validator.TryValidateObject(request, out var results))
