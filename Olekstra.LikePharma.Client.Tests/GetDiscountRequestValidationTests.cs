@@ -118,16 +118,19 @@
             Assert.Single(results);
         }
 
+        /* 4 июня 2020:
+         * от аптек пришло пожелание разрешить данный вариант,
+         * так как бывают "бонусные" элементы в чеке (пакеты,...) без заводских ШК
+         */
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        [InlineData(" \t ")]
-        public void FailsOnEmptyOrderBarcode(string value)
+        public void NotFailsOnEmptyOrderBarcode(string value)
         {
             validValue.Orders[0].Barcode = value;
 
-            Assert.False(validator.TryValidateObject(validValue, out var results));
-            Assert.Single(results);
+            Assert.True(validator.TryValidateObject(validValue, out var results));
+            Assert.Empty(results);
         }
 
         [Fact]

@@ -115,16 +115,18 @@
             Assert.Single(results);
         }
 
+        /// <summary>
+        /// Так как запрос может быть с пустым набором, см. <see cref="GetDiscountRequestValidationTests.NotFailsOnEmptyOrderBarcode(string)"/>.
+        /// </summary>
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        [InlineData(" \t ")]
-        public void FailsOnEmptyOrderBarcode(string value)
+        public void NotFailsOnEmptyOrderBarcode(string value)
         {
             ValidValue.Orders[0].Barcode = value;
 
-            Assert.False(Validator.TryValidateObject(ValidValue, out var results));
-            Assert.Single(results);
+            Assert.True(Validator.TryValidateObject(ValidValue, out var results));
+            Assert.Empty(results);
         }
 
         [Fact]

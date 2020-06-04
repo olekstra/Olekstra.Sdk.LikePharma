@@ -87,7 +87,6 @@
             /// <summary>
             /// Штрихкод (заводской штрихкод) позиции в заказе.
             /// </summary>
-            [Required(AllowEmptyStrings = false, ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = nameof(ValidationMessages.ValueRequired))]
             [JsonPropertyName("barcode")]
             [XmlElement("barcode")]
             public string? Barcode { get; set; }
