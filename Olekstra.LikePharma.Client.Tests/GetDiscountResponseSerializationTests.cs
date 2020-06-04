@@ -18,6 +18,7 @@
 ""any_data"":""Hello everyone"",
 ""barcode"":""1234567890123"",
 ""count"":11,
+""price"":111.11,
 ""description"":""description_1"",
 ""discount"":110.11,
 ""error_code"":7,
@@ -31,6 +32,7 @@
 ""any_data"":""Hello here"",
 ""barcode"":""1234567890000"",
 ""count"":22.5,
+""price"":222.22,
 ""description"":""description_2"",
 ""discount"":220.00,
 ""error_code"":77,
@@ -63,6 +65,7 @@
 <any_data>Hello everyone</any_data>
 <barcode>1234567890123</barcode>
 <count>11</count>
+<price>111.11</price>
 <description>description_1</description>
 <discount>110.11</discount>
 <error_code>7</error_code>
@@ -76,6 +79,7 @@
 <any_data>Hello here</any_data>
 <barcode>1234567890000</barcode>
 <count>22.5</count>
+<price>222.22</price>
 <description>description_2</description>
 <discount>220.00</discount>
 <error_code>77</error_code>
@@ -117,6 +121,7 @@
             Assert.Equal("Hello everyone", order.AnyData);
             Assert.Equal("1234567890123", order.Barcode);
             Assert.Equal(11, order.Count);
+            Assert.Equal(111.11M, order.Price);
             Assert.Equal("description_1", order.Description);
             Assert.Equal(110.11M, order.Discount);
             Assert.Equal(7, order.ErrorCode);
@@ -131,6 +136,7 @@
             Assert.Equal("Hello here", order.AnyData);
             Assert.Equal("1234567890000", order.Barcode);
             Assert.Equal(22.5M, order.Count);
+            Assert.Equal(222.22M, order.Price);
             Assert.Equal("description_2", order.Description);
             Assert.Equal(220.00M, order.Discount);
             Assert.Equal(77, order.ErrorCode);

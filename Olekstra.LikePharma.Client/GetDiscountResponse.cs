@@ -100,6 +100,14 @@
             public decimal Count { get; set; }
 
             /// <summary>
+            /// Исходная цена за единицу в заказе.
+            /// </summary>
+            [NonNegativeDecimal]
+            [JsonPropertyName("price")]
+            [XmlElement("price")]
+            public decimal Price { get; set; }
+
+            /// <summary>
             /// Наименование препарата (если ШК распознан).
             /// </summary>
             [JsonPropertyName("description")]
