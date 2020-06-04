@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>2.0.0</Version>
+    <Version>2.1.0</Version>
     <Copyright>2019, Olekstra LLC</Copyright>
     <Authors>Dmitry Popov</Authors>
     <Company>Olekstra LLC</Company>
@@ -17,9 +17,10 @@
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>ru-RU</NeutralLanguage>
-    <PackageReleaseNotes>1. 'Policy' renamed to 'ProtocolSettings';
-2. UrlEncode for request/response added to 'ProtocolSettings';
-3. 'GetProgramsResponse' now supports both 'program' and 'programs' field name;</PackageReleaseNotes>
+    <PackageReleaseNotes>1. GetDiscount: Orders[] may be empty;
+2. GetDiscountResponse.Order: Price added (value from request);
+3. GetDiscount: Order.Barcode may be null/empty;
+4. new: GetDiscountErrorCode with predefined ErrorCode values.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
