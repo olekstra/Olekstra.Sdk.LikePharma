@@ -59,7 +59,7 @@
         /// <summary>
         /// Коды транзакции из параметра <see cref="ConfirmPurchaseRequest.Transactions"/> подтверждения продажи.
         /// </summary>
-        [NonEmptyCollection]
+        [NonEmptyCollectionWithoutNulls]
         [JsonPropertyName("transactions")]
         [XmlArray("transactions")]
         [XmlArrayItem("transaction")]

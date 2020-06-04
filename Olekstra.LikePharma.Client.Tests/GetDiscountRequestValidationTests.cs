@@ -96,13 +96,17 @@
             Assert.Single(results);
         }
 
+        /* 4 июня 2020:
+         * поступила информация что лайк обрабатывает данный сценарий положительно (т.е. не считает за ошибку).
+         * таким образом тест с отрицательного изменён на положительный
+         */
         [Fact]
-        public void FailsWithoutOrders()
+        public void NotFailsWithoutOrders()
         {
             validValue.Orders.Clear();
 
-            Assert.False(validator.TryValidateObject(validValue, out var results));
-            Assert.Single(results);
+            Assert.True(validator.TryValidateObject(validValue, out var results));
+            Assert.Empty(results);
         }
 
         [Fact]

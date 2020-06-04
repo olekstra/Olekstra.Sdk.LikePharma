@@ -51,7 +51,7 @@
         /// <summary>
         /// Коды транзакции из параметра <see cref="GetDiscountResponse.Order.Transaction"/> из запроса на расчёт скидки.
         /// </summary>
-        [NonEmptyCollection]
+        [NonEmptyCollectionWithoutNulls]
         [JsonPropertyName("transactions")]
         [XmlArray("transactions")]
         [XmlArrayItem("transaction")]

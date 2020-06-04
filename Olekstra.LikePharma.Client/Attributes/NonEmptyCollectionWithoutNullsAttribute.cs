@@ -9,7 +9,7 @@
     /// Проверка, что в список/коллекция не являются пустыми (содержат элементы).
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, AllowMultiple = false)]
-    public class NonEmptyCollectiocInSuccessulResponseAttribute : ValidationAttribute
+    public class NonEmptyCollectionWithoutNullsAttribute : CollectionWithoutNullsAttribute
     {
         /// <inheritdoc />
         public override bool RequiresValidationContext => true;
@@ -17,24 +17,14 @@
         /// <inheritdoc />
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
             if (validationContext == null)
             {
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            if (!(validationContext.ObjectInstance is ResponseBase responseValue))
+            if (value == null)
             {
-                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ValidationMessages.ValidationContextObjectInstanceMustBeResponseBase, validationContext.MemberName));
-            }
-
-            if (responseValue.Status != Globals.StatusSuccess)
-            {
-                return ValidationResult.Success;
+                return new ValidationResult(string.Format(CultureInfo.InvariantCulture, ValidationMessages.CollectionMustHaveElements, validationContext.MemberName));
             }
 
             if (!(value is ICollection collection))
@@ -47,20 +37,8 @@
                 return new ValidationResult(string.Format(CultureInfo.InvariantCulture, ValidationMessages.CollectionMustHaveElements, validationContext.MemberName));
             }
 
-            foreach (var item in collection)
-            {
-                if (item == null)
-                {
-                    return new ValidationResult(string.Format(CultureInfo.InvariantCulture, ValidationMessages.CollectionCanNotHaveNullElements, validationContext.MemberName));
-                }
-
-                if (item is string itemString && string.IsNullOrWhiteSpace(itemString))
-                {
-                    return new ValidationResult(string.Format(CultureInfo.InvariantCulture, ValidationMessages.CollectionCanNotHaveNullElements, validationContext.MemberName));
-                }
-            }
-
-            return ValidationResult.Success;
+            // а сами элементы пусть проверяет предок
+            return base.IsValid(value, validationContext);
         }
     }
 }

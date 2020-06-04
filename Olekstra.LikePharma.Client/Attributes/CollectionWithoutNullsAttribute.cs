@@ -6,10 +6,11 @@
     using System.Globalization;
 
     /// <summary>
-    /// Проверка, что в список/коллекция не являются пустыми (содержат элементы).
+    /// Проверка, что в список/коллекция не содержит пустые (null) элементы.
     /// </summary>
+    /// <remarks>Сама по себе пустая (Count=0) или даже <b>null</b> коллекция считаются корректными.</remarks>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, AllowMultiple = false)]
-    public class NonEmptyCollectionAttribute : ValidationAttribute
+    public class CollectionWithoutNullsAttribute : ValidationAttribute
     {
         /// <inheritdoc />
         public override bool RequiresValidationContext => true;
@@ -19,7 +20,7 @@
         {
             if (value == null)
             {
-                throw new ArgumentNullException(nameof(value));
+                return ValidationResult.Success;
             }
 
             if (validationContext == null)
@@ -30,11 +31,6 @@
             if (!(value is ICollection collection))
             {
                 throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ValidationMessages.PropertyIsNotACollection, validationContext.MemberName));
-            }
-
-            if (collection.Count == 0)
-            {
-                return new ValidationResult(string.Format(CultureInfo.InvariantCulture, ValidationMessages.CollectionMustHaveElements, validationContext.MemberName));
             }
 
             foreach (var item in collection)

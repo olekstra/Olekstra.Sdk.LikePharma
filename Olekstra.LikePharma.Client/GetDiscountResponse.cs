@@ -65,7 +65,7 @@
         /// <summary>
         /// Список товарных позиций.
         /// </summary>
-        [NonEmptyCollectiocInSuccessulResponse]
+        [CollectionWithoutNullsInSuccessulResponse]
         [JsonPropertyName("orders")]
         [XmlArray("orders")]
         [XmlArrayItem("order")]

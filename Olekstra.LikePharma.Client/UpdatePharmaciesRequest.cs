@@ -31,7 +31,7 @@
         /// <summary>
         /// Список аптек.
         /// </summary>
-        [NonEmptyCollection]
+        [NonEmptyCollectionWithoutNulls]
         [JsonPropertyName("pharmacies")]
         [XmlArray("pharmacies")]
         [XmlArrayItem("pharmacy")]

@@ -83,13 +83,16 @@
             Assert.Single(results);
         }
 
+        /// <summary>
+        /// Так как запрос может быть с пустым набором, см. <see cref="GetDiscountRequestValidationTests.NotFailsWithoutOrders"/>.
+        /// </summary>
         [Fact]
-        public void FailsWithoutOrders()
+        public void NotFailsWithoutOrders()
         {
             ValidValue.Orders.Clear();
 
-            Assert.False(Validator.TryValidateObject(ValidValue, out var results));
-            Assert.Single(results);
+            Assert.True(Validator.TryValidateObject(ValidValue, out var results));
+            Assert.Empty(results);
         }
 
         [Fact]
