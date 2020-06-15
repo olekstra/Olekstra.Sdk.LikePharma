@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
     <Copyright>2019, Olekstra LLC</Copyright>
     <Authors>Dmitry Popov</Authors>
     <Company>Olekstra LLC</Company>
@@ -17,7 +17,7 @@
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>ru-RU</NeutralLanguage>
-    <PackageReleaseNotes>Client updated to 2.1.0</PackageReleaseNotes>
+    <PackageReleaseNotes>Client updated to 2.2.0, new ClientExtensions class</PackageReleaseNotes>
 
     <DocumentationFile>.\bin\Debug\Olekstra.LikePharma.Server.xml</DocumentationFile>
   </PropertyGroup>
