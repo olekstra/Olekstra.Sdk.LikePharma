@@ -135,7 +135,7 @@
 
             response.Message = string.Join(
                 delimiter,
-                response.Orders.Select((x, i) => (string.IsNullOrEmpty(x.Description) ? (string.IsNullOrEmpty(x.Barcode) ? $"Строка {i}" : x.Barcode) : x.Description) + ": " + x.Message));
+                response.Orders.Select((x, i) => (string.IsNullOrEmpty(x.Description) ? (string.IsNullOrEmpty(x.Barcode) ? $"Строка {(i + 1)}" : x.Barcode) : x.Description) + ": " + x.Message));
 
             if (response.Orders.Any(x => x.ErrorCode == 0))
             {
