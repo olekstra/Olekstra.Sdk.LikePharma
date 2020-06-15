@@ -108,10 +108,12 @@
         /// <param name="response">Ответ, данные в котором надо свернуть.</param>
         /// <param name="messageWhenNoOrders">Сообщение для ситуации когда чек пустой.</param>
         /// <param name="messageWhenAllOrdersSuccessful">Сообщение для ситуации когда все строки со скидкой.</param>
+        /// <param name="delimiter">Разделитель строк при сборке (по умолчанию <b>; \r\n</b>).</param>
         public static void RollupMessages(
             this GetDiscountResponse response,
             string messageWhenNoOrders,
-            string messageWhenAllOrdersSuccessful)
+            string messageWhenAllOrdersSuccessful,
+            string? delimiter = "; \r\n")
         {
             response = response ?? throw new ArgumentNullException(nameof(response));
 
@@ -132,8 +134,8 @@
             }
 
             response.Message = string.Join(
-                "\r\n",
-                response.Orders.Select(x => (string.IsNullOrEmpty(x.Description) ? x.Barcode : x.Description) + ": " + x.Message));
+                delimiter,
+                response.Orders.Select((x, i) => (string.IsNullOrEmpty(x.Description) ? (string.IsNullOrEmpty(x.Barcode) ? $"Строка {i}" : x.Barcode) : x.Description) + ": " + x.Message));
 
             if (response.Orders.Any(x => x.ErrorCode == 0))
             {
