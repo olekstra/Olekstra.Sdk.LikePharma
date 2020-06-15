@@ -25,8 +25,17 @@
         /// </summary>
         public const int PhoneNotFound = 5;
 
+        /// <summary>
+        /// Нет скидок в чеке - параметры товарных позиций (количество, цена) не удовлетворяют требованиям программы.
+        /// </summary>
+        public const int NoDiscountsParamsNotValid = 6;
+
+        /// <summary>
+        /// Нет скидок в чеке - нет "нужных" товарных позиций (все имеющиеся - не входят в программу).
+        /// </summary>
+        public const int NoDiscountsUnknownBarcodes = 106;
+
         ////NEED_SMS_CONFIRM = 2, // требуется смс подтверждение
         ////CARD_NOT_LINK_PHONE_NUMBER = 3, // телефон не привязан к карте
-        ////PARAMS_NOT_VALID = 6, //Параметры запроса не соответствуют скидочному правилу
     }
 }
