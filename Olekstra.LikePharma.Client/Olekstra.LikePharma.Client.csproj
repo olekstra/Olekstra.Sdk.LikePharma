@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>2.2.0</Version>
-    <Copyright>2019, Olekstra LLC</Copyright>
+    <Version>2.3.0</Version>
+    <Copyright>2020, Olekstra LLC</Copyright>
     <Authors>Dmitry Popov</Authors>
     <Company>Olekstra LLC</Company>
     <Description>Olekstra client for Like-Pharma protocol.</Description>
@@ -17,7 +17,8 @@
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NeutralLanguage>ru-RU</NeutralLanguage>
-    <PackageReleaseNotes>New members in GetDiscountErrorCodes, new class GetDiscountOrderErrorCodes</PackageReleaseNotes>
+    <PackageReleaseNotes>New: DigitCardNumberValidator and Digit17CardNumberValudator;
+Updated: ProtocolSettings.CreateOlekstra() uses DigitCardNumberValidator;</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

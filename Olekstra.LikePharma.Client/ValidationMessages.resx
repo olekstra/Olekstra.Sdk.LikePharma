@@ -141,6 +141,9 @@
   <data name="Digit13Or19CardNumberValidator_Failure" xml:space="preserve">
     <value>Номер карты указан некорректно: ожидается 13 или 19 цифр (без разделителей).</value>
   </data>
+  <data name="Digit17CardNumberValidator_Failure" xml:space="preserve">
+    <value>Номер карты указан некорректно: ожидается 17 цифр (без разделителей).</value>
+  </data>
   <data name="Digit19CardNumberValidator_Failure" xml:space="preserve">
     <value>Номер карты указан некорректно: ожидается 19 цифр (без разделителей).</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="Digit19Starting6103CardNumberValidator_Failure" xml:space="preserve">
     <value>Номер карты указан некорректно: ожидается 19 цифр (без разделителей), первые цифры 6103.</value>
+  </data>
+  <data name="DigitCardNumberValidator_Failure" xml:space="preserve">
+    <value>Номер карты указан некорректно: ожидаются только цифры (без разделителей).</value>
   </data>
   <data name="ErrorCodeInvalid" xml:space="preserve">
     <value>Значение поля {0} должно быть от 0 до 9999.</value>

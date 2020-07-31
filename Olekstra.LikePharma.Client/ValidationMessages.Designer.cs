@@ -133,6 +133,15 @@ namespace Olekstra.LikePharma.Client {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Номер карты указан некорректно: ожидается 17 цифр (без разделителей)..
+        /// </summary>
+        public static string Digit17CardNumberValidator_Failure {
+            get {
+                return ResourceManager.GetString("Digit17CardNumberValidator_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Номер карты указан некорректно: ожидается 19 цифр (без разделителей)..
         /// </summary>
         public static string Digit19CardNumberValidator_Failure {
@@ -156,6 +165,15 @@ namespace Olekstra.LikePharma.Client {
         public static string Digit19Starting6103CardNumberValidator_Failure {
             get {
                 return ResourceManager.GetString("Digit19Starting6103CardNumberValidator_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Номер карты указан некорректно: ожидаются только цифры (без разделителей)..
+        /// </summary>
+        public static string DigitCardNumberValidator_Failure {
+            get {
+                return ResourceManager.GetString("DigitCardNumberValidator_Failure", resourceCulture);
             }
         }
         

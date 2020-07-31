@@ -79,7 +79,7 @@
             return new ProtocolSettings
             {
                 PhoneNumberValidator = new FullRussianPhoneNumberValidator(),
-                CardNumberValidator = new Digit13Or19CardNumberValidator(),
+                CardNumberValidator = new DigitCardNumberValidator(),
                 PharmacyIdUsage = Usage.Optional,
                 CardAndPhoneUsage = CardAndPhoneUsage.CardOrPhone,
                 UrlEncodedRequests = false,
