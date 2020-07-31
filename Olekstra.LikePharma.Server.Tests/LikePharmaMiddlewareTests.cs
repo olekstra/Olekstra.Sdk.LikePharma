@@ -147,6 +147,51 @@ namespace Olekstra.LikePharma.Server
         }
 
         [Fact]
+        public async Task NegativeResponsesAreValid()
+        {
+            var jsonOpts = LikePharmaClientOptions.CreateDefaultJsonSerializerOptions();
+            var protSet = ProtocolSettings.CreateOlekstra();
+
+            var req = new GetDiscountRequest
+            {
+                PosId = "12345",
+                PharmacyId = "123",
+                CardNumber = "1234567890",
+                PhoneNumber = "+79000000000",
+                AnyData = "abc",
+            };
+
+            var jsonText = LikePharmaClient.SerializeJson(req, protSet, jsonOpts);
+            var jsonBytes = Encoding.UTF8.GetBytes(jsonText);
+
+            using var body = new MemoryStream();
+            body.Write(jsonBytes, 0, jsonBytes.Length);
+            body.Position = 0;
+
+            context.Request.Method = "POST";
+            context.Request.Path = "/get_discount";
+            context.Request.ContentType = "application/json";
+            context.Request.Body = body;
+
+            context.Response.Body = new MemoryStream();
+
+            await middleware.InvokeAsync(context).ConfigureAwait(false);
+
+            Assert.Equal(200, context.Response.StatusCode);
+
+            context.Response.Body.Position = 0;
+
+            using var sr = new StreamReader(context.Response.Body);
+            var respText = await sr.ReadToEndAsync().ConfigureAwait(false);
+            var resp = LikePharmaClient.DeserializeJson<GetDiscountResponse>(respText, protSet, jsonOpts);
+
+            var validator = new LikePharmaValidator(protSet);
+            var valid = validator.TryValidateObject(resp, out var results);
+            Assert.Empty(results);
+            Assert.True(valid);
+        }
+
+        [Fact]
         public async Task RawProcessorCalled()
         {
             PathString unknownPath = "/hello_world";

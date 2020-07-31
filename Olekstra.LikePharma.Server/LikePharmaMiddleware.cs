@@ -115,42 +115,42 @@
             {
                 case "/register":
                 case "/register/":
-                    await Process<RegisterRequest, RegisterResponse>(service.RegisterAsync, request, response, user).ConfigureAwait(false);
+                    await Process<RegisterRequest, RegisterResponse>(service.RegisterAsync, ClientExtensions.CreateEmptyResponse, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/confirm_code":
                 case "/confirm_code/":
-                    await Process<ConfirmCodeRequest, ConfirmCodeResponse>(service.ConfirmCodeAsync, request, response, user).ConfigureAwait(false);
+                    await Process<ConfirmCodeRequest, ConfirmCodeResponse>(service.ConfirmCodeAsync, ClientExtensions.CreateEmptyResponse, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/get_discount":
                 case "/get_discount/":
-                    await Process<GetDiscountRequest, GetDiscountResponse>(service.GetDiscountAsync, request, response, user).ConfigureAwait(false);
+                    await Process<GetDiscountRequest, GetDiscountResponse>(service.GetDiscountAsync, ClientExtensions.CreateEmptyResponse, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/confirm_purchase":
                 case "/confirm_purchase/":
-                    await Process<ConfirmPurchaseRequest, ConfirmPurchaseResponse>(service.ConfirmPurchaseAsync, request, response, user).ConfigureAwait(false);
+                    await Process<ConfirmPurchaseRequest, ConfirmPurchaseResponse>(service.ConfirmPurchaseAsync, ClientExtensions.CreateEmptyResponse, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/cancel_purchase":
                 case "/cancel_purchase/":
-                    await Process<CancelPurchaseRequest, CancelPurchaseResponse>(service.CancelPurchaseAsync, request, response, user).ConfigureAwait(false);
+                    await Process<CancelPurchaseRequest, CancelPurchaseResponse>(service.CancelPurchaseAsync, ClientExtensions.CreateEmptyResponse, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/get_products":
                 case "/get_products/":
-                    await Process<GetProductsRequest, GetProductsResponse>(service.GetProductsAsync, request, response, user).ConfigureAwait(false);
+                    await Process<GetProductsRequest, GetProductsResponse>(service.GetProductsAsync, ClientExtensions.CreateEmptyResponse, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/get_programs":
                 case "/get_programs/":
-                    await Process<GetProgramsRequest, GetProgramsResponse>(service.GetProgramsAsync, request, response, user).ConfigureAwait(false);
+                    await Process<GetProgramsRequest, GetProgramsResponse>(service.GetProgramsAsync, ClientExtensions.CreateEmptyResponse, request, response, user).ConfigureAwait(false);
                     break;
 
                 case "/update_pharmacies":
                 case "/update_pharmacies/":
-                    await Process<UpdatePharmaciesRequest, UpdatePharmaciesResponse>(service.UpdatePharmaciesAsync, request, response, user).ConfigureAwait(false);
+                    await Process<UpdatePharmaciesRequest, UpdatePharmaciesResponse>(service.UpdatePharmaciesAsync, ClientExtensions.CreateEmptyResponse, request, response, user).ConfigureAwait(false);
                     break;
 
                 default:
@@ -168,15 +168,22 @@
         /// <typeparam name="TRequest">Тип запроса.</typeparam>
         /// <typeparam name="TResponse">Тип ответа.</typeparam>
         /// <param name="processor">Обработчик.</param>
-        /// <param name="httpRequest">HTTP request (to read request from).</param>
-        /// <param name="httpResponse">HTTP response (to write response to).</param>
-        /// <param name="user">Current (authorized) user.</param>
+        /// <param name="negativeResponseTemplate">Шаблон для создания отрицательного ответа (в случае ошибок валидации).</param>
+        /// <param name="httpRequest">HTTP-запрос (из которого считывать данные).</param>
+        /// <param name="httpResponse">HTTP-ответ (куда записывать результат).</param>
+        /// <param name="user">Текущий (авторизованный) пользователь.</param>
         /// <returns>Awaitable Task.</returns>
-        public async Task Process<TRequest, TResponse>(Func<TRequest, TUser, Task<TResponse>> processor, HttpRequest httpRequest, HttpResponse httpResponse, TUser user)
+        public async Task Process<TRequest, TResponse>(
+                Func<TRequest, TUser, Task<TResponse>> processor,
+                Func<TRequest, int, string, TResponse> negativeResponseTemplate,
+                HttpRequest httpRequest,
+                HttpResponse httpResponse,
+                TUser user)
             where TRequest : RequestBase<TResponse>
             where TResponse : ResponseBase, new()
         {
             processor = processor ?? throw new ArgumentNullException(nameof(processor));
+            negativeResponseTemplate = negativeResponseTemplate ?? throw new ArgumentNullException(nameof(negativeResponseTemplate));
             httpRequest = httpRequest ?? throw new ArgumentNullException(nameof(httpRequest));
             httpResponse = httpResponse ?? throw new ArgumentNullException(nameof(httpResponse));
             user = user ?? throw new ArgumentNullException(nameof(user));
@@ -209,13 +216,7 @@
 
             if (!validator.TryValidateObject(req, out var results))
             {
-                resp = new TResponse
-                {
-                    Status = Globals.StatusError,
-                    ErrorCode = StatusCodes.Status400BadRequest,
-                    Message = results.First().ErrorMessage,
-                };
-
+                resp = negativeResponseTemplate(req, StatusCodes.Status400BadRequest, results.First().ErrorMessage);
                 await WriteResponse(resp).ConfigureAwait(false);
                 return;
             }

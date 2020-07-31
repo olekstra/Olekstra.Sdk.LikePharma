@@ -9,21 +9,75 @@
     public static class ClientExtensions
     {
         /// <summary>
-        /// Создает класс ответа без строк (orders),
-        /// копируя из запроса в ответ те поля, которые должны вернуться неизменными,
-        /// и устанавливая поля ErrorCode, Message и Description в указанные значения.
+        /// Создает пустой класс ответа, устанавливая поля ErrorCode и Message в указанные значения.
         /// </summary>
         /// <param name="request">Запрос.</param>
         /// <param name="errorCode">Значение для поля <see cref="ResponseBase.ErrorCode"/>.</param>
         /// <param name="message">Значение для поля <see cref="ResponseBase.Message"/>.</param>
-        /// <param name="description">Значение для поля <see cref="GetDiscountResponse.Description"/>.</param>
-        /// <returns>Ответ, заполненный данными из запроса (без копирования блока Orders).</returns>
+        /// <returns>Ответ с установленными полями <see cref="ResponseBase.Status"/>, <see cref="ResponseBase.ErrorCode"/>, <see cref="ResponseBase.Message"/>.</returns>
         /// <remarks>Если передать значение 0 для <paramref name="errorCode"/>, то будет создан "успешный" ответ, иначе "ошибочный".</remarks>
-        public static GetDiscountResponse CreateResponseWithoutOrders(
+        public static RegisterResponse CreateEmptyResponse(
+            this RegisterRequest request,
+            int errorCode,
+            string message)
+        {
+            request = request ?? throw new ArgumentNullException(nameof(request));
+
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            return new RegisterResponse
+            {
+                Status = errorCode == 0 ? Globals.StatusSuccess : Globals.StatusError,
+                ErrorCode = errorCode,
+                Message = message,
+            };
+        }
+
+        /// <summary>
+        /// Создает пустой класс ответа, устанавливая поля ErrorCode и Message в указанные значения.
+        /// </summary>
+        /// <param name="request">Запрос.</param>
+        /// <param name="errorCode">Значение для поля <see cref="ResponseBase.ErrorCode"/>.</param>
+        /// <param name="message">Значение для поля <see cref="ResponseBase.Message"/>.</param>
+        /// <returns>Ответ с установленными полями <see cref="ResponseBase.Status"/>, <see cref="ResponseBase.ErrorCode"/>, <see cref="ResponseBase.Message"/>.</returns>
+        /// <remarks>Если передать значение 0 для <paramref name="errorCode"/>, то будет создан "успешный" ответ, иначе "ошибочный".</remarks>
+        public static ConfirmCodeResponse CreateEmptyResponse(
+            this ConfirmCodeRequest request,
+            int errorCode,
+            string message)
+        {
+            request = request ?? throw new ArgumentNullException(nameof(request));
+
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            return new ConfirmCodeResponse
+            {
+                Status = errorCode == 0 ? Globals.StatusSuccess : Globals.StatusError,
+                ErrorCode = errorCode,
+                Message = message,
+            };
+        }
+
+        /// <summary>
+        /// Создает пустой класс ответа,
+        /// копируя из запроса в ответ те поля, которые должны вернуться неизменными,
+        /// и устанавливая поля ErrorCode и Message в указанные значения.
+        /// </summary>
+        /// <param name="request">Запрос.</param>
+        /// <param name="errorCode">Значение для поля <see cref="ResponseBase.ErrorCode"/>.</param>
+        /// <param name="message">Значение для поля <see cref="ResponseBase.Message"/>.</param>
+        /// <returns>Ответ с установленными полями <see cref="ResponseBase.Status"/>, <see cref="ResponseBase.ErrorCode"/>, <see cref="ResponseBase.Message"/>.</returns>
+        /// <remarks>Если передать значение 0 для <paramref name="errorCode"/>, то будет создан "успешный" ответ, иначе "ошибочный".</remarks>
+        public static GetDiscountResponse CreateEmptyResponse(
             this GetDiscountRequest request,
             int errorCode,
-            string message,
-            string? description = null)
+            string message)
         {
             request = request ?? throw new ArgumentNullException(nameof(request));
 
@@ -42,9 +96,169 @@
                 CardNumber = request.CardNumber,
                 PhoneNumber = request.PhoneNumber,
                 AnyData = request.AnyData,
-                Description = description,
-                //// Orders = null,
             };
+        }
+
+        /// <summary>
+        /// Создает пустой класс ответа, устанавливая поля ErrorCode и Message в указанные значения.
+        /// </summary>
+        /// <param name="request">Запрос.</param>
+        /// <param name="errorCode">Значение для поля <see cref="ResponseBase.ErrorCode"/>.</param>
+        /// <param name="message">Значение для поля <see cref="ResponseBase.Message"/>.</param>
+        /// <returns>Ответ с установленными полями <see cref="ResponseBase.Status"/>, <see cref="ResponseBase.ErrorCode"/>, <see cref="ResponseBase.Message"/>.</returns>
+        /// <remarks>Если передать значение 0 для <paramref name="errorCode"/>, то будет создан "успешный" ответ, иначе "ошибочный".</remarks>
+        public static ConfirmPurchaseResponse CreateEmptyResponse(
+            this ConfirmPurchaseRequest request,
+            int errorCode,
+            string message)
+        {
+            request = request ?? throw new ArgumentNullException(nameof(request));
+
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            return new ConfirmPurchaseResponse
+            {
+                Status = errorCode == 0 ? Globals.StatusSuccess : Globals.StatusError,
+                ErrorCode = errorCode,
+                Message = message,
+            };
+        }
+
+        /// <summary>
+        /// Создает пустой класс ответа, устанавливая поля ErrorCode и Message в указанные значения.
+        /// </summary>
+        /// <param name="request">Запрос.</param>
+        /// <param name="errorCode">Значение для поля <see cref="ResponseBase.ErrorCode"/>.</param>
+        /// <param name="message">Значение для поля <see cref="ResponseBase.Message"/>.</param>
+        /// <returns>Ответ с установленными полями <see cref="ResponseBase.Status"/>, <see cref="ResponseBase.ErrorCode"/>, <see cref="ResponseBase.Message"/>.</returns>
+        /// <remarks>Если передать значение 0 для <paramref name="errorCode"/>, то будет создан "успешный" ответ, иначе "ошибочный".</remarks>
+        public static CancelPurchaseResponse CreateEmptyResponse(
+            this CancelPurchaseRequest request,
+            int errorCode,
+            string message)
+        {
+            request = request ?? throw new ArgumentNullException(nameof(request));
+
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            return new CancelPurchaseResponse
+            {
+                Status = errorCode == 0 ? Globals.StatusSuccess : Globals.StatusError,
+                ErrorCode = errorCode,
+                Message = message,
+            };
+        }
+
+        /// <summary>
+        /// Создает пустой класс ответа, устанавливая поля ErrorCode и Message в указанные значения.
+        /// </summary>
+        /// <param name="request">Запрос.</param>
+        /// <param name="errorCode">Значение для поля <see cref="ResponseBase.ErrorCode"/>.</param>
+        /// <param name="message">Значение для поля <see cref="ResponseBase.Message"/>.</param>
+        /// <returns>Ответ с установленными полями <see cref="ResponseBase.Status"/>, <see cref="ResponseBase.ErrorCode"/>, <see cref="ResponseBase.Message"/>.</returns>
+        /// <remarks>Если передать значение 0 для <paramref name="errorCode"/>, то будет создан "успешный" ответ, иначе "ошибочный".</remarks>
+        public static GetProductsResponse CreateEmptyResponse(
+            this GetProductsRequest request,
+            int errorCode,
+            string message)
+        {
+            request = request ?? throw new ArgumentNullException(nameof(request));
+
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            return new GetProductsResponse
+            {
+                Status = errorCode == 0 ? Globals.StatusSuccess : Globals.StatusError,
+                ErrorCode = errorCode,
+                Message = message,
+            };
+        }
+
+        /// <summary>
+        /// Создает пустой класс ответа, устанавливая поля ErrorCode и Message в указанные значения.
+        /// </summary>
+        /// <param name="request">Запрос.</param>
+        /// <param name="errorCode">Значение для поля <see cref="ResponseBase.ErrorCode"/>.</param>
+        /// <param name="message">Значение для поля <see cref="ResponseBase.Message"/>.</param>
+        /// <returns>Ответ с установленными полями <see cref="ResponseBase.Status"/>, <see cref="ResponseBase.ErrorCode"/>, <see cref="ResponseBase.Message"/>.</returns>
+        /// <remarks>Если передать значение 0 для <paramref name="errorCode"/>, то будет создан "успешный" ответ, иначе "ошибочный".</remarks>
+        public static GetProgramsResponse CreateEmptyResponse(
+            this GetProgramsRequest request,
+            int errorCode,
+            string message)
+        {
+            request = request ?? throw new ArgumentNullException(nameof(request));
+
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            return new GetProgramsResponse
+            {
+                Status = errorCode == 0 ? Globals.StatusSuccess : Globals.StatusError,
+                ErrorCode = errorCode,
+                Message = message,
+            };
+        }
+
+        /// <summary>
+        /// Создает пустой класс ответа, устанавливая поля ErrorCode и Message в указанные значения.
+        /// </summary>
+        /// <param name="request">Запрос.</param>
+        /// <param name="errorCode">Значение для поля <see cref="ResponseBase.ErrorCode"/>.</param>
+        /// <param name="message">Значение для поля <see cref="ResponseBase.Message"/>.</param>
+        /// <returns>Ответ с установленными полями <see cref="ResponseBase.Status"/>, <see cref="ResponseBase.ErrorCode"/>, <see cref="ResponseBase.Message"/>.</returns>
+        /// <remarks>Если передать значение 0 для <paramref name="errorCode"/>, то будет создан "успешный" ответ, иначе "ошибочный".</remarks>
+        public static UpdatePharmaciesResponse CreateEmptyResponse(
+            this UpdatePharmaciesRequest request,
+            int errorCode,
+            string message)
+        {
+            request = request ?? throw new ArgumentNullException(nameof(request));
+
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            return new UpdatePharmaciesResponse
+            {
+                Status = errorCode == 0 ? Globals.StatusSuccess : Globals.StatusError,
+                ErrorCode = errorCode,
+                Message = message,
+            };
+        }
+
+        /// <summary>
+        /// Создает класс ответа без строк (orders),
+        /// копируя из запроса в ответ те поля, которые должны вернуться неизменными,
+        /// и устанавливая поля ErrorCode, Message и Description в указанные значения.
+        /// </summary>
+        /// <param name="request">Запрос.</param>
+        /// <param name="errorCode">Значение для поля <see cref="ResponseBase.ErrorCode"/>.</param>
+        /// <param name="message">Значение для поля <see cref="ResponseBase.Message"/>.</param>
+        /// <param name="description">Значение для поля <see cref="GetDiscountResponse.Description"/>.</param>
+        /// <returns>Ответ, заполненный данными из запроса (без копирования блока Orders).</returns>
+        /// <remarks>Аналогичен методу <see cref="CreateEmptyResponse(GetDiscountRequest, int, string)"/>, но дополнительно заполняет поле <see cref="GetDiscountResponse.Description"/>.</remarks>
+        public static GetDiscountResponse CreateResponseWithoutOrders(
+            this GetDiscountRequest request,
+            int errorCode,
+            string message,
+            string? description = null)
+        {
+            var resp = CreateEmptyResponse(request, errorCode, message);
+            resp.Description = description;
+            return resp;
         }
 
         /// <summary>
@@ -68,6 +282,8 @@
             string message,
             string? description = null)
         {
+            request = request ?? throw new ArgumentNullException(nameof(request));
+
             var resp = CreateResponseWithoutOrders(request, errorCode, message, description);
 
             if (string.IsNullOrEmpty(orderMessageWhenEmptyBarcode))
